@@ -1,1 +1,1 @@
-Created the new branch, because I cannot push to master.
+Created new branch, because I cannot push to master.
