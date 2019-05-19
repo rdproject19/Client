@@ -34,13 +34,13 @@ public class loginScreen extends AppCompatActivity {
         String un = ((TextView) username).getText().toString().toLowerCase();
         String pw = ((TextView) password).getText().toString().toLowerCase();
 
-        if(un.equals(placeholder_un) && pw.equals(placeholder_pw)) {
+        //if(un.equals(placeholder_un) && pw.equals(placeholder_pw)) {
             startActivity(new Intent(loginScreen.this, chats.class));
-        }
-        else {
-            String invalid_login_details = "Please enter a valid username/password";
-            error_text.setText(invalid_login_details);
-        }
+        //}
+        //else {
+        //    String invalid_login_details = "Please enter a valid username/password";
+        //    error_text.setText(invalid_login_details);
+        //}
     }
 
     public void openRegisterScreen(View v) {
