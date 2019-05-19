@@ -11,6 +11,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".chats"></activity>
         <activity android:name=".profile" />
+        <activity android:name=".registerScreen" />
         <activity android:name=".loginScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
