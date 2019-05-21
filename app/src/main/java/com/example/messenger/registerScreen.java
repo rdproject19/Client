@@ -118,7 +118,6 @@ public class registerScreen extends AppCompatActivity {
     }
 
     private void saveImage(Bitmap bitmap, int n) {
-
         String root = Environment.getExternalStorageDirectory().toString();
         File myDir = new File(root + "/messenger_app_images");
         if (!myDir.exists()) {
@@ -143,10 +142,10 @@ public class registerScreen extends AppCompatActivity {
     public Bitmap circelizeBitmap(Bitmap bitmap)
     {
         int width = bitmap.getWidth() > bitmap.getHeight() ? bitmap.getHeight() : bitmap.getWidth();
-        int length = bitmap.getWidth() > bitmap.getHeight() ? bitmap.getWidth() : bitmap.getHeight();
-        boolean standing = bitmap.getWidth() < bitmap.getHeight();
+        //int length = bitmap.getWidth() > bitmap.getHeight() ? bitmap.getWidth() : bitmap.getHeight();
+        //boolean standing = bitmap.getWidth() < bitmap.getHeight();
 
-        Bitmap resultBitmap = Bitmap.createBitmap(bitmap, standing ? (length-width)/2 : 0, !standing ? (length-width)/2 : 0, width, width);
+        Bitmap resultBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, width);
 
         Bitmap canvasBitmap = Bitmap.createBitmap(width, width, Bitmap.Config.ARGB_8888);
         BitmapShader shader = new BitmapShader(resultBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
