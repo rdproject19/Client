@@ -15,8 +15,9 @@ public class profile extends AppCompatActivity {
 
     public void openChats(View v) {
         Intent i = new Intent(profile.this, chats.class);
-        finish();
         startActivity(i);
+        finish();
+        overridePendingTransition(0, 0);
     }
 
 }

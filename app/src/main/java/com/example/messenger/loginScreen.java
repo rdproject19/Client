@@ -36,6 +36,7 @@ public class loginScreen extends AppCompatActivity {
 
         //if(un.equals(placeholder_un) && pw.equals(placeholder_pw)) {
             startActivity(new Intent(loginScreen.this, chats.class));
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         //}
         //else {
         //    String invalid_login_details = "Please enter a valid username/password";
@@ -45,5 +46,6 @@ public class loginScreen extends AppCompatActivity {
 
     public void openRegisterScreen(View v) {
         startActivity(new Intent(loginScreen.this, registerScreen.class));
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }
