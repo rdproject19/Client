@@ -99,8 +99,8 @@ public class registerScreen extends AppCompatActivity {
     }
 
     public void takePicture(View v) {
-        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(i, 0);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, 0);
     }
 
     public void pickPicture(View v) {
@@ -139,17 +139,16 @@ public class registerScreen extends AppCompatActivity {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
 
+        Bitmap resultBitmap = Bitmap.createBitmap(bitmap, 0, 0, width > height ? height : width, width > height ? height : width);
         Bitmap canvasBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        BitmapShader shader = new BitmapShader(resultBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         Paint paint = new Paint();
         paint.setAntiAlias(true);
         paint.setShader(shader);
 
         Canvas canvas = new Canvas(canvasBitmap);
-        float radius = ((float) height) / 2f;
+        float radius = width > height ? ((float) height) / 2f : ((float) width) / 2f;
         canvas.drawCircle(width / 2, height / 2, radius, paint);
-
-        error_text.setText("width = " + width);
 
         return canvasBitmap;
     }
