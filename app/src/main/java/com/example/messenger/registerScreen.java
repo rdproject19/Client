@@ -7,12 +7,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -51,7 +51,7 @@ public class registerScreen extends AppCompatActivity {
                     Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                     profile_picture.setImageBitmap(circelizeBitmap(bitmap));
                     pictures_taken++;
-                    saveImageInGallery(bitmap, "Messenger-app-profile-picture-" + pictures_taken);
+                    saveImage(bitmap, pictures_taken);
                 }
                 case 1: {
                     final Bundle extras = data.getExtras();
@@ -101,6 +101,7 @@ public class registerScreen extends AppCompatActivity {
     public void takePicture(View v) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, 0);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     public void pickPicture(View v) {
@@ -116,19 +117,23 @@ public class registerScreen extends AppCompatActivity {
         startActivityForResult(intent, 1);
     }
 
-    private void saveImageInGallery(Bitmap finalBitmap, String image_name) {
-        String root = Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DCIM + "/";
-        File myDir = new File(root);
-        myDir.mkdirs();
-        String fname = image_name+ ".jpg";
-        File file = new File(myDir, fname);
-        if (file.exists()) file.delete();
-        Log.i("LOAD", root + fname);
+    private void saveImage(Bitmap bitmap, int n) {
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/messenger_app_images");
+        if (!myDir.exists()) {
+            myDir.mkdirs();
+        }
+        String fname = "messenger-image-"+ n +".jpg";
+        File file = new File (myDir, fname);
+        if (file.exists ()) {
+            file.delete();
+        }
         try {
             FileOutputStream out = new FileOutputStream(file);
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
             out.flush();
             out.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -136,19 +141,21 @@ public class registerScreen extends AppCompatActivity {
 
     public Bitmap circelizeBitmap(Bitmap bitmap)
     {
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
+        int width = bitmap.getWidth() > bitmap.getHeight() ? bitmap.getHeight() : bitmap.getWidth();
+        //int length = bitmap.getWidth() > bitmap.getHeight() ? bitmap.getWidth() : bitmap.getHeight();
+        //boolean standing = bitmap.getWidth() < bitmap.getHeight();
 
-        Bitmap resultBitmap = Bitmap.createBitmap(bitmap, 0, 0, width > height ? height : width, width > height ? height : width);
-        Bitmap canvasBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Bitmap resultBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, width);
+
+        Bitmap canvasBitmap = Bitmap.createBitmap(width, width, Bitmap.Config.ARGB_8888);
         BitmapShader shader = new BitmapShader(resultBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         Paint paint = new Paint();
         paint.setAntiAlias(true);
         paint.setShader(shader);
 
         Canvas canvas = new Canvas(canvasBitmap);
-        float radius = width > height ? ((float) height) / 2f : ((float) width) / 2f;
-        canvas.drawCircle(width / 2, height / 2, radius, paint);
+        float radius = ((float) width) / 2f;
+        canvas.drawCircle(radius, radius, radius, paint);
 
         return canvasBitmap;
     }

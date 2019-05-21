@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Space;
 
 public class chats extends AppCompatActivity {
 
@@ -24,8 +25,9 @@ public class chats extends AppCompatActivity {
 
     public void openProfile(View v) {
         Intent i = new Intent(chats.this, profile.class);
-        finish();
         startActivity(i);
+        finish();
+        overridePendingTransition(0, 0);
     }
 
     public void newChat(View view) {
@@ -53,5 +55,9 @@ public class chats extends AppCompatActivity {
         chatbox.setCompoundDrawables( profile_picture, null, null, null );
         chatbox.setPadding(50, 0, 0, 0);
         chatlist.addView(chatbox);
+
+        Space space = new Space(this);
+        space.setMinimumHeight(30);
+        chatlist.addView(space);
     }
 }
