@@ -85,28 +85,42 @@
         <Button
             android:id="@+id/openChats"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_weight="1"
 
+            android:background="@drawable/button_inactive"
             android:enabled="false"
-            android:text="Chats" />
+            android:text="Chats"
+            android:textAllCaps="false"
+            android:textColor="#505050"
+            android:textColorLink="#616161"
+            android:textSize="22dp" />
 
         <Button
             android:id="@+id/openProfile"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_weight="1"
 
+            android:background="@drawable/button_active"
             android:onClick="openProfile"
-            android:text="Profile" />
+            android:text="Profile"
+            android:textAllCaps="false"
+            android:textColor="#505050"
+            android:textColorLink="#616161"
+            android:textSize="22dp" />
 
         <Button
             android:id="@+id/button4"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_weight="1"
-
-            android:text="Button" />
+            android:background="@drawable/button_active"
+            android:text="Button"
+            android:textAllCaps="false"
+            android:textColor="#505050"
+            android:textColorLink="#616161"
+            android:textSize="22dp" />
     </LinearLayout>
 
 

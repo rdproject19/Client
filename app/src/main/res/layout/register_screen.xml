@@ -21,7 +21,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.245" />
+        app:layout_constraintVertical_bias="0.26" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -32,7 +32,38 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.75">
+
+        <EditText
+            android:id="@+id/phonenumber"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Full name"
+            android:inputType="textPersonName"
+            android:textColorHighlight="#FFFFFF"
+            android:textColorHint="#86FFFFFF"
+            android:textColorLink="#FFFFFF"
+            android:textCursorDrawable="@null"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/fullname"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Phone number"
+            android:inputType="textPersonName"
+            android:textColorHighlight="#FFFFFF"
+            android:textColorHint="#86FFFFFF"
+            android:textColorLink="#FFFFFF"
+            android:textCursorDrawable="@null"
+            android:textSize="30sp" />
 
         <EditText
             android:id="@+id/username"
@@ -41,7 +72,7 @@
             android:layout_weight="1"
             android:ems="10"
             android:gravity="center"
-            android:hint="Username"
+            android:hint="Username*"
             android:inputType="textPersonName"
             android:textColorHighlight="#FFFFFF"
             android:textColorHint="#86FFFFFF"
@@ -56,7 +87,7 @@
             android:layout_weight="1"
             android:ems="10"
             android:gravity="center"
-            android:hint="Password"
+            android:hint="Password*"
             android:inputType="textPassword"
             android:textColorHighlight="#FFFFFF"
             android:textColorHint="#86FFFFFF"
@@ -66,13 +97,16 @@
 
         <Button
             android:id="@+id/register"
-            android:layout_width="250dp"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="#0DD839"
+            android:background="@drawable/button_active"
+            android:onClick="openLoginScreen"
             android:text="Register"
-            android:textColorLink="#2196F3"
-            android:onClick="openLoginScreen"/>
+            android:textColor="#505050"
+            android:textColorHint="#0A474747"
+            android:textColorLink="#616161"
+            android:textSize="30dp" />
 
     </LinearLayout>
 
@@ -93,7 +127,8 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:scaleType="fitXY"
-            app:srcCompat="@android:drawable/btn_star_big_on"
+            app:srcCompat="@drawable/icon_default_profile"
+            android:background="@null"
             android:onClick="pickPicture"/>
 
         <Space
@@ -106,7 +141,8 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:scaleType="fitXY"
-            app:srcCompat="@android:drawable/ic_menu_camera"
+            app:srcCompat="@drawable/icon_camera"
+            android:background="@null"
             android:onClick="takePicture"/>
     </LinearLayout>
 

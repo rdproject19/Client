@@ -2,6 +2,11 @@ package com.example.messenger;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Shader;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -44,15 +49,15 @@ public class registerScreen extends AppCompatActivity {
             switch (requestCode) {
                 case 0: {
                     Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                    profile_picture.setImageBitmap(bitmap);
+                    profile_picture.setImageBitmap(circelizeBitmap(bitmap));
                     pictures_taken++;
-                    saveImage(bitmap, "Messenger-app-profile-picture " + pictures_taken);
+                    saveImageInGallery(bitmap, "Messenger-app-profile-picture-" + pictures_taken);
                 }
                 case 1: {
                     final Bundle extras = data.getExtras();
                     if (extras != null) {
                         Bitmap bitmap = extras.getParcelable("data");
-                        profile_picture.setImageBitmap(bitmap);
+                        profile_picture.setImageBitmap(circelizeBitmap(bitmap));
                     }
                 }
             }
@@ -94,8 +99,8 @@ public class registerScreen extends AppCompatActivity {
     }
 
     public void takePicture(View v) {
-        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(i, 0);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, 0);
     }
 
     public void pickPicture(View v) {
@@ -111,8 +116,8 @@ public class registerScreen extends AppCompatActivity {
         startActivityForResult(intent, 1);
     }
 
-    private void saveImage(Bitmap finalBitmap, String image_name) {
-        String root = Environment.getExternalStorageDirectory().toString();
+    private void saveImageInGallery(Bitmap finalBitmap, String image_name) {
+        String root = Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DCIM + "/";
         File myDir = new File(root);
         myDir.mkdirs();
         String fname = image_name+ ".jpg";
@@ -127,5 +132,24 @@ public class registerScreen extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public Bitmap circelizeBitmap(Bitmap bitmap)
+    {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        Bitmap resultBitmap = Bitmap.createBitmap(bitmap, 0, 0, width > height ? height : width, width > height ? height : width);
+        Bitmap canvasBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        BitmapShader shader = new BitmapShader(resultBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setShader(shader);
+
+        Canvas canvas = new Canvas(canvasBitmap);
+        float radius = width > height ? ((float) height) / 2f : ((float) width) / 2f;
+        canvas.drawCircle(width / 2, height / 2, radius, paint);
+
+        return canvasBitmap;
     }
 }
