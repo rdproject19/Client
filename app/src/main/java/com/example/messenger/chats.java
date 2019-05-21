@@ -12,25 +12,23 @@ import android.widget.ScrollView;
 
 public class chats extends AppCompatActivity {
 
+    LinearLayout chatlist;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chats);
 
+        chatlist = findViewById(R.id.Chats);
     }
 
     public void openProfile(View v) {
-
         Intent i = new Intent(chats.this, profile.class);
         finish();
         startActivity(i);
-
     }
 
     public void newChat(View view) {
-
-        LinearLayout chatlist = findViewById(R.id.Chats);
-
         Drawable profile_picture = this.getBaseContext().getResources().getDrawable( R.drawable.icon_default_profile , null);
         Drawable background = this.getBaseContext().getResources().getDrawable( R.drawable.chatbox , null);
 
@@ -41,6 +39,16 @@ public class chats extends AppCompatActivity {
         chatbox.setHeight(300);
         chatbox.setTextSize(30);
         chatbox.setGravity(Gravity.CENTER_VERTICAL);
+
+        //button opens new activity - chat activity.
+        chatbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(chats.this, chatWindow.class);
+                startActivity(i);
+            }
+        });
+
         profile_picture.setBounds( 0, 0, 200, 200 );
         chatbox.setCompoundDrawables( profile_picture, null, null, null );
         chatbox.setPadding(50, 0, 0, 0);

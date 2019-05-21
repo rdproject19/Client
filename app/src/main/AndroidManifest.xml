@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".chats"></activity>
+        <activity android:name=".chatWindow"></activity>
+        <activity android:name=".chats" />
         <activity android:name=".profile" />
         <activity android:name=".registerScreen" />
         <activity android:name=".loginScreen">
