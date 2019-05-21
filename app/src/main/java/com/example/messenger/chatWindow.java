@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -57,12 +58,33 @@ public class chatWindow extends AppCompatActivity {
         if(i%2 == 0){
             TextView tv = new TextView(this);
             tv.setText(message);
-            tv.setBackgroundColor(Color.GREEN);
+            tv.setBackgroundColor(Color.GRAY);
+            tv.setGravity(Gravity.END);
+
+            //margins
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            params.setMargins(250, 0, 0, 0);
+            tv.setLayoutParams(params);
+
+            ll.addView(tv);
             et.setText("");
         } else{
             TextView tv = new TextView(this);
             tv.setText(message);
             tv.setBackgroundColor(Color.WHITE);
+
+            //margins
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            params.setMargins(0, 0, 250, 0);
+            tv.setLayoutParams(params);
+
+            ll.addView(tv);
             et.setText("");
         }
         i++;
