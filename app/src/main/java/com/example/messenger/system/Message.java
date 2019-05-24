@@ -1,4 +1,4 @@
-package com.example.messenger;
+package com.example.messenger.system;
 import org.json.*;
 
 /**
@@ -9,7 +9,7 @@ public class Message {
     private String senderID;
     private long timeStamp;
     private String message;
-    private String conversationID;
+    private int conversationID;
     private String sessionToken;
     private String messageID;
     private boolean parsed;
@@ -18,13 +18,17 @@ public class Message {
         senderID = json.getString("SENDER_ID");
         timeStamp = json.getLong("TIMESTAMP");
         message = json.getString("MESSAGE");
-        conversationID = json.getString("CONVERSATION_ID");
+        conversationID = json.getInt("CONVERSATION_ID");
         sessionToken = json.getString("SESSION_TOKEN");
         messageID = json.getString("MESSAGE_ID");
         parsed = false;
     }
 
-    public Message(String senderID, long timeStamp, String message, String conversationID, String sessionToken, String messageID) {
+    public Message (String string) throws JSONException {
+        this(new JSONObject(string));
+    }
+
+    public Message(String senderID, long timeStamp, String message, int conversationID, String sessionToken, String messageID) {
         this.senderID = senderID;
         this.timeStamp = timeStamp;
         this.message = message;
