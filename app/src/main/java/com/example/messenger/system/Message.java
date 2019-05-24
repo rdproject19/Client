@@ -72,7 +72,7 @@ public class Message {
         return conversationID;
     }
 
-    public int getSessionToken() {
+    public String getSessionToken() {
         return sessionToken;
     }
 
