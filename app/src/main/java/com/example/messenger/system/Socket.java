@@ -3,7 +3,7 @@ package com.example.messenger.system;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
-
+import org.json.*;
 import java.net.InetSocketAddress;
 
 public class Socket extends WebSocketServer {
@@ -18,7 +18,9 @@ public class Socket extends WebSocketServer {
 
         @Override
         public void onOpen(WebSocket conn, ClientHandshake handshake) {
-
+            //Send Handshake
+            //Recieve question
+            //Send Answer
         }
 
         @Override
@@ -29,10 +31,13 @@ public class Socket extends WebSocketServer {
         @Override
         public void onMessage(WebSocket conn, String message)
         {
-            Message msg;
-
             try {
-                msg = new Message(message);
+                String type = new JSONObject(message).getString("TYPE");
+                if (type.equals("message")) {
+                    handleMessage(new Message(message));
+                } else if (type.equals("conversation")) {
+                    handleConversation(message);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 return;

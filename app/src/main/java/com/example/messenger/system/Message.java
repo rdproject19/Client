@@ -6,6 +6,7 @@ import org.json.*;
  * @author Cas Haaijman (s4372662)
  */
 public class Message {
+    private String type;
     private String senderID;
     private long timeStamp;
     private String message;
@@ -20,6 +21,9 @@ public class Message {
      * @throws JSONException If the required data is not present
      */
     public Message (JSONObject json) throws JSONException {
+        if (json.getString("TYPE") != "message") {
+            throw new JSONException("Wrong message type");
+        }
         senderID = json.getString("SENDER_ID");
         timeStamp = json.getLong("TIMESTAMP");
         message = json.getString("MESSAGE");
