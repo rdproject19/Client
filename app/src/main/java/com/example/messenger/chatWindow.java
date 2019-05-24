@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class chatWindow extends AppCompatActivity {
@@ -19,8 +18,6 @@ public class chatWindow extends AppCompatActivity {
     String message;
     Button sendButton;
     LinearLayout ll;
-    ScrollView sv;
-
 
     int i = 0;
 
@@ -29,7 +26,6 @@ public class chatWindow extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_window);
 
-        sv = findViewById(R.id.scrollView);
         ll = findViewById(R.id.linearLayout);
         sendButton = findViewById(R.id.sendButton);
         et = findViewById(R.id.messageField);
@@ -42,7 +38,6 @@ public class chatWindow extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //enabling and disabling of the "SEND" button
                 message = et.getText().toString();
                 if(message.isEmpty()) {
                     sendButton.setEnabled(false);
@@ -60,8 +55,6 @@ public class chatWindow extends AppCompatActivity {
 
     public void sendMessage(View view) {
         message = et.getText().toString();
-
-        //sent message
         if(i%2 == 0){
             TextView tv = new TextView(this);
             tv.setText(message);
@@ -78,7 +71,7 @@ public class chatWindow extends AppCompatActivity {
 
             ll.addView(tv);
             et.setText("");
-        } else{ //received message
+        } else{
             TextView tv = new TextView(this);
             tv.setText(message);
             tv.setBackgroundColor(Color.WHITE);
@@ -94,14 +87,6 @@ public class chatWindow extends AppCompatActivity {
             ll.addView(tv);
             et.setText("");
         }
-
-        //scroll to the bottom
-        sv.post(new Runnable() {
-            @Override
-            public void run() {
-                sv.fullScroll(View.FOCUS_DOWN);
-            }
-        });
         i++;
     }
 }
