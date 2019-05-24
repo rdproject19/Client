@@ -5,7 +5,8 @@ package com.example.messenger;
  *
  * @author Cas Haaijman (s4372662)
  */
-public class Message {
+public class Message
+{
     private final String senderID;
     private final long timeStamp;
     private final String message;
