@@ -1,40 +1,27 @@
 package com.example.messenger;
-
+import org.json.*;
 
 /**
  *
  * @author Cas Haaijman (s4372662)
  */
 public class Message {
-    private final String senderID;
-    private final long timeStamp;
-    private final String message;
-    private final String conversationID;
-    private final String sessionToken;
-    private final String messageID;
+    private String senderID;
+    private long timeStamp;
+    private String message;
+    private String conversationID;
+    private String sessionToken;
+    private String messageID;
+    private boolean parsed;
 
-    public Message (String JSON) {
-        Gson gson = new Gson();
-        gson.fromJson(JSON, Message::class);
-        /*String[] splitString = JSON.replace("{", "").split(", ");
-        for (String s : splitString) {
-            String[] set = s.split(":");
-            switch (set[0]) {
-                case "senderID":
-                    this.senderID = set[1];
-                case "timeStamp":
-                    this.senderID = set[1];
-                case "message":
-                    this.senderID = set[1];
-                case "conversationID":
-                    this.senderID = set[1];
-                case "sessionToken":
-                    this.senderID = set[1];
-                case "messageID":
-                    this.senderID = set[1];
-            }
-
-        }*/
+    public Message (JSONObject json) throws JSONException {
+        senderID = json.getString("SENDER_ID");
+        timeStamp = json.getLong("TIMESTAMP");
+        message = json.getString("MESSAGE");
+        conversationID = json.getString("CONVERSATION_ID");
+        sessionToken = json.getString("SESSION_TOKEN");
+        messageID = json.getString("MESSAGE_ID");
+        parsed = false;
     }
 
     public Message(String senderID, long timeStamp, String message, String conversationID, String sessionToken, String messageID) {
@@ -44,6 +31,7 @@ public class Message {
         this.conversationID = conversationID;
         this.sessionToken = sessionToken;
         this.messageID = messageID;
+        this.parsed = false;
     }
 
     public String getSenderID() {
@@ -70,5 +58,12 @@ public class Message {
         return messageID;
     }
 
+    public boolean isParsed() {
+        return parsed;
+    }
+
+    public void setParsed(boolean parsed) {
+        this.parsed = parsed;
+    }
 
     }
