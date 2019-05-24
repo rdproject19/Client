@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class loginScreen extends AppCompatActivity {
+public class LoginScreen extends AppCompatActivity {
 
     EditText username, password;
     TextView error_text;
@@ -35,7 +35,7 @@ public class loginScreen extends AppCompatActivity {
         String pw = ((TextView) password).getText().toString().toLowerCase();
 
         //if(un.equals(placeholder_un) && pw.equals(placeholder_pw)) {
-            startActivity(new Intent(loginScreen.this, chats.class));
+            startActivity(new Intent(LoginScreen.this, MessengerScreen.class));
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         //}
         //else {
@@ -45,7 +45,7 @@ public class loginScreen extends AppCompatActivity {
     }
 
     public void openRegisterScreen(View v) {
-        startActivity(new Intent(loginScreen.this, registerScreen.class));
+        startActivity(new Intent(LoginScreen.this, RegisterScreen.class));
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }

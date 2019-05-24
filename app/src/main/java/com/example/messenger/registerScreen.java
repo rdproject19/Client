@@ -21,7 +21,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.io.FileOutputStream;
 
-public class registerScreen extends AppCompatActivity {
+public class RegisterScreen extends AppCompatActivity {
 
     private int pictures_taken;
 
