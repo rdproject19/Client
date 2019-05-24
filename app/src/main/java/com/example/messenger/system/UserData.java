@@ -41,7 +41,6 @@ public class UserData
     private SharedPreferences sp;
 
 
-
     public UserData(Context context)
     {
         this.context = context;
