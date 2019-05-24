@@ -14,6 +14,11 @@ public class Message {
     private String messageID;
     private boolean parsed;
 
+    /**
+     *
+     * @param json The message information as a JSON object
+     * @throws JSONException If the required data is not present
+     */
     public Message (JSONObject json) throws JSONException {
         senderID = json.getString("SENDER_ID");
         timeStamp = json.getLong("TIMESTAMP");
@@ -24,10 +29,23 @@ public class Message {
         parsed = false;
     }
 
+    /**
+     *
+     * @param string The message data in JSON format as a string
+     * @throws JSONException If the required data is not present
+     */
     public Message (String string) throws JSONException {
         this(new JSONObject(string));
     }
 
+    /**
+     * @param senderID The ID of the sender (username)
+     * @param timeStamp Timestamp in unixtime
+     * @param message The substance of the message
+     * @param conversationID The ID of the conversation
+     * @param sessionToken
+     * @param messageID
+     */
     public Message(String senderID, long timeStamp, String message, int conversationID, String sessionToken, String messageID) {
         this.senderID = senderID;
         this.timeStamp = timeStamp;
@@ -50,11 +68,11 @@ public class Message {
         return message;
     }
 
-    public String getConversationID() {
+    public int getConversationID() {
         return conversationID;
     }
 
-    public String getSessionToken() {
+    public int getSessionToken() {
         return sessionToken;
     }
 
