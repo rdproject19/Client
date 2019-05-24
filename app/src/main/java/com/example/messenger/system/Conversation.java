@@ -1,7 +1,5 @@
 package com.example.messenger.system;
 
-import com.example.messenger.Message;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -18,6 +16,8 @@ public class Conversation
     {
         this.conversationId = id;
     }
+
+    public void putMessage(Integer, )
 
 
 
