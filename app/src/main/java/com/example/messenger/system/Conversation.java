@@ -10,14 +10,17 @@ public class Conversation
     private LinkedList participants;
 
 
-    private HashMap<Integer, Message> messages;
+    private HashMap<String, Message> messages;
 
     Conversation (int id)
     {
         this.conversationId = id;
     }
 
-    public void putMessage(Integer, )
+    public void putMessage(Message msg)
+    {
+        this.messages.put(msg.getMessageID(), msg);
+    }
 
 
 

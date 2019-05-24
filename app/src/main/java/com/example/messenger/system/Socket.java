@@ -17,7 +17,8 @@ public class Socket extends WebSocketServer {
         }
 
         @Override
-        public void onOpen(WebSocket conn, ClientHandshake handshake) {
+        public void onOpen(WebSocket conn, ClientHandshake handshake)
+        {
 
         }
 
@@ -31,6 +32,7 @@ public class Socket extends WebSocketServer {
         {
             Message msg;
 
+            // Parse message
             try {
                 msg = new Message(message);
             } catch (Exception e) {
@@ -40,7 +42,7 @@ public class Socket extends WebSocketServer {
 
             int convId = msg.getConversationID();
 
-
+            // get conversation object
             Conversation conv;
             if(this.ch.conversationExists(convId)) {
                 conv = this.ch.getConversation(convId);
@@ -48,6 +50,8 @@ public class Socket extends WebSocketServer {
                 conv = new Conversation(convId);
             }
 
+            // put message in conversation
+            conv.putMessage(msg);
 
 
         }
