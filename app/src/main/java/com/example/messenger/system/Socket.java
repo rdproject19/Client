@@ -89,9 +89,13 @@ public class Socket extends WebSocketServer {
                 if(this.ch.conversationExists(convId)) {
                     conv = this.ch.getConversation(convId);
                 } else {
+                    this.broadcast(String.format("{TYPE: \"conversation_request\", CONVERSATION_ID:%d}", convId));
                     conv = new Conversation(convId);
                     ch.putConversation(conv);
                 }
+
+                conv.putMessage(msg);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -99,6 +103,25 @@ public class Socket extends WebSocketServer {
         }
 
         private void handleConversation(JSONObject jsonConvo) {
+            Gson gson = new Gson();
 
+            try {
+                if (jsonConvo.has("PARTICIPANTS")) {
+                    int convId = jsonConvo.getInt("CONVERSATION_ID");
+                    Conversation conv;
+                    if(this.ch.conversationExists(convId)) {
+                        conv = ch.getConversation(convId);
+                    } else {
+                        conv = new Conversation(convId);
+                        ch.putConversation(conv);
+                    }
+                    for (String name : gson.fromJson((JsonElement) jsonConvo.get("PARTICIPANTS"), String[].class)) {
+                        conv.addParticipant(name);
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 }

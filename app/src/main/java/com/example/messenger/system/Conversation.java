@@ -7,7 +7,7 @@ import java.util.LinkedList;
 public class Conversation
 {
     private final int conversationId;
-    private LinkedList participants;
+    private LinkedList<String> participants;
 
 
     private HashMap<Integer, Message> messages;
@@ -15,6 +15,7 @@ public class Conversation
     Conversation (int id)
     {
         this.conversationId = id;
+
     }
 
     public int getID() {
@@ -29,6 +30,12 @@ public class Conversation
     public void putMessage(Integer msgId, Message msg)
     {
         this.messages.put(msgId, msg);
+    }
+
+    public void addParticipant(String participant) {
+        if(!participants.contains(participant)) {
+            participants.add(participant);
+        }
     }
 
     public int HashCode()
