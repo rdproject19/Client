@@ -88,8 +88,6 @@ public class LoginScreen extends AppCompatActivity {
 
         startActivity(new Intent(LoginScreen.this, MessengerScreen.class));
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        username.getText().clear();
-        password.getText().clear();
     }
 
     public void openRegisterScreen(View v) {

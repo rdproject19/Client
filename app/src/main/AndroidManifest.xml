@@ -14,6 +14,7 @@
         <activity android:name=".ChatWindow"></activity>
         <activity android:name=".MessengerScreen" />
         <activity android:name=".RegisterScreen" />
+        <activity android:name=".EditDetailsScreen" />
         <activity android:name=".LoginScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

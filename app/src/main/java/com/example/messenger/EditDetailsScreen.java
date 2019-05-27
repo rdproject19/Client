@@ -6,11 +6,11 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -19,26 +19,24 @@ import android.widget.TextView;
 import java.io.File;
 import java.io.FileOutputStream;
 
-public class RegisterScreen extends AppCompatActivity {
+public class EditDetailsScreen extends AppCompatActivity {
 
     private int pictures_taken;
     private final int minimal_chars = 4;
 
-    EditText full_name, username, password;
+    EditText new_name;
     TextView error_text;
     ImageButton profile_picture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.register_screen);
+        setContentView(R.layout.editdetails_screen);
 
-        full_name = findViewById(R.id.fullname);
-        username = findViewById(R.id.username);
-        password = findViewById(R.id.password);
-        error_text = findViewById(R.id.invalid);
-        profile_picture = findViewById(R.id.profilePicture);
-        full_name.requestFocus();
+        new_name = findViewById(R.id.newname);
+        error_text = findViewById(R.id.newinvalid);
+        profile_picture = findViewById(R.id.newProfilePicture);
+        new_name.requestFocus();
     }
 
     @Override
@@ -64,15 +62,15 @@ public class RegisterScreen extends AppCompatActivity {
         }
     }
 
-    public void openLoginScreen(View v) {
+    public void openMessengerScreen(View v) {
         if(correctFields()) {
             finish();
         }
     }
 
     private boolean correctFields() {
-        String[][] array = {{"fullname", "username", "password"},
-        {((TextView) full_name).getText().toString(), ((TextView) username).getText().toString(), ((TextView) password).getText().toString()}};
+        String[][] array = {{"new name"},
+        {((TextView) new_name).getText().toString()}};
 
         String errortext = "";
         boolean correct = true;
@@ -101,14 +99,6 @@ public class RegisterScreen extends AppCompatActivity {
             errortext = "The field" + (empty_fields.length() > 10 ? "s " : " ")  + empty_fields + " cannot be empty.";
         }
 
-        // test password requirements
-        if(correct) {
-            if(!testPasswordRequirements(array[1][2])) {
-                errortext = "The password has to contain at least 2 capital letters and 1 number.";
-                correct = false;
-            }
-        }
-
         if(correct) {
             return true;
         }
@@ -116,21 +106,6 @@ public class RegisterScreen extends AppCompatActivity {
             error_text.setText(errortext);
             return false;
         }
-    }
-
-    private boolean testPasswordRequirements(String s){
-        int capital_letters = 0, numbers = 0;
-
-        for(int i=0; i<s.length(); i++){
-            char c = s.charAt(i);
-            if(c >= 65 && c <= 90) {
-                capital_letters++;
-            }
-            else if(c >= 48 && c <= 57) {
-                numbers++;
-            }
-        }
-        return capital_letters >= 2 && numbers >= 1;
     }
 
     private boolean isMinimalLength(String s, boolean empty) { return s.length() >= (empty ? 1 : minimal_chars); }

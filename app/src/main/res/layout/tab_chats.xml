@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/background_login"
+    android:background="@mipmap/background_login"
     android:gravity="center_horizontal">
-    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView
         android:id="@+id/scrollviewd"
@@ -18,18 +18,7 @@
             android:id="@+id/chatlist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
-        </LinearLayout>
+            android:orientation="vertical"></LinearLayout>
     </ScrollView>
-
-    <Button
-        android:id="@+id/addchatbutton"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:text="Add Chat"
-        android:textAllCaps="false"
-        android:textSize="30dp"
-        android:textColor="#FFFFFF"
-        android:background="#2A387E"/>
 
 </LinearLayout>

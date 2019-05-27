@@ -1,23 +1,21 @@
 package com.example.messenger;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Space;
 
 public class ViewPagerAdapter extends PagerAdapter {
 
-    ViewPager viewPager;
     private Context mContext;
     private String[] tabTitles = {"Chats", "Profile", "Button"};
     LinearLayout chatlist;
@@ -60,9 +58,10 @@ public class ViewPagerAdapter extends PagerAdapter {
 
         View view = inflater.inflate(resource, container, false);
 
+        /*
         switch (position) {
             case 0: {
-                Button btn = view.findViewById(R.id.addchatbutton);
+                ImageButton btn = ((Activity) mContext).findViewById(R.id.actionButton);
                 chatlist = view.findViewById(R.id.chatlist);
 
                 btn.setOnClickListener(new View.OnClickListener()
@@ -76,14 +75,14 @@ public class ViewPagerAdapter extends PagerAdapter {
                 break;
             }
             case 1: {
-                //actions for profile tab
+                //action for profile tab
                 break;
             }
             case 2: {
                 //action for ? tab
                 break;
             }
-        }
+        }*/
 
         container.addView(view);
         return view;
@@ -105,8 +104,8 @@ public class ViewPagerAdapter extends PagerAdapter {
         Drawable background = mContext.getResources().getDrawable( R.drawable.chatbox , null);
 
         Button chatbox = new Button(mContext);
-        //chatbox.setBackground(background);
-        chatbox.setBackgroundColor(Color.parseColor("#e6e6e6"));
+        chatbox.setBackground(background);
+        //chatbox.setBackgroundColor(Color.parseColor("#e6e6e6"));
         chatbox.setText(" Full name");
         chatbox.setAllCaps(false);
         chatbox.setHeight(300);
@@ -128,7 +127,7 @@ public class ViewPagerAdapter extends PagerAdapter {
         chatlist.addView(chatbox);
 
         Space space = new Space(mContext);
-        space.setMinimumHeight(30);
+        space.setMinimumHeight(0);
         chatlist.addView(space);
     }
 }

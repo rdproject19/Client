@@ -4,27 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginScreen"
+    tools:context=".EditDetailsScreen"
     android:background="@mipmap/background_login"
     android:gravity="center">
 
     <TextView
-        android:id="@+id/invalid"
-        android:layout_width="match_parent"
+        android:id="@+id/newinvalid"
+        android:layout_width="350dp"
         android:layout_height="100dp"
         android:layout_weight="0"
         android:gravity="center"
         android:textColor="#ff1900"
         android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.22000003" />
+        app:layout_constraintVertical_bias="0.3" />
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -33,16 +31,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.6">
 
         <EditText
-            android:id="@+id/username"
+            android:id="@+id/newname"
             android:layout_width="250dp"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:ems="10"
             android:gravity="center"
-            android:hint="Username"
+            android:hint="New Full name*"
             android:inputType="textPersonName"
             android:textColorHighlight="#FFFFFF"
             android:textColorHint="#86FFFFFF"
@@ -50,44 +49,17 @@
             android:textCursorDrawable="@null"
             android:textSize="30sp" />
 
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="250dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:ems="10"
-            android:gravity="center"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:textColorHighlight="#FFFFFF"
-            android:textColorHint="#86FFFFFF"
-            android:textColorLink="#285BC0"
-            android:textCursorDrawable="@null"
-            android:textSize="30sp" />
-
-        <CheckBox
-            android:id="@+id/rememberMe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Remember me"
-            android:textColor="#505050"
-            android:textSize="20dp"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="30dp" />
-
         <Button
-            android:id="@+id/register"
-            android:layout_width="250dp"
+            android:id="@+id/confirm"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:background="@drawable/button_active"
-            android:onClick="openChats"
-            android:text="Log In"
-            android:textAllCaps="true"
-            android:textColorLink="#616161"
+            android:onClick="openMessengerScreen"
+            android:text="confirm"
             android:textColor="#505050"
+            android:textColorHint="#0A474747"
+            android:textColorLink="#616161"
             android:textSize="30dp" />
 
     </LinearLayout>
@@ -95,26 +67,37 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="bottom"
-        android:orientation="vertical"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.98">
+        app:layout_constraintVertical_bias="0.100000024">
 
-        <Button
-            android:id="@+id/openRegisterScreen"
-            android:layout_width="180dp"
-            android:layout_height="60dp"
-            android:onClick="openRegisterScreen"
-            android:text="no account yet? register here"
-            android:background="@drawable/button_active"
-            android:textAllCaps="false"
-            android:textColorLink="#616161"
-            android:textColor="#505050"
-            android:textSize="22dp" />
+        <ImageButton
+            android:id="@+id/newProfilePicture"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/icon_default_profile"
+            android:background="@null"
+            android:onClick="pickPicture"/>
 
+        <Space
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/newTakePicture"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/icon_camera"
+            android:background="@null"
+            android:onClick="takePicture"/>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

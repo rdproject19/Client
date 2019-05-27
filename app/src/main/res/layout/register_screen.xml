@@ -5,23 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RegisterScreen"
-    android:background="@drawable/background_login"
+    android:background="@mipmap/background_login"
     android:gravity="center">
 
     <TextView
         android:id="@+id/invalid"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="100dp"
         android:layout_weight="0"
         android:gravity="center"
         android:textColor="#ff1900"
         android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.26" />
+        app:layout_constraintVertical_bias="0.3" />
 
     <LinearLayout
         android:layout_width="wrap_content"
