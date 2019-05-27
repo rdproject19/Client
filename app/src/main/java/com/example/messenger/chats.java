@@ -13,6 +13,9 @@ import android.widget.ScrollView;
 import android.widget.Space;
 
 import com.example.messenger.system.ChatHandler;
+import com.example.messenger.system.Conversation;
+
+import java.util.Iterator;
 
 public class chats extends AppCompatActivity {
 
@@ -26,7 +29,11 @@ public class chats extends AppCompatActivity {
         chatlist = findViewById(R.id.Chats);
 
         ChatHandler ch = ((Global) this.getApplication()).getChatHandler();
-        for(ch.ch().)
+
+        //for(Conversation conv : ch.ch().getConversations(0).values())
+        //{
+            // append chat to list of chats
+        //}
 
     }
 

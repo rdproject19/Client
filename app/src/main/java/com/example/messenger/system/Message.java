@@ -5,7 +5,7 @@ import org.json.*;
  *
  * @author Cas Haaijman (s4372662)
  */
-public class Message {
+public class Message implements Comparable<Message>{
     private String type;
     private String senderID;
     private long timeStamp;
@@ -92,4 +92,13 @@ public class Message {
         this.parsed = parsed;
     }
 
+    public int hashCode()
+    {
+        return Long.hashCode(this.getTimeStamp());
+    }
+
+    @Override
+    public int compareTo(Message message) {
+        return (int) (this.timeStamp - message.getTimeStamp());
+    }
 }
