@@ -32,28 +32,17 @@ public class Socket extends WebSocketServer {
         public void onMessage(WebSocket conn, String message)
         {
             try {
-                String type = new JSONObject(message).getString("TYPE");
+                JSONObject json = new JSONObject(message);
+                String type = json.getString("TYPE");
                 if (type.equals("message")) {
-                    handleMessage(new Message(message));
+                    handleMessage(json);
                 } else if (type.equals("conversation")) {
-                    handleConversation(message);
+                    handleConversation(json);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 return;
             }
-
-            int convId = msg.getConversationID();
-
-
-            Conversation conv;
-            if(this.ch.conversationExists(convId)) {
-                conv = this.ch.getConversation(convId);
-            } else {
-                conv = new Conversation(convId);
-            }
-
-
 
         }
 
@@ -64,6 +53,23 @@ public class Socket extends WebSocketServer {
 
         @Override
         public void onStart() {
+
+        }
+
+        private void handleMessage(JSONObject jsonMessage) {
+            Message msg = new Message(jsonMessage);
+            int convId = msg.getConversationID();
+
+            Conversation conv;
+            if(this.ch.conversationExists(convId)) {
+                conv = this.ch.getConversation(convId);
+            } else {
+                conv = new Conversation(convId);
+
+            }
+        }
+
+        private void handleConversation(JSONObject msg) {
 
         }
 }
