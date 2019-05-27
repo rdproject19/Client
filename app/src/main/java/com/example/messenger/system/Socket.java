@@ -1,5 +1,8 @@
 package com.example.messenger.system;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -56,16 +59,21 @@ public class Socket extends WebSocketServer {
         }
 
         private void handleUpdate(JSONObject jsonUpdate) {
+            Gson gson = new Gson();
+
             try {
                 if (jsonUpdate.has("NEW_CONVERSATIONS")) {
 
-                    for(JSONObject convo : jsonUpdate.getJSONArray("NEW_CONVERSATIONS")) {
-
+                    for(JSONObject convo : gson.fromJson((JsonElement) jsonUpdate.get("NEW_CONVERSATIONS"),JSONObject[].class)) {
+                        handleConversation(convo);
                     }
 
                 }
                 if (jsonUpdate.has("NEW_MESSAGES")) {
 
+                    for(JSONObject message : gson.fromJson((JsonElement) jsonUpdate.get("NEW_MESSAGES"),JSONObject[].class)) {
+                        handleMessage(message);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -73,19 +81,24 @@ public class Socket extends WebSocketServer {
         }
 
         private void handleMessage(JSONObject jsonMessage) {
-            Message msg = new Message(jsonMessage);
-            int convId = msg.getConversationID();
+            try {
+                Message msg = new Message(jsonMessage);
+                int convId = msg.getConversationID();
 
-            Conversation conv;
-            if(this.ch.conversationExists(convId)) {
-                conv = this.ch.getConversation(convId);
-            } else {
-                conv = new Conversation(convId);
-
+                Conversation conv;
+                if(this.ch.conversationExists(convId)) {
+                    conv = this.ch.getConversation(convId);
+                } else {
+                    conv = new Conversation(convId);
+                    ch.putConversation(conv);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
         }
 
-        private void handleConversation(JSONObject msg) {
+        private void handleConversation(JSONObject jsonConvo) {
 
         }
 }
