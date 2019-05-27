@@ -17,12 +17,19 @@ public class Conversation
         this.conversationId = id;
     }
 
-    public void putMessage(Integer, )
+    /**
+     * Puts a message object in current conversation
+     * @param msgId identifier for message object
+     * @param msg message object
+     */
+    public void putMessage(Integer msgId, Message msg)
+    {
+        this.messages.put(msgId, msg);
+    }
 
-
-
-
-
-
+    @Override
+    public int hashCode() {
+        return this.conversationId;
+    }
 
 }

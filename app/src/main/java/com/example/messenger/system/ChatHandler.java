@@ -9,7 +9,7 @@ public class ChatHandler
 
     CommunicationHandler ch;
 
-    ChatHandler()
+    public ChatHandler()
     {
         this.ch = new CommunicationHandler();
 
@@ -22,7 +22,11 @@ public class ChatHandler
         }
 
         Socket socket = new Socket(IA, this.ch);
+    }
 
+    public CommunicationHandler ch()
+    {
+        return this.ch();
     }
 
 }

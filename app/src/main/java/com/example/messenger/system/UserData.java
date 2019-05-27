@@ -12,6 +12,7 @@ enum Keys
     USERNAME("Username"),
     FULLNAME("Fullname"),
     TOKEN("Token"),
+    TOKENCOUNT("TokenCount"),
     REMEMBER("Remember");
 
 

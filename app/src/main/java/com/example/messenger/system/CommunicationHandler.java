@@ -46,6 +46,15 @@ public class CommunicationHandler
     }
 
 
+    /**
+     * Get list of conversations
+     * @param limit number of conversations to pull from list
+     * @return HashMap of conversations
+     */
+    public HashMap<Integer, Conversation> getConversations(int limit)
+    {
+
+    }
 
 
 }
