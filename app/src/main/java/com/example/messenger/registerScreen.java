@@ -24,8 +24,9 @@ import java.io.FileOutputStream;
 public class RegisterScreen extends AppCompatActivity {
 
     private int pictures_taken;
+    private final int minimal_chars = 4;
 
-    EditText username, password;
+    EditText full_name, username, password;
     TextView error_text;
     ImageButton profile_picture;
 
@@ -34,11 +35,12 @@ public class RegisterScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_screen);
 
+        full_name = findViewById(R.id.fullname);
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         error_text = findViewById(R.id.invalid);
         profile_picture = findViewById(R.id.profilePicture);
-        username.requestFocus();
+        full_name.requestFocus();
     }
 
     @Override
@@ -65,17 +67,56 @@ public class RegisterScreen extends AppCompatActivity {
     }
 
     public void openLoginScreen(View v) {
-        String un = ((TextView) username).getText().toString();
-        String pw = ((TextView) password).getText().toString();
-
-        if(testPasswordRequirements(pw) && isMinimalLength(un) && isMinimalLength(pw)) {
+        if(correctFields()) {
             finish();
         }
-        else {
-            String invalid_login_details = (!isMinimalLength(un) || !isMinimalLength(pw)) ? "Your username/password must at least be 4 characters long"
-                    : "Your password must contain at least 2 capital letters and 1 number";
+    }
 
-            error_text.setText(invalid_login_details);
+    private boolean correctFields() {
+        String[][] array = {{"fullname", "username", "password"},
+        {((TextView) full_name).getText().toString(), ((TextView) username).getText().toString(), ((TextView) password).getText().toString()}};
+
+        String errortext = "";
+        boolean correct = true;
+        String empty_fields = "";
+
+        // test empty fields
+        for(int i = 0; i < array[0].length; i++) {
+            if(!isMinimalLength(array[1][i], true)) {
+                empty_fields += empty_fields.length() != 0 ? "/" : "";
+                empty_fields += array[0][i];
+                correct = false;
+            }
+        }
+
+        // test field length
+        if(correct) {
+            for(int i = 0; i < array[0].length; i++) {
+                if(!isMinimalLength(array[1][i], false)) {
+                    errortext = "The field " + array[0][i] + " needs to be at least " + minimal_chars + " characters long.";
+                    i = array[0].length;
+                    correct = false;
+                }
+            }
+        }
+        else {
+            errortext = "The field" + (empty_fields.length() > 10 ? "s " : " ")  + empty_fields + " cannot be empty.";
+        }
+
+        // test password requirements
+        if(correct) {
+            if(!testPasswordRequirements(array[1][2])) {
+                errortext = "The password has to contain at least 2 capital letters and 1 number.";
+                correct = false;
+            }
+        }
+
+        if(correct) {
+            return true;
+        }
+        else {
+            error_text.setText(errortext);
+            return false;
         }
     }
 
@@ -94,9 +135,7 @@ public class RegisterScreen extends AppCompatActivity {
         return capital_letters >= 2 && numbers >= 1;
     }
 
-    private boolean isMinimalLength(String s) {
-        return s.length() >= 4;
-    }
+    private boolean isMinimalLength(String s, boolean empty) { return s.length() >= (empty ? 1 : minimal_chars); }
 
     public void takePicture(View v) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

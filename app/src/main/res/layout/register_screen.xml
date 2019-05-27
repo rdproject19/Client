@@ -33,22 +33,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.75">
-
-        <EditText
-            android:id="@+id/phonenumber"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:ems="10"
-            android:gravity="center"
-            android:hint="Full name"
-            android:inputType="textPersonName"
-            android:textColorHighlight="#FFFFFF"
-            android:textColorHint="#86FFFFFF"
-            android:textColorLink="#FFFFFF"
-            android:textCursorDrawable="@null"
-            android:textSize="30sp" />
+        app:layout_constraintVertical_bias="0.7">
 
         <EditText
             android:id="@+id/fullname"
@@ -57,7 +42,7 @@
             android:layout_weight="1"
             android:ems="10"
             android:gravity="center"
-            android:hint="Phone number"
+            android:hint="Full name*"
             android:inputType="textPersonName"
             android:textColorHighlight="#FFFFFF"
             android:textColorHint="#86FFFFFF"

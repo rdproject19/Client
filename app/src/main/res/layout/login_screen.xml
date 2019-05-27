@@ -65,6 +65,18 @@
             android:textCursorDrawable="@null"
             android:textSize="30sp" />
 
+        <CheckBox
+            android:id="@+id/rememberMe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remember me"
+            android:textColor="#505050"
+            android:textSize="20dp"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
         <Button
             android:id="@+id/register"
             android:layout_width="250dp"
