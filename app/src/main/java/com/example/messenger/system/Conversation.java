@@ -6,7 +6,7 @@ import java.util.LinkedList;
 
 public class Conversation
 {
-    private int conversationId;
+    private final int conversationId;
     private LinkedList participants;
 
 
@@ -17,12 +17,12 @@ public class Conversation
         this.conversationId = id;
     }
 
-    public void putMessage(Integer, )
+    public int getID() {
+        return conversationId;
+    }
 
+    public void putMessage(Message message) {
 
-
-
-
-
+    }
 
 }
