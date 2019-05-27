@@ -53,7 +53,7 @@ public class CommunicationHandler
      */
     public HashMap<Integer, Conversation> getConversations(int limit)
     {
-
+        return this.conversations;
     }
 
 

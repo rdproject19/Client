@@ -9,7 +9,6 @@ public class Conversation
     private final int conversationId;
     private LinkedList<String> participants;
 
-
     private HashMap<Integer, Message> messages;
 
     Conversation (int id)
@@ -40,6 +39,6 @@ public class Conversation
 
     public int HashCode()
     {
-        return 
+        return this.conversationId;
     }
 }
