@@ -19,7 +19,7 @@ public class Socket extends WebSocketServer {
         @Override
         public void onOpen(WebSocket conn, ClientHandshake handshake) {
             //Send Handshake
-            //Recieve question
+            //Receive question
             //Send Answer
         }
 
@@ -34,14 +34,13 @@ public class Socket extends WebSocketServer {
             try {
                 JSONObject json = new JSONObject(message);
                 String type = json.getString("TYPE");
-                if (type.equals("message")) {
-                    handleMessage(json);
-                } else if (type.equals("conversation")) {
-                    handleConversation(json);
+                switch (type){
+                    case "update": handleUpdate(json); break;
+                    case "message": handleMessage(json); break;
+                    case "conversation" : handleConversation(json); break;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                return;
             }
 
         }
@@ -54,6 +53,23 @@ public class Socket extends WebSocketServer {
         @Override
         public void onStart() {
 
+        }
+
+        private void handleUpdate(JSONObject jsonUpdate) {
+            try {
+                if (jsonUpdate.has("NEW_CONVERSATIONS")) {
+
+                    for(JSONObject convo : jsonUpdate.getJSONArray("NEW_CONVERSATIONS")) {
+
+                    }
+
+                }
+                if (jsonUpdate.has("NEW_MESSAGES")) {
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         private void handleMessage(JSONObject jsonMessage) {
