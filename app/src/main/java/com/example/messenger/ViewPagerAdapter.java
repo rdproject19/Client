@@ -24,7 +24,6 @@ public class ViewPagerAdapter extends PagerAdapter {
 
     private Context mContext;
     private String[] tabTitles = {"Chats", "Profile", "Contacts"};
-    private static final String prefs_name = "PrefsFile";
     private ImageView profile_picture;
 
     ViewPagerAdapter(Context context) {
@@ -45,7 +44,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
 
         LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        SharedPreferences prefs = mContext.getSharedPreferences(prefs_name, MODE_PRIVATE);
+        SharedPreferences prefs = mContext.getSharedPreferences("PrefsFile", MODE_PRIVATE);
         int resource = 0;
 
         switch (position) {
@@ -73,15 +72,13 @@ public class ViewPagerAdapter extends PagerAdapter {
             case 1: {
                 //actions for profile tab
                 profile_picture = view.findViewById(R.id.profilePicture);
-
-                SharedPreferences sp = mContext.getSharedPreferences(prefs_name, MODE_PRIVATE);
+                SharedPreferences sp = mContext.getSharedPreferences("PrefsFile", MODE_PRIVATE);
 
                 if(sp.contains("pref_bm")) {
                     String profile_pic = sp.getString("pref_bm", "not found.");
                     byte[] imageAsBytes = Base64.decode(profile_pic.getBytes(), Base64.DEFAULT);
                     profile_picture.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
                 }
-
                 break;
             }
             case 2: {

@@ -18,13 +18,11 @@ public class LoginScreen extends AppCompatActivity {
     private CheckBox remember_me;
     private SharedPreferences prefs;
 
-    private static final String prefs_name = "PrefsFile";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
-        prefs = getSharedPreferences(prefs_name, MODE_PRIVATE);
+        prefs = getSharedPreferences("PrefsFile", MODE_PRIVATE);
 
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
@@ -36,7 +34,7 @@ public class LoginScreen extends AppCompatActivity {
     }
 
     private void getPreferencesData() {
-         SharedPreferences sp = getSharedPreferences(prefs_name, MODE_PRIVATE);
+         SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
 
          if(sp.contains("pref_un")) {
              String un = sp.getString("pref_un", "not found.");

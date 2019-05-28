@@ -3,6 +3,7 @@ package com.example.messenger;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -12,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +23,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Space;
 
@@ -55,6 +58,23 @@ public class MessengerScreen extends AppCompatActivity {
 
                 ButtonAnimation(getBaseContext(), action_button, BitmapFactory.decodeResource(getResources(),
                         tab_pos == 2 ? R.drawable.icon_contact : tab_pos == 1 ? R.drawable.icon_edit : R.drawable.icon_chat));
+
+                switch(tab_pos) {
+                    case 0: {
+                        break;
+                    }
+                    case 1: {
+                        ImageView profile_picture = findViewById(R.id.profilePicture);
+                        SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
+
+                        if(sp.contains("pref_bm")) {
+                            String profile_pic = sp.getString("pref_bm", "not found.");
+                            byte[] imageAsBytes = Base64.decode(profile_pic.getBytes(), Base64.DEFAULT);
+                            profile_picture.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
+                        }
+                        break;
+                    }
+                }
             }
 
             @Override
@@ -63,6 +83,24 @@ public class MessengerScreen extends AppCompatActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+                tab_pos = tab.getPosition();
+
+                switch(tab_pos) {
+                    case 0: {
+                        break;
+                    }
+                    case 1: {
+                        ImageView profile_picture = findViewById(R.id.profilePicture);
+                        SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
+
+                        if(sp.contains("pref_bm")) {
+                            String profile_pic = sp.getString("pref_bm", "not found.");
+                            byte[] imageAsBytes = Base64.decode(profile_pic.getBytes(), Base64.DEFAULT);
+                            profile_picture.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
+                        }
+                        break;
+                    }
+                }
             }
         });
 

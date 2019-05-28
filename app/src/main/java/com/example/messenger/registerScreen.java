@@ -1,5 +1,6 @@
 package com.example.messenger;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -30,13 +31,11 @@ public class RegisterScreen extends AppCompatActivity {
     private TextView error_text;
     private ImageButton profile_picture;
 
-    private static final String prefs_name = "PrefsFile";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_screen);
-        prefs = getSharedPreferences(prefs_name, MODE_PRIVATE);
+        prefs = getSharedPreferences("PrefsFile", MODE_PRIVATE);
 
         full_name = findViewById(R.id.fullname);
         username = findViewById(R.id.username);
@@ -61,7 +60,7 @@ public class RegisterScreen extends AppCompatActivity {
                     Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                     Bitmap profile_pic = circelizeBitmap(bitmap);
                     profile_picture.setImageBitmap(profile_pic);
-                    saveImage(profile_pic);
+                    saveImage(profile_pic, this);
                 }
                 case 1: {
                     final Bundle extras = data.getExtras();
@@ -69,7 +68,7 @@ public class RegisterScreen extends AppCompatActivity {
                         Bitmap bitmap = extras.getParcelable("data");
                         Bitmap profile_pic = circelizeBitmap(bitmap);
                         profile_picture.setImageBitmap(profile_pic);
-                        saveImage(profile_pic);
+                        saveImage(profile_pic, this);
                     }
                 }
             }
@@ -92,7 +91,7 @@ public class RegisterScreen extends AppCompatActivity {
 
         // test empty fields
         for(int i = 0; i < array[0].length; i++) {
-            if(!isMinimalLength(array[1][i], true)) {
+            if(!isMinimalLength(array[1][i], true, minimal_chars)) {
                 empty_fields += empty_fields.length() != 0 ? "/" : "";
                 empty_fields += array[0][i];
                 correct = false;
@@ -102,7 +101,7 @@ public class RegisterScreen extends AppCompatActivity {
         // test field length
         if(correct) {
             for(int i = 0; i < array[0].length; i++) {
-                if(!isMinimalLength(array[1][i], false)) {
+                if(!isMinimalLength(array[1][i], false, minimal_chars)) {
                     errortext = "The field " + array[0][i] + " needs to be at least " + minimal_chars + " characters long.";
                     i = array[0].length;
                     correct = false;
@@ -145,7 +144,7 @@ public class RegisterScreen extends AppCompatActivity {
         return capital_letters >= 2 && numbers >= 1;
     }
 
-    private boolean isMinimalLength(String s, boolean empty) { return s.length() >= (empty ? 1 : minimal_chars); }
+    public static boolean isMinimalLength(String s, boolean empty, int min) { return s.length() >= (empty ? 1 : min); }
 
     public void takePicture(View v) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -166,7 +165,7 @@ public class RegisterScreen extends AppCompatActivity {
         startActivityForResult(intent, 1);
     }
 
-    public Bitmap circelizeBitmap(Bitmap bitmap)
+    public static Bitmap circelizeBitmap(Bitmap bitmap)
     {
         int width = bitmap.getWidth() > bitmap.getHeight() ? bitmap.getHeight() : bitmap.getWidth();
         //int length = bitmap.getWidth() > bitmap.getHeight() ? bitmap.getWidth() : bitmap.getHeight();
@@ -187,13 +186,14 @@ public class RegisterScreen extends AppCompatActivity {
         return canvasBitmap;
     }
 
-    public void saveImage(Bitmap bitmap) {
+    public static void saveImage(Bitmap bitmap, Context context) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] b = baos.toByteArray();
         String profile_pic = Base64.encodeToString(b, Base64.DEFAULT);
 
-        SharedPreferences sp = getSharedPreferences(prefs_name, MODE_PRIVATE);
+        String prefs_name = "PrefsFile";
+        SharedPreferences sp = context.getSharedPreferences(prefs_name, MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("pref_bm", profile_pic);
         editor.apply();
