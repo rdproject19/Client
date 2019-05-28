@@ -80,7 +80,6 @@ public class LoginScreen extends AppCompatActivity {
             editor.putString("pref_pw", password.getText().toString());
             editor.putBoolean("pref_check", true);
             editor.apply();
-            Toast.makeText(getApplicationContext(), "Login details saved", Toast.LENGTH_SHORT).show();
         }
         else {
             prefs.edit().clear().apply();

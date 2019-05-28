@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -51,16 +53,8 @@ public class MessengerScreen extends AppCompatActivity {
                 tab_pos = tab.getPosition();
                 addButtonListener(action_button);
 
-                switch(tab_pos) {
-                    case 0: {
-                        ButtonAnimation(getBaseContext(), action_button, BitmapFactory.decodeResource(getResources(), R.drawable.icon_chat));
-                        break;
-                    }
-                    case 1: {
-                        ButtonAnimation(getBaseContext(), action_button, BitmapFactory.decodeResource(getResources(), R.drawable.icon_edit));
-                        break;
-                    }
-                }
+                ButtonAnimation(getBaseContext(), action_button, BitmapFactory.decodeResource(getResources(),
+                        tab_pos == 2 ? R.drawable.icon_contact : tab_pos == 1 ? R.drawable.icon_edit : R.drawable.icon_chat));
             }
 
             @Override
@@ -72,11 +66,17 @@ public class MessengerScreen extends AppCompatActivity {
             }
         });
 
-        TabLayout.Tab tab1 = tabLayout.getTabAt(1);
-        tab1.select();
+        //just ignore this part, it wont work otherwise
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                addButtonListener(action_button);
+            }
+        }, 10);
     }
 
     private void addButtonListener(ImageButton btn) {
+
         chatlist = findViewById(R.id.chatlist);
 
         btn.setOnClickListener(new View.OnClickListener()

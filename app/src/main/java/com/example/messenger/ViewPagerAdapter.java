@@ -3,22 +3,29 @@ package com.example.messenger;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.support.v4.view.PagerAdapter;
+import android.util.Base64;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Space;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class ViewPagerAdapter extends PagerAdapter {
 
     private Context mContext;
-    private String[] tabTitles = {"Chats", "Profile", "Button"};
-    LinearLayout chatlist;
+    private String[] tabTitles = {"Chats", "Profile", "Contacts"};
+    private static final String prefs_name = "PrefsFile";
+    private ImageView profile_picture;
 
     ViewPagerAdapter(Context context) {
         mContext = context;
@@ -38,7 +45,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
 
         LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+        SharedPreferences prefs = mContext.getSharedPreferences(prefs_name, MODE_PRIVATE);
         int resource = 0;
 
         switch (position) {
@@ -58,31 +65,30 @@ public class ViewPagerAdapter extends PagerAdapter {
 
         View view = inflater.inflate(resource, container, false);
 
-        /*
         switch (position) {
             case 0: {
-                ImageButton btn = ((Activity) mContext).findViewById(R.id.actionButton);
-                chatlist = view.findViewById(R.id.chatlist);
-
-                btn.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        addChatBox(v);
-                    }
-                });
+                //actions for chats tab
                 break;
             }
             case 1: {
-                //action for profile tab
+                //actions for profile tab
+                profile_picture = view.findViewById(R.id.profilePicture);
+
+                SharedPreferences sp = mContext.getSharedPreferences(prefs_name, MODE_PRIVATE);
+
+                if(sp.contains("pref_bm")) {
+                    String profile_pic = sp.getString("pref_bm", "not found.");
+                    byte[] imageAsBytes = Base64.decode(profile_pic.getBytes(), Base64.DEFAULT);
+                    profile_picture.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
+                }
+
                 break;
             }
             case 2: {
-                //action for ? tab
+                //actions for contacts tab
                 break;
             }
-        }*/
+        }
 
         container.addView(view);
         return view;
@@ -96,38 +102,5 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return tabTitles[position];
-    }
-
-    // Buttons //
-    public void addChatBox(View view) {
-        Drawable profile_picture = mContext.getResources().getDrawable( R.drawable.icon_default_profile , null);
-        Drawable background = mContext.getResources().getDrawable( R.drawable.chatbox , null);
-
-        Button chatbox = new Button(mContext);
-        chatbox.setBackground(background);
-        //chatbox.setBackgroundColor(Color.parseColor("#e6e6e6"));
-        chatbox.setText(" Full name");
-        chatbox.setAllCaps(false);
-        chatbox.setHeight(300);
-        chatbox.setTextSize(30);
-        chatbox.setGravity(Gravity.CENTER_VERTICAL);
-
-        //button opens new activity - chat activity.
-        chatbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(mContext, ChatWindow.class);
-                mContext.startActivity(i);
-            }
-        });
-
-        profile_picture.setBounds( 0, 0, 200, 200 );
-        chatbox.setCompoundDrawables( profile_picture, null, null, null );
-        chatbox.setPadding(50, 0, 0, 0);
-        chatlist.addView(chatbox);
-
-        Space space = new Space(mContext);
-        space.setMinimumHeight(0);
-        chatlist.addView(space);
     }
 }

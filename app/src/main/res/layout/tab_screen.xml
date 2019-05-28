@@ -48,8 +48,8 @@
     </LinearLayout>
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_gravity="right"
         android:background="@null"
         android:scaleType="fitXY"
@@ -63,8 +63,8 @@
 
     <ImageButton
         android:id="@+id/actionButton"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_gravity="right"
         android:background="@null"
         android:scaleType="fitXY"

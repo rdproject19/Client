@@ -1,37 +1,42 @@
 package com.example.messenger;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 
 public class RegisterScreen extends AppCompatActivity {
 
-    private int pictures_taken;
     private final int minimal_chars = 4;
+    private SharedPreferences prefs;
 
-    EditText full_name, username, password;
-    TextView error_text;
-    ImageButton profile_picture;
+    private EditText full_name, username, password;
+    private TextView error_text;
+    private ImageButton profile_picture;
+
+    private static final String prefs_name = "PrefsFile";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_screen);
+        prefs = getSharedPreferences(prefs_name, MODE_PRIVATE);
 
         full_name = findViewById(R.id.fullname);
         username = findViewById(R.id.username);
@@ -39,6 +44,11 @@ public class RegisterScreen extends AppCompatActivity {
         error_text = findViewById(R.id.invalid);
         profile_picture = findViewById(R.id.profilePicture);
         full_name.requestFocus();
+
+        if(prefs.contains("pref_un")) {
+            String un = prefs.getString("pref_un", "not found.");
+            username.setText(un);
+        }
     }
 
     @Override
@@ -49,15 +59,17 @@ public class RegisterScreen extends AppCompatActivity {
             switch (requestCode) {
                 case 0: {
                     Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                    profile_picture.setImageBitmap(circelizeBitmap(bitmap));
-                    pictures_taken++;
-                    saveImage(bitmap, pictures_taken);
+                    Bitmap profile_pic = circelizeBitmap(bitmap);
+                    profile_picture.setImageBitmap(profile_pic);
+                    saveImage(profile_pic);
                 }
                 case 1: {
                     final Bundle extras = data.getExtras();
                     if (extras != null) {
                         Bitmap bitmap = extras.getParcelable("data");
-                        profile_picture.setImageBitmap(circelizeBitmap(bitmap));
+                        Bitmap profile_pic = circelizeBitmap(bitmap);
+                        profile_picture.setImageBitmap(profile_pic);
+                        saveImage(profile_pic);
                     }
                 }
             }
@@ -154,28 +166,6 @@ public class RegisterScreen extends AppCompatActivity {
         startActivityForResult(intent, 1);
     }
 
-    private void saveImage(Bitmap bitmap, int n) {
-        String root = Environment.getExternalStorageDirectory().toString();
-        File myDir = new File(root + "/messenger_app_images");
-        if (!myDir.exists()) {
-            myDir.mkdirs();
-        }
-        String fname = "messenger-image-"+ n +".jpg";
-        File file = new File (myDir, fname);
-        if (file.exists ()) {
-            file.delete();
-        }
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
-            out.flush();
-            out.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public Bitmap circelizeBitmap(Bitmap bitmap)
     {
         int width = bitmap.getWidth() > bitmap.getHeight() ? bitmap.getHeight() : bitmap.getWidth();
@@ -195,5 +185,17 @@ public class RegisterScreen extends AppCompatActivity {
         canvas.drawCircle(radius, radius, radius, paint);
 
         return canvasBitmap;
+    }
+
+    public void saveImage(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String profile_pic = Base64.encodeToString(b, Base64.DEFAULT);
+
+        SharedPreferences sp = getSharedPreferences(prefs_name, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("pref_bm", profile_pic);
+        editor.apply();
     }
 }
