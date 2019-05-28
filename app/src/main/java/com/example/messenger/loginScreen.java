@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class LoginScreen extends AppCompatActivity {
 
@@ -16,13 +15,11 @@ public class LoginScreen extends AppCompatActivity {
     private TextView error_text;
 
     private CheckBox remember_me;
-    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
-        prefs = getSharedPreferences("PrefsFile", MODE_PRIVATE);
 
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
@@ -72,15 +69,17 @@ public class LoginScreen extends AppCompatActivity {
             error_text.setText(invalid_login_details);
         }*/
 
+        SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
+
         if(remember_me.isChecked()) {
-            SharedPreferences.Editor editor = prefs.edit();
+            SharedPreferences.Editor editor = sp.edit();
             editor.putString("pref_un", username.getText().toString());
             editor.putString("pref_pw", password.getText().toString());
             editor.putBoolean("pref_check", true);
             editor.apply();
         }
         else {
-            prefs.edit().clear().apply();
+            sp.edit().clear().apply();
         }
 
         startActivity(new Intent(LoginScreen.this, MessengerScreen.class));

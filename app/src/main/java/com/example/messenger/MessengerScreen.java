@@ -1,6 +1,5 @@
 package com.example.messenger;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,7 +17,6 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -26,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Space;
+import android.widget.TextView;
 
 public class MessengerScreen extends AppCompatActivity {
 
@@ -54,27 +53,7 @@ public class MessengerScreen extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 tab_pos = tab.getPosition();
-                addButtonListener(action_button);
-
-                ButtonAnimation(getBaseContext(), action_button, BitmapFactory.decodeResource(getResources(),
-                        tab_pos == 2 ? R.drawable.icon_contact : tab_pos == 1 ? R.drawable.icon_edit : R.drawable.icon_chat));
-
-                switch(tab_pos) {
-                    case 0: {
-                        break;
-                    }
-                    case 1: {
-                        ImageView profile_picture = findViewById(R.id.profilePicture);
-                        SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
-
-                        if(sp.contains("pref_bm")) {
-                            String profile_pic = sp.getString("pref_bm", "not found.");
-                            byte[] imageAsBytes = Base64.decode(profile_pic.getBytes(), Base64.DEFAULT);
-                            profile_picture.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
-                        }
-                        break;
-                    }
-                }
+                InitTabs();
             }
 
             @Override
@@ -83,24 +62,6 @@ public class MessengerScreen extends AppCompatActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                tab_pos = tab.getPosition();
-
-                switch(tab_pos) {
-                    case 0: {
-                        break;
-                    }
-                    case 1: {
-                        ImageView profile_picture = findViewById(R.id.profilePicture);
-                        SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
-
-                        if(sp.contains("pref_bm")) {
-                            String profile_pic = sp.getString("pref_bm", "not found.");
-                            byte[] imageAsBytes = Base64.decode(profile_pic.getBytes(), Base64.DEFAULT);
-                            profile_picture.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
-                        }
-                        break;
-                    }
-                }
             }
         });
 
@@ -111,6 +72,36 @@ public class MessengerScreen extends AppCompatActivity {
                 addButtonListener(action_button);
             }
         }, 10);
+    }
+
+    private void InitTabs() {
+        addButtonListener(action_button);
+
+        ButtonAnimation(getBaseContext(), action_button, BitmapFactory.decodeResource(getResources(),
+                tab_pos == 2 ? R.drawable.icon_contact : tab_pos == 1 ? R.drawable.icon_edit : R.drawable.icon_chat));
+
+        switch(tab_pos) {
+            case 0: {
+                break;
+            }
+            case 1: {
+                ImageView profile_picture = findViewById(R.id.profilePicture);
+                TextView user_full_name = findViewById(R.id.userfullname);
+                SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
+
+                if(sp.contains("pref_bm")) {
+                    String profile_pic = sp.getString("pref_bm", "not found.");
+                    byte[] imageAsBytes = Base64.decode(profile_pic.getBytes(), Base64.DEFAULT);
+                    profile_picture.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
+                }
+
+                if(sp.contains("pref_fn")) {
+                    String full_name = sp.getString("pref_fn", "not found.");
+                    user_full_name.setText("Full name: " + full_name);
+                }
+                break;
+            }
+        }
     }
 
     private void addButtonListener(ImageButton btn) {
@@ -154,11 +145,6 @@ public class MessengerScreen extends AppCompatActivity {
             @Override public void onAnimationEnd(Animation animation)
             {
                 v.setImageBitmap(new_image);
-                anim_in.setAnimationListener(new Animation.AnimationListener() {
-                    @Override public void onAnimationStart(Animation animation) {}
-                    @Override public void onAnimationRepeat(Animation animation) {}
-                    @Override public void onAnimationEnd(Animation animation) {}
-                });
                 v.startAnimation(anim_in);
             }
         });
@@ -173,7 +159,6 @@ public class MessengerScreen extends AppCompatActivity {
 
         Button chatbox = new Button(this);
         chatbox.setBackground(background);
-        //chatbox.setBackgroundColor(Color.parseColor("#e6e6e6"));
         chatbox.setText(" Full name");
         chatbox.setAllCaps(false);
         chatbox.setHeight(300);
@@ -197,5 +182,12 @@ public class MessengerScreen extends AppCompatActivity {
         Space space = new Space(this);
         space.setMinimumHeight(0);
         chatlist.addView(space);
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        InitTabs();
     }
 }

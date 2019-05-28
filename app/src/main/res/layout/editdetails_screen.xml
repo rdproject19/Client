@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".EditDetailsScreen"
-    android:background="@mipmap/background_login"
+    android:background="#214D83"
     android:gravity="center">
 
     <TextView
@@ -20,7 +20,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintVertical_bias="0.29000002" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.6">
+        app:layout_constraintVertical_bias="0.53">
 
         <EditText
             android:id="@+id/newname"
@@ -43,11 +43,15 @@
             android:gravity="center"
             android:hint="New Full name*"
             android:inputType="textPersonName"
+            android:textColor="#FFFFFF"
             android:textColorHighlight="#FFFFFF"
             android:textColorHint="#86FFFFFF"
-            android:textColorLink="#FFFFFF"
             android:textCursorDrawable="@null"
             android:textSize="30sp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
 
         <Button
             android:id="@+id/confirm"

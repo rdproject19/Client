@@ -1,6 +1,7 @@
 package com.example.messenger;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -57,6 +58,10 @@ public class EditDetailsScreen extends AppCompatActivity {
 
     public void openMessengerScreen(View v) {
         if(correctFields()) {
+            SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("pref_fn", new_name.getText().toString());
+            editor.apply();
             finish();
         }
     }

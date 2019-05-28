@@ -9,8 +9,6 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Shader;
-import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +23,6 @@ import java.io.ByteArrayOutputStream;
 public class RegisterScreen extends AppCompatActivity {
 
     private final int minimal_chars = 4;
-    private SharedPreferences prefs;
 
     private EditText full_name, username, password;
     private TextView error_text;
@@ -35,7 +32,6 @@ public class RegisterScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_screen);
-        prefs = getSharedPreferences("PrefsFile", MODE_PRIVATE);
 
         full_name = findViewById(R.id.fullname);
         username = findViewById(R.id.username);
@@ -43,11 +39,6 @@ public class RegisterScreen extends AppCompatActivity {
         error_text = findViewById(R.id.invalid);
         profile_picture = findViewById(R.id.profilePicture);
         full_name.requestFocus();
-
-        if(prefs.contains("pref_un")) {
-            String un = prefs.getString("pref_un", "not found.");
-            username.setText(un);
-        }
     }
 
     @Override
@@ -77,6 +68,10 @@ public class RegisterScreen extends AppCompatActivity {
 
     public void openLoginScreen(View v) {
         if(correctFields()) {
+            SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("pref_fn", full_name.getText().toString());
+            editor.apply();
             finish();
         }
     }
