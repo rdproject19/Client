@@ -19,21 +19,36 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Space;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class MessengerScreen extends AppCompatActivity {
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private LinearLayout chatlist;
+    private ListView chatlist;
+    private ListView contactlist;
     private ImageButton action_button;
     private int tab_pos = 0;
+
+    private SimpleAdapter chat_adapter;
+    private List<HashMap<String, String>> chat_array;
+    private SimpleAdapter contact_adapter;
+    private List<HashMap<String, String>> contact_array;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +62,8 @@ public class MessengerScreen extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         viewPager.setAdapter(new ViewPagerAdapter(this));
+
+        InitLists();
 
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -69,6 +86,16 @@ public class MessengerScreen extends AppCompatActivity {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
+                chatlist = findViewById(R.id.chatlist);
+                chatlist.setAdapter(chat_adapter);
+                chatlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterview, View view, int i, long l) {
+                        Intent j = new Intent(MessengerScreen.this, ChatWindow.class);
+                        startActivity(j);
+                    }
+                });
+
                 addButtonListener(action_button);
             }
         }, 10);
@@ -82,6 +109,24 @@ public class MessengerScreen extends AppCompatActivity {
 
         switch(tab_pos) {
             case 0: {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        chatlist = findViewById(R.id.chatlist);
+                        chatlist.setAdapter(chat_adapter);
+                        chatlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterview, View view, int i, long l) {
+                                Intent j = new Intent(MessengerScreen.this, ChatWindow.class);
+                                startActivity(j);
+                            }
+                        });
+
+                        chat_array.add(null);
+                        chat_array.remove(chat_array.size()-1);
+
+                    }
+                }, 20);
                 break;
             }
             case 1: {
@@ -101,13 +146,21 @@ public class MessengerScreen extends AppCompatActivity {
                 }
                 break;
             }
+            case 2: {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        contactlist = findViewById(R.id.contactlist);
+                        contactlist.setAdapter(contact_adapter);
+                        ShowContacts();
+                    }
+                }, 20);
+                break;
+            }
         }
     }
 
     private void addButtonListener(ImageButton btn) {
-
-        chatlist = findViewById(R.id.chatlist);
-
         btn.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -115,7 +168,7 @@ public class MessengerScreen extends AppCompatActivity {
             {
                 switch(tab_pos) {
                     case 0: {
-                        addChatBox(v);
+                        addChatBox();
                         break;
                     }
                     case 1: {
@@ -123,9 +176,25 @@ public class MessengerScreen extends AppCompatActivity {
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                         break;
                     }
+                    case 2: {
+                        startActivity(new Intent(MessengerScreen.this, ContactsScreen.class));
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    }
                 }
             }
         });
+    }
+
+    private void InitLists() {
+        chat_array = new ArrayList<HashMap<String, String>>();
+        String[] from = {"listview_image", "listview_title", "listview_discription"};
+        int[] to = {R.id.listview_image, R.id.listview_item_title, R.id.listview_item_short_description};
+        chat_adapter = new SimpleAdapter(getBaseContext(), chat_array, R.layout.chatlist_layout, from, to);
+
+        contact_array = new ArrayList<HashMap<String, String>>();
+        String[] from2 = {"contactview_image", "contactview_title"};
+        int[] to2 = {R.id.contactview_image, R.id.contactview_item_title};
+        contact_adapter = new SimpleAdapter(getBaseContext(), contact_array, R.layout.contactlist_layout, from2, to2);
     }
 
     @Override
@@ -151,37 +220,51 @@ public class MessengerScreen extends AppCompatActivity {
         v.startAnimation(anim_out);
     }
 
-    // Buttons //
-    public void addChatBox(View view) {
-        Drawable profile_picture = getResources().getDrawable( R.drawable.icon_default_profile , null);
-        Drawable background = getResources().getDrawable( R.drawable.chatbox , null);
+    private void ShowContadcts() {
+        String[] contactlist = null;
+        SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
 
+        if(sp.contains("pref_contacts")) {
+            contactlist = sp.getString("pref_contacts", "").split(",");
+        }
 
-        Button chatbox = new Button(this);
-        chatbox.setBackground(background);
-        chatbox.setText(" Full name");
-        chatbox.setAllCaps(false);
-        chatbox.setHeight(300);
-        chatbox.setTextSize(30);
-        chatbox.setGravity(Gravity.CENTER_VERTICAL);
+        for(String c:contactlist) {
+            HashMap<String, String> hm = new HashMap<String, String>();
+            hm.put("contactview_title", c);
+            hm.put("contactview_image", Integer.toString(R.drawable.icon_default_profile));
+            contact_array.add(hm);
+        }
+    }
 
-        //button opens new activity - chat activity.
-        chatbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MessengerScreen.this, ChatWindow.class);
-                startActivity(i);
+    private void ShowContacts() {
+        contact_array.clear();
+        SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
+
+        if(sp.contains("pref_contacts")) {
+            String list = sp.getString("pref_contacts", "");
+            String[] contactlist = list.split(",");
+
+            if(contactlist.length > 0) {
+                for(String c:contactlist) {
+                    HashMap<String, String> hm = new HashMap<String, String>();
+                    hm.put("contactview_title", c);
+                    hm.put("contactview_image", Integer.toString(R.drawable.icon_default_profile));
+                    contact_array.add(hm);
+                }
             }
-        });
+        }
+    }
 
-        profile_picture.setBounds( 0, 0, 200, 200 );
-        chatbox.setCompoundDrawables( profile_picture, null, null, null );
-        chatbox.setPadding(50, 0, 0, 0);
-        chatlist.addView(chatbox);
+    public void addChatBox() {
+        HashMap<String, String> hm = new HashMap<String, String>();
+        hm.put("listview_title", "Full name");
+        hm.put("listview_discription", "boe");
+        hm.put("listview_image", Integer.toString(R.drawable.icon_default_profile));
 
-        Space space = new Space(this);
-        space.setMinimumHeight(0);
-        chatlist.addView(space);
+        chatlist = findViewById(R.id.chatlist);
+        chatlist.setAdapter(chat_adapter);
+
+        chat_array.add(hm);
     }
 
     @Override

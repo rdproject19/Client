@@ -16,7 +16,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Space;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -24,7 +30,6 @@ public class ViewPagerAdapter extends PagerAdapter {
 
     private Context mContext;
     private String[] tabTitles = {"Chats", "Profile", "Contacts"};
-    private ImageView profile_picture;
 
     ViewPagerAdapter(Context context) {
         mContext = context;
@@ -57,7 +62,7 @@ public class ViewPagerAdapter extends PagerAdapter {
                 break;
             }
             case 2: {
-                resource = R.layout.tab_profile;
+                resource = R.layout.tab_contacts;
                 break;
             }
         }
@@ -71,7 +76,7 @@ public class ViewPagerAdapter extends PagerAdapter {
             }
             case 1: {
                 //actions for profile tab
-                profile_picture = view.findViewById(R.id.profilePicture);
+                ImageView profile_picture = view.findViewById(R.id.profilePicture);
                 SharedPreferences sp = mContext.getSharedPreferences("PrefsFile", MODE_PRIVATE);
 
                 if(sp.contains("pref_bm")) {
