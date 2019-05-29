@@ -75,7 +75,7 @@ public class ContactsScreen extends AppCompatActivity {
     }
 
     private void InitListView() {
-        contacts_array = new String[]{"ba", "la", "ga"};
+        contacts_array = new String[]{"Thomas", "Mark", "Cas", "Bas", "Karim", "Koen"};
         contacts = new ArrayList<>(Arrays.asList(contacts_array));
         array_adapter = new ArrayAdapter(this, R.layout.searchlist_layout, R.id.searchlist_contact, contacts);
         list_view.setAdapter(array_adapter);
@@ -95,6 +95,9 @@ public class ContactsScreen extends AppCompatActivity {
 
         if(sp.contains("pref_contacts")) {
             string.append(sp.getString("pref_contacts", "")).append(name + ",");
+        }
+        else {
+            string.append(name + ",");
         }
 
         SharedPreferences.Editor editor = sp.edit();

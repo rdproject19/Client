@@ -47,7 +47,7 @@ public class MessengerScreen extends AppCompatActivity {
 
     private SimpleAdapter chat_adapter;
     private List<HashMap<String, String>> chat_array;
-    private SimpleAdapter contact_adapter;
+    public static SimpleAdapter contact_adapter;
     private List<HashMap<String, String>> contact_array;
 
     @Override
@@ -63,7 +63,8 @@ public class MessengerScreen extends AppCompatActivity {
         setSupportActionBar(toolbar);
         viewPager.setAdapter(new ViewPagerAdapter(this));
 
-        InitLists();
+        InitChatList();
+        InitContactList();
 
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -121,10 +122,7 @@ public class MessengerScreen extends AppCompatActivity {
                                 startActivity(j);
                             }
                         });
-
-                        chat_array.add(null);
-                        chat_array.remove(chat_array.size()-1);
-
+                        ShowChats();
                     }
                 }, 20);
                 break;
@@ -168,29 +166,45 @@ public class MessengerScreen extends AppCompatActivity {
             {
                 switch(tab_pos) {
                     case 0: {
-                        addChatBox();
+                        startActivity(new Intent(MessengerScreen.this, AddChatScreen.class));
+
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            public void run() {
+                                TabLayout.Tab tab = tabLayout.getTabAt(2);
+                                tab.select();
+                                Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    public void run() {
+                                        TabLayout.Tab tab = tabLayout.getTabAt(0);
+                                        tab.select();
+                                    }
+                                }, 200);
+                            }
+                        }, 100);
+
                         break;
                     }
                     case 1: {
                         startActivity(new Intent(MessengerScreen.this, EditDetailsScreen.class));
-                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                         break;
                     }
                     case 2: {
                         startActivity(new Intent(MessengerScreen.this, ContactsScreen.class));
-                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     }
                 }
             }
         });
     }
 
-    private void InitLists() {
+    private void InitChatList() {
         chat_array = new ArrayList<HashMap<String, String>>();
         String[] from = {"listview_image", "listview_title", "listview_discription"};
         int[] to = {R.id.listview_image, R.id.listview_item_title, R.id.listview_item_short_description};
         chat_adapter = new SimpleAdapter(getBaseContext(), chat_array, R.layout.chatlist_layout, from, to);
+    }
 
+    private void InitContactList() {
         contact_array = new ArrayList<HashMap<String, String>>();
         String[] from2 = {"contactview_image", "contactview_title"};
         int[] to2 = {R.id.contactview_image, R.id.contactview_item_title};
@@ -220,32 +234,16 @@ public class MessengerScreen extends AppCompatActivity {
         v.startAnimation(anim_out);
     }
 
-    private void ShowContadcts() {
-        String[] contactlist = null;
-        SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
-
-        if(sp.contains("pref_contacts")) {
-            contactlist = sp.getString("pref_contacts", "").split(",");
-        }
-
-        for(String c:contactlist) {
-            HashMap<String, String> hm = new HashMap<String, String>();
-            hm.put("contactview_title", c);
-            hm.put("contactview_image", Integer.toString(R.drawable.icon_default_profile));
-            contact_array.add(hm);
-        }
-    }
-
     private void ShowContacts() {
         contact_array.clear();
         SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
 
         if(sp.contains("pref_contacts")) {
             String list = sp.getString("pref_contacts", "");
-            String[] contactlist = list.split(",");
+            String[] savedcontacts = list.split(",");
 
-            if(contactlist.length > 0) {
-                for(String c:contactlist) {
+            if(savedcontacts.length > 0) {
+                for(String c:savedcontacts) {
                     HashMap<String, String> hm = new HashMap<String, String>();
                     hm.put("contactview_title", c);
                     hm.put("contactview_image", Integer.toString(R.drawable.icon_default_profile));
@@ -255,16 +253,24 @@ public class MessengerScreen extends AppCompatActivity {
         }
     }
 
-    public void addChatBox() {
-        HashMap<String, String> hm = new HashMap<String, String>();
-        hm.put("listview_title", "Full name");
-        hm.put("listview_discription", "boe");
-        hm.put("listview_image", Integer.toString(R.drawable.icon_default_profile));
+    private void ShowChats() {
+        chat_array.clear();
+        SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
 
-        chatlist = findViewById(R.id.chatlist);
-        chatlist.setAdapter(chat_adapter);
+        if(sp.contains("pref_chats")) {
+            String list = sp.getString("pref_chats", "");
+            String[] savedchats = list.split(",");
 
-        chat_array.add(hm);
+            if(savedchats.length > 0) {
+                for(String c:savedchats) {
+                    HashMap<String, String> hm = new HashMap<String, String>();
+                    hm.put("listview_title", c);
+                    hm.put("listview_discription", "boe");
+                    hm.put("listview_image", Integer.toString(R.drawable.icon_default_profile));
+                    chat_array.add(hm);
+                }
+            }
+        }
     }
 
     @Override
