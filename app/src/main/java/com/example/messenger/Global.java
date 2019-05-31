@@ -61,8 +61,8 @@ public class Global extends Application {
     public void onCreate()
     {
         super.onCreate();
-        this.initChatHandler();
         this.context = getApplicationContext();
+        this.chatHandler = new ChatHandler(context);
         this.userdata = new UserData(this.context);
 
         this.db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database").build();

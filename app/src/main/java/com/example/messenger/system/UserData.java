@@ -9,24 +9,35 @@
  */
 enum Keys
 {
-    USERNAME("Username"),
-    FULLNAME("Fullname"),
-    TOKEN("Token"),
-    COUNTER("TokenCount"),
-    SEED("TokenSeed"),
-    REMEMBER("Remember");
+    USERNAME("Username", String.class, false),
+    FULLNAME("Fullname", String.class, true),
+    TOKEN("Token", int.class, false),
+    COUNTER("TokenCount", long.class, true),
+    SEED("TokenSeed", String.class, false),
+    REMEMBER("Remember", boolean.class, false);
 
 
     String key;
+    Class<?> type;
+    boolean hasConstraints;
 
-    Keys(String key)
+    Keys(String key, Class<?> type, boolean hasConstraints)
     {
         this.key = key;
+        this.type = type;
+        this.hasConstraints = hasConstraints;
     }
 
-    public String get()
+
+    public String getName()
     {
         return this.key;
+    }
+
+    public Class<?> getType() { return this.type; }
+
+    public boolean hasConstraints() {
+        return this.hasConstraints;
     }
 
 }
@@ -59,22 +70,27 @@ public class UserData
     private void insert(Keys key, String value)
     {
         SharedPreferences.Editor handle = this.sp.edit();
-        handle.putString(key.get(), value);
+        handle.putString(key.getName(), value);
         handle.apply();
     }
     private void insert(Keys key, boolean value)
     {
         SharedPreferences.Editor handle = this.sp.edit();
-        handle.putBoolean(key.get(), value);
+        handle.putBoolean(key.getName(), value);
         handle.apply();
     }
     private void insert(Keys key, int val)
     {
         SharedPreferences.Editor handle = this.sp.edit();
-        handle.putInt(key.get(), val);
+        handle.putInt(key.getName(), val);
         handle.apply();
     }
-
+    private void insert(Keys key, long val)
+    {
+        SharedPreferences.Editor handle = this.sp.edit();
+        handle.putLong(key.getName(), val);
+        handle.apply();
+    }
 
     /**
      * Set username, length 3 < strlen < 24
@@ -93,23 +109,11 @@ public class UserData
      * @param fullname
      * @return false on failure
      */
-    public boolean setFullname(String fullname)
-    {
-        if(fullname.length() > 64 || fullname.length() < 6) { return false; }
+    public boolean setFullname(String fullname) {
+        if (fullname.length() > 64 || fullname.length() < 6) {
+            return false;
+        }
         this.insert(Keys.FULLNAME, fullname);
-        return true;
-    }
-
-
-    /**
-     * Set last token, must be 128 char long
-     * @param token
-     * @return true on success
-     */
-    public boolean setToken(String token)
-    {
-        if(token.length() != 128) return false;
-        this.insert(Keys.TOKEN, token);
         return true;
     }
 
@@ -137,15 +141,6 @@ public class UserData
         return true;
     }
 
-    /**
-     * Store preference to remember or not
-     * @param r
-     */
-    public void rememberMe(boolean r)
-    {
-        this.insert(Keys.REMEMBER, r);
-    }
-
 
     /**
      * Get preference that is of type String
@@ -154,7 +149,7 @@ public class UserData
      */
     public String getString(Keys key)
     {
-        return this.sp.getString(key.get(), null);
+        return this.sp.getString(key.getName(), null);
     }
 
     /**
@@ -164,7 +159,7 @@ public class UserData
      */
     public int getInt(Keys key)
     {
-        return this.sp.getInt(key.get(), 0);
+        return this.sp.getInt(key.getName(), 0);
     }
 
     /**
@@ -174,15 +169,46 @@ public class UserData
      */
     public boolean getBool(Keys key)
     {
-        return this.sp.getBoolean(key.get(), false);
+        return this.sp.getBoolean(key.getName(), false);
     }
 
+    /**
+     * Get preference that is of type long
+     * @param key
+     * @return stored value of this preference
+     */
+    public long getLong(Keys key) { return this.sp.getLong(key.getName(), 0); }
 
+    public void setString(Keys key, String string) {
+        if(!key.hasConstraints()) {
+            this.insert(key, string);
+        } else {
+            throw new UnsupportedOperationException("Key has restrictions.");
+        }
+    }
 
-    public String getUsername() { return this.sp.getString(Keys.USERNAME.get(), null); }
-    public String getFullname() { return this.sp.getString(Keys.FULLNAME.get(), null); }
-    public String getToken()    { return this.sp.getString(Keys.TOKEN.get(), null); }
-    public String getRememberMe()    { return this.sp.getString(Keys.REMEMBER.get(), null); }
+    public void setInt(Keys key, int val) {
+        if(!key.hasConstraints()) {
+            this.insert(key, val);
+        } else {
+            throw new UnsupportedOperationException("Key has restrictions.");
+        }
+    }
 
+    public void setLong(Keys key, long val) {
+        if(!key.hasConstraints()) {
+            this.insert(key, val);
+        } else {
+            throw new UnsupportedOperationException("Key has restrictions.");
+        }
+    }
+
+    public void setBoolean(Keys key, boolean bool) {
+        if(!key.hasConstraints()) {
+            this.insert(key, bool);
+        } else {
+            throw new UnsupportedOperationException("Key has restrictions.");
+        }
+    }
 
 }
