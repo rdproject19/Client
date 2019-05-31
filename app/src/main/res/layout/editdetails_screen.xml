@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterScreen"
+    tools:context=".EditDetailsScreen"
     android:background="#214D83"
     android:gravity="center">
 
     <TextView
-        android:id="@+id/invalid"
+        android:id="@+id/newinvalid"
         android:layout_width="350dp"
         android:layout_height="100dp"
         android:layout_weight="0"
@@ -17,11 +17,10 @@
         android:textColor="#ff1900"
         android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintVertical_bias="0.29000002" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -33,65 +32,35 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.7">
+        app:layout_constraintVertical_bias="0.53">
 
         <EditText
-            android:id="@+id/fullname"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:ems="10"
-            android:gravity="center"
-            android:hint="Full name*"
-            android:inputType="textPersonName"
-            android:textColorHighlight="#FFFFFF"
-            android:textColorHint="#86FFFFFF"
-            android:textColor="#FFFFFF"
-            android:textCursorDrawable="@null"
-            android:textSize="30sp" />
-
-        <EditText
-            android:id="@+id/username"
+            android:id="@+id/newname"
             android:layout_width="250dp"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:ems="10"
             android:gravity="center"
-            android:hint="Username*"
+            android:hint="New Full name*"
             android:inputType="textPersonName"
+            android:textColor="#FFFFFF"
             android:textColorHighlight="#FFFFFF"
             android:textColorHint="#86FFFFFF"
-            android:textColor="#FFFFFF"
-            android:textCursorDrawable="@null"
-            android:textSize="30sp" />
-
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="250dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:ems="10"
-            android:gravity="center"
-            android:hint="Password*"
-            android:inputType="textPassword"
-            android:textColorHighlight="#FFFFFF"
-            android:textColorHint="#86FFFFFF"
-            android:textColor="#FFFFFF"
             android:textCursorDrawable="@null"
             android:textSize="30sp" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="30dp"/>
+            android:layout_height="30dp" />
 
         <Button
-            android:id="@+id/register"
+            android:id="@+id/confirm"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:background="@drawable/button_active"
-            android:onClick="openLoginScreen"
-            android:text="Register"
+            android:onClick="openMessengerScreen"
+            android:text="confirm"
             android:textColor="#505050"
             android:textColorHint="#0A474747"
             android:textColorLink="#616161"
@@ -112,7 +81,7 @@
         app:layout_constraintVertical_bias="0.100000024">
 
         <ImageButton
-            android:id="@+id/profilePicture"
+            android:id="@+id/newProfilePicture"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:scaleType="fitXY"
@@ -126,7 +95,7 @@
             android:layout_weight="1" />
 
         <ImageButton
-            android:id="@+id/takePicture"
+            android:id="@+id/newTakePicture"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:scaleType="fitXY"

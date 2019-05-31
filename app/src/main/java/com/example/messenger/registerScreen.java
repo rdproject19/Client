@@ -1,44 +1,44 @@
 package com.example.messenger;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
-import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import java.io.ByteArrayOutputStream;
 
-import java.io.File;
-import java.io.FileOutputStream;
+public class RegisterScreen extends AppCompatActivity {
 
-public class registerScreen extends AppCompatActivity {
+    private final int minimal_chars = 4;
 
-    private int pictures_taken;
-
-    EditText username, password;
-    TextView error_text;
-    ImageButton profile_picture;
+    private EditText full_name, username, password;
+    private TextView error_text;
+    private ImageButton profile_picture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_screen);
 
+        full_name = findViewById(R.id.fullname);
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         error_text = findViewById(R.id.invalid);
         profile_picture = findViewById(R.id.profilePicture);
-        username.requestFocus();
+        full_name.requestFocus();
     }
 
     @Override
@@ -49,15 +49,17 @@ public class registerScreen extends AppCompatActivity {
             switch (requestCode) {
                 case 0: {
                     Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                    profile_picture.setImageBitmap(circelizeBitmap(bitmap));
-                    pictures_taken++;
-                    saveImage(bitmap, pictures_taken);
+                    Bitmap profile_pic = circelizeBitmap(bitmap);
+                    profile_picture.setImageBitmap(profile_pic);
+                    saveImage(profile_pic, this);
                 }
                 case 1: {
                     final Bundle extras = data.getExtras();
                     if (extras != null) {
                         Bitmap bitmap = extras.getParcelable("data");
-                        profile_picture.setImageBitmap(circelizeBitmap(bitmap));
+                        Bitmap profile_pic = circelizeBitmap(bitmap);
+                        profile_picture.setImageBitmap(profile_pic);
+                        saveImage(profile_pic, this);
                     }
                 }
             }
@@ -65,17 +67,60 @@ public class registerScreen extends AppCompatActivity {
     }
 
     public void openLoginScreen(View v) {
-        String un = ((TextView) username).getText().toString();
-        String pw = ((TextView) password).getText().toString();
-
-        if(testPasswordRequirements(pw) && isMinimalLength(un) && isMinimalLength(pw)) {
+        if(correctFields()) {
+            SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("pref_fn", full_name.getText().toString());
+            editor.apply();
             finish();
         }
-        else {
-            String invalid_login_details = (!isMinimalLength(un) || !isMinimalLength(pw)) ? "Your username/password must at least be 4 characters long"
-                    : "Your password must contain at least 2 capital letters and 1 number";
+    }
 
-            error_text.setText(invalid_login_details);
+    private boolean correctFields() {
+        String[][] array = {{"fullname", "username", "password"},
+        {((TextView) full_name).getText().toString(), ((TextView) username).getText().toString(), ((TextView) password).getText().toString()}};
+
+        String errortext = "";
+        boolean correct = true;
+        String empty_fields = "";
+
+        // test empty fields
+        for(int i = 0; i < array[0].length; i++) {
+            if(!isMinimalLength(array[1][i], true, minimal_chars)) {
+                empty_fields += empty_fields.length() != 0 ? "/" : "";
+                empty_fields += array[0][i];
+                correct = false;
+            }
+        }
+
+        // test field length
+        if(correct) {
+            for(int i = 0; i < array[0].length; i++) {
+                if(!isMinimalLength(array[1][i], false, minimal_chars)) {
+                    errortext = "The field " + array[0][i] + " needs to be at least " + minimal_chars + " characters long.";
+                    i = array[0].length;
+                    correct = false;
+                }
+            }
+        }
+        else {
+            errortext = "The field" + (empty_fields.length() > 10 ? "s " : " ")  + empty_fields + " cannot be empty.";
+        }
+
+        // test password requirements
+        if(correct) {
+            if(!testPasswordRequirements(array[1][2])) {
+                errortext = "The password has to contain at least 2 capital letters and 1 number.";
+                correct = false;
+            }
+        }
+
+        if(correct) {
+            return true;
+        }
+        else {
+            error_text.setText(errortext);
+            return false;
         }
     }
 
@@ -94,9 +139,7 @@ public class registerScreen extends AppCompatActivity {
         return capital_letters >= 2 && numbers >= 1;
     }
 
-    private boolean isMinimalLength(String s) {
-        return s.length() >= 4;
-    }
+    public static boolean isMinimalLength(String s, boolean empty, int min) { return s.length() >= (empty ? 1 : min); }
 
     public void takePicture(View v) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -117,29 +160,7 @@ public class registerScreen extends AppCompatActivity {
         startActivityForResult(intent, 1);
     }
 
-    private void saveImage(Bitmap bitmap, int n) {
-        String root = Environment.getExternalStorageDirectory().toString();
-        File myDir = new File(root + "/messenger_app_images");
-        if (!myDir.exists()) {
-            myDir.mkdirs();
-        }
-        String fname = "messenger-image-"+ n +".jpg";
-        File file = new File (myDir, fname);
-        if (file.exists ()) {
-            file.delete();
-        }
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
-            out.flush();
-            out.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Bitmap circelizeBitmap(Bitmap bitmap)
+    public static Bitmap circelizeBitmap(Bitmap bitmap)
     {
         int width = bitmap.getWidth() > bitmap.getHeight() ? bitmap.getHeight() : bitmap.getWidth();
         //int length = bitmap.getWidth() > bitmap.getHeight() ? bitmap.getWidth() : bitmap.getHeight();
@@ -158,5 +179,18 @@ public class registerScreen extends AppCompatActivity {
         canvas.drawCircle(radius, radius, radius, paint);
 
         return canvasBitmap;
+    }
+
+    public static void saveImage(Bitmap bitmap, Context context) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String profile_pic = Base64.encodeToString(b, Base64.DEFAULT);
+
+        String prefs_name = "PrefsFile";
+        SharedPreferences sp = context.getSharedPreferences(prefs_name, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("pref_bm", profile_pic);
+        editor.apply();
     }
 }
