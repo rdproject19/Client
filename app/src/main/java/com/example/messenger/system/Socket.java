@@ -26,8 +26,8 @@ public class Socket extends WebSocketServer {
             UserData prefs = new UserData();
 
             //making the handshake
-            String userId = prefs.getUsername();
-            LSFR lsfr = new LSFR(prefs.getSeed(), prefs.getShiftCount());
+            String userId = prefs.getString("Username");
+            LSFR lsfr = new LSFR(prefs.getString("Seed"), prefs.getLong("ShiftCount"));
             int authToken = lsfr.shift();
             prefs.setToken(authToken);
 
@@ -42,11 +42,6 @@ public class Socket extends WebSocketServer {
 
             //Send Handshake
             this.broadcast(myHandshake);
-
-            //Receive question
-
-
-            //Send Answer
         }
 
         @Override
