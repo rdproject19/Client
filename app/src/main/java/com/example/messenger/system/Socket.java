@@ -1,5 +1,6 @@
 package com.example.messenger.system;
 
+import com.example.messenger.Global;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
