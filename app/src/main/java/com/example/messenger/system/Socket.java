@@ -21,10 +21,31 @@ public class Socket extends WebSocketServer {
         }
 
         @Override
-        public void onOpen(WebSocket conn, ClientHandshake handshake)
-        {
+        public void onOpen(WebSocket conn, ClientHandshake handshake) {
+            Gson gson = new Gson();
+            UserData prefs = new UserData();
+
+            //making the handshake
+            String userId = prefs.getUsername();
+            LSFR lsfr = new LSFR(prefs.getSeed(), prefs.getShiftCount());
+            int authToken = lsfr.shift();
+            prefs.setToken(authToken);
+
+            String myHandshake =
+                            "{TYPE: \"handshake\"," +
+                            "USER_ID:\"" +
+                            userId +
+                            "\", AUTHENTICATION_TOKEN: " +
+                            authToken +
+                            "}";
+
+
             //Send Handshake
+            this.broadcast(myHandshake);
+
             //Receive question
+
+
             //Send Answer
         }
 
