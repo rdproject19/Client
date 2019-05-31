@@ -23,11 +23,11 @@ public class Socket extends WebSocketServer {
         @Override
         public void onOpen(WebSocket conn, ClientHandshake handshake) {
             Gson gson = new Gson();
-            UserData prefs = new UserData();
+            //UserData prefs = new UserData();
 
             //making the handshake
-            String userId = prefs.getString(Keys.USERNAME);
-            LSFR lsfr = new LSFR(prefs.getString(Keys.SEED), prefs.getLong(Keys.COUNTER));
+            //String userId = prefs.getString(Keys.USERNAME);
+            /*LSFR lsfr = new LSFR(prefs.getString(Keys.SEED), prefs.getLong(Keys.COUNTER));
             int authToken = lsfr.shift();
             prefs.setToken(authToken);
 
@@ -41,7 +41,7 @@ public class Socket extends WebSocketServer {
 
 
             //Send Handshake
-            this.broadcast(myHandshake);
+            this.broadcast(myHandshake);*/
         }
 
         @Override
@@ -112,7 +112,7 @@ public class Socket extends WebSocketServer {
                     ch.putConversation(conv);
                 }
 
-                conv.putMessage(msg);
+                //conv.putMessage(msg);
 
             } catch (Exception e) {
                 e.printStackTrace();
