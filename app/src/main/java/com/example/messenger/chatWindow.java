@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class chatWindow extends AppCompatActivity {
@@ -18,6 +19,8 @@ public class chatWindow extends AppCompatActivity {
     String message;
     Button sendButton;
     LinearLayout ll;
+    ScrollView sv;
+
 
     int i = 0;
 
@@ -26,6 +29,7 @@ public class chatWindow extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_window);
 
+        sv = findViewById(R.id.scrollView);
         ll = findViewById(R.id.linearLayout);
         sendButton = findViewById(R.id.sendButton);
         et = findViewById(R.id.messageField);
@@ -87,6 +91,13 @@ public class chatWindow extends AppCompatActivity {
             ll.addView(tv);
             et.setText("");
         }
+        //scroll to the bottom
+        sv.post(new Runnable() {
+            @Override
+            public void run() {
+                sv.fullScroll(View.FOCUS_DOWN);
+            }
+        });
         i++;
     }
 }
