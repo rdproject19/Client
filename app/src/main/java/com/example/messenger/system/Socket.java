@@ -20,7 +20,8 @@ public class Socket extends WebSocketServer {
         }
 
         @Override
-        public void onOpen(WebSocket conn, ClientHandshake handshake) {
+        public void onOpen(WebSocket conn, ClientHandshake handshake)
+        {
             //Send Handshake
             //Receive question
             //Send Answer
