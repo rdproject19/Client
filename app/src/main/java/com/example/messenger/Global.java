@@ -1,8 +1,10 @@
 package com.example.messenger;
 
 import android.app.Application;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 
+import com.example.messenger.system.AppDatabase;
 import com.example.messenger.system.ChatHandler;
 import com.example.messenger.system.UserData;
 
@@ -15,6 +17,7 @@ public class Global extends Application {
     private ChatHandler chatHandler;
     private UserData userdata;
     private Context context;
+    private AppDatabase db;
 
     /**
      * Get current chatHandler object
@@ -43,6 +46,15 @@ public class Global extends Application {
 
 
     /**
+     * Access database instance
+     * @return AppDatabase
+     */
+    public AppDatabase db()
+    {
+        return this.db;
+    }
+
+    /**
      * All things to do when application is first started.
      */
     @Override
@@ -52,6 +64,8 @@ public class Global extends Application {
         this.initChatHandler();
         this.context = getApplicationContext();
         this.userdata = new UserData(this.context);
+
+        this.db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database").build();
     }
 
 

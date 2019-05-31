@@ -31,9 +31,16 @@ import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.messenger.system.ChatHandler;
+import com.example.messenger.system.Conversation;
+import com.example.messenger.system.Keys;
+import com.example.messenger.system.Message;
+import com.example.messenger.system.UserData;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 public class MessengerScreen extends AppCompatActivity {
 
@@ -254,6 +261,32 @@ public class MessengerScreen extends AppCompatActivity {
     }
 
     private void ShowChats() {
+
+        chat_array.clear();
+
+        ChatHandler ch = ((Global) this.getApplication()).getChatHandler();
+        UserData ud = ((Global) this.getApplication()).getUserData();
+
+        HashMap<Integer, Conversation> ConvoMap = ch.ch().getConversations(50);
+
+        for(Conversation convo : ConvoMap.values())
+        {
+            HashMap<String, String> hm = new HashMap<String, String>();
+            // username of recipient
+            hm.put("listview_title", convo.recipient(ud.getString(Keys.USERNAME)));
+
+            // last message in conversation
+            TreeMap<Integer, Message> sorted = convo.getSortedMessages();
+            Message last = sorted.lastEntry().getValue();
+
+            hm.put("listview_discription", last.getSenderID() + ": " + last.getMessage());
+
+            // profile image of recipient/sender
+            hm.put("listview_image", Integer.toString(R.drawable.icon_default_profile));
+            chat_array.add(hm);
+        }
+
+        /*
         chat_array.clear();
         SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
 
@@ -271,6 +304,7 @@ public class MessengerScreen extends AppCompatActivity {
                 }
             }
         }
+        */
     }
 
     @Override

@@ -1,18 +1,39 @@
 package com.example.messenger.system;
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+
 import org.json.*;
 
 /**
  *
  * @author Cas Haaijman (s4372662)
  */
+@Entity
 public class Message implements Comparable<Message>{
+    @ColumnInfo(name = "type")
     private String type;
+
+    @PrimaryKey
     private String senderID;
+
+    @ColumnInfo(name = "timeStamp")
     private long timeStamp;
+
+    @ColumnInfo(name = "Message")
     private String message;
+
+    @ColumnInfo(name = "convID")
     private int conversationID;
+
+    @ColumnInfo(name = "sessionToken")
     private String sessionToken;
+
+    @ColumnInfo(name = "messageId")
     private String messageID;
+
+    @Ignore
     private boolean parsed;
 
     /**
