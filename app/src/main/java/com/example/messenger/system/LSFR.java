@@ -78,4 +78,11 @@ public class LSFR {
         state = result;
     }
 
+    public long getShiftcounter() {
+        return shiftcounter;
+    }
+
+    public String getSeed() {
+        return seed;
+    }
 }
