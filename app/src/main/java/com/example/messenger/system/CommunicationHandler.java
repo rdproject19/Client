@@ -37,15 +37,24 @@ public class CommunicationHandler
 
     /**
      * Put conversation object in list
-     * @param id conversation id
+     * @param convo conversation
      */
-    public void putConversation(int id)
+    public void putConversation(Conversation convo)
     {
-        Conversation conv = new Conversation(id);
-        this.conversations.put(id, conv);
+        int id = convo.getID();
+        this.conversations.put(id, convo);
     }
 
 
+    /**
+     * Get list of conversations
+     * @param limit number of conversations to pull from list
+     * @return HashMap of conversations
+     */
+    public HashMap<Integer, Conversation> getConversations(int limit)
+    {
+        return this.conversations;
+    }
 
 
 }
