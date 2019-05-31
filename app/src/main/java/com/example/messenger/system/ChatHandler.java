@@ -1,7 +1,10 @@
 package com.example.messenger.system;
 
+import android.content.Context;
+
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.URI;
 
 
 public class ChatHandler
@@ -9,20 +12,21 @@ public class ChatHandler
 
     CommunicationHandler ch;
 
-    public ChatHandler()
+    public ChatHandler(Context context)
     {
         this.ch = new CommunicationHandler();
 
-        InetSocketAddress IA = null;
+        URI uri = null;
         try {
-            InetAddress addr = InetAddress.getByName("134.209.205.126");
-            IA = new InetSocketAddress(addr, 7070);
+            uri = new URI("ws://134.209.205.126port:7070");
+            Socket socket = new Socket(uri, this.ch, context);
         } catch(Exception e) {
             e.printStackTrace();
         }
 
-        Socket socket = new Socket(IA, this.ch);
     }
+
+
 
     public CommunicationHandler ch()
     {

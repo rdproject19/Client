@@ -35,22 +35,14 @@ public class Global extends Application {
     }
 
     /**
-     * If app starts for first time, the chathandler must be initialised.
-     */
-    public void initChatHandler() {
-        this.chatHandler = new ChatHandler();
-    }
-
-
-    /**
      * All things to do when application is first started.
      */
     @Override
     public void onCreate()
     {
         super.onCreate();
-        this.initChatHandler();
         this.context = getApplicationContext();
+        this.chatHandler = new ChatHandler(context);
         this.userdata = new UserData(this.context);
     }
 
