@@ -39,6 +39,7 @@ public class Socket extends WebSocketServer {
                             authToken +
                             "}";
 
+
             //Send Handshake
             this.broadcast(myHandshake);
 
