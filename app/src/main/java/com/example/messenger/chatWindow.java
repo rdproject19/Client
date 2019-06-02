@@ -48,7 +48,7 @@ public class ChatWindow extends AppCompatActivity {
         //get the users
         user1 = "user1";
         user2 = "user2";
-
+        //this is janky but seemingly needed to change the file name.
         et.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
