@@ -7,8 +7,8 @@
 /**
  * Auxiliary enum for consistent keys.
  */
-enum Keys
-{
+
+enum Keys {
     USERNAME("Username", String.class, false),
     FULLNAME("Fullname", String.class, true),
     TOKEN("Token", int.class, false),
@@ -21,8 +21,7 @@ enum Keys
     Class<?> type;
     boolean hasConstraints;
 
-    Keys(String key, Class<?> type, boolean hasConstraints)
-    {
+    Keys(String key, Class<?> type, boolean hasConstraints) {
         this.key = key;
         this.type = type;
         this.hasConstraints = hasConstraints;

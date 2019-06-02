@@ -3,6 +3,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import org.json.*;
 
@@ -15,7 +16,7 @@ public class Message implements Comparable<Message>{
     @ColumnInfo(name = "type")
     private String type;
 
-    @PrimaryKey
+    @PrimaryKey @NonNull
     private String senderID;
 
     @ColumnInfo(name = "timeStamp")
@@ -104,6 +105,7 @@ public class Message implements Comparable<Message>{
     public String getMessageID() {
         return messageID;
     }
+
 
     public boolean isParsed() {
         return parsed;
