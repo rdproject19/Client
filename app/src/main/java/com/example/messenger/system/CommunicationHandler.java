@@ -10,7 +10,7 @@ public class CommunicationHandler
 
     CommunicationHandler()
     {
-        this.conversations = new HashMap<>();
+        conversations = new HashMap<>();
     }
 
     /**
@@ -55,6 +55,5 @@ public class CommunicationHandler
     {
         return this.conversations;
     }
-
 
 }

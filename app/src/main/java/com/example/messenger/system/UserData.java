@@ -143,6 +143,11 @@ public class UserData
      */
     public long getLong(Keys key) { return this.sp.getLong(key.getName(), 0); }
 
+    /**
+     * Sets any string preference if it doesn't have a restriction
+     * @param key The name of the preference
+     * @param string The string to set it to
+     */
     public void setString(Keys key, String string) {
         if(!key.hasConstraints()) {
             this.insert(key, string);
@@ -151,6 +156,11 @@ public class UserData
         }
     }
 
+    /**
+     * Sets any int preference if it doesn't have a restriction
+     * @param key The name of the preference
+     * @param val The value to set it to
+     */
     public void setInt(Keys key, int val) {
         if(!key.hasConstraints()) {
             this.insert(key, val);
@@ -159,6 +169,11 @@ public class UserData
         }
     }
 
+    /**
+     * Sets any long preference if it doesn't have a restriction
+     * @param key The name of the preference
+     * @param val The value to set it to
+     */
     public void setLong(Keys key, long val) {
         if(!key.hasConstraints()) {
             this.insert(key, val);
@@ -167,6 +182,11 @@ public class UserData
         }
     }
 
+    /**
+     * Sets any boolean preference if it doesn't have a restriction
+     * @param key The name of the preference
+     * @param bool the value to set it to
+     */
     public void setBoolean(Keys key, boolean bool) {
         if(!key.hasConstraints()) {
             this.insert(key, bool);

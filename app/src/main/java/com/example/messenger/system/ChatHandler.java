@@ -29,7 +29,6 @@ public class ChatHandler
     }
 
 
-
     public CommunicationHandler ch()
     {
         return this.ch;
