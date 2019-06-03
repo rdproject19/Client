@@ -72,6 +72,7 @@ public class Socket extends WebSocketClient {
 
     private void handleConversation(JSONObject jsonConvo) {
         Gson gson = new Gson();
+        String userName = global.getUserData().getString(Keys.FULLNAME);
 
         try {
             if (jsonConvo.has("PARTICIPANTS"))
@@ -85,7 +86,9 @@ public class Socket extends WebSocketClient {
                     ch.putConversation(conv);
                 }
                 for (String name : gson.fromJson((JsonElement) jsonConvo.get("PARTICIPANTS"), String[].class)) {
-                    conv.addParticipant(name);
+                    if (name != userName) {
+                        conv.addParticipant(name);
+                    }
                 }
 
                 global.db().conversationDao().putConversation(conv);

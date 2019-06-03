@@ -13,6 +13,7 @@ public class ChatHandler
 {
 
     private CommunicationHandler ch;
+    Socket socket;
 
     public ChatHandler(Global global)
     {
@@ -28,6 +29,10 @@ public class ChatHandler
             e.printStackTrace();
         }
 
+    }
+
+    public void sendMessage(Message message) {
+        socket.send(message.toJSON());
     }
 
 

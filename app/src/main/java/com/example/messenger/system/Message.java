@@ -9,15 +9,14 @@ import com.example.messenger.Global;
 
 import org.json.*;
 
+import java.util.Date;
+
 /**
  *
  * @author Cas Haaijman (s4372662)
  */
 @Entity
 public class Message implements Comparable<Message>{
-    @ColumnInfo(name = "type")
-    private String type;
-
     @ColumnInfo(name = "senderID")
     private String senderID;
 
@@ -85,10 +84,10 @@ public class Message implements Comparable<Message>{
      * Used for generating Message class giving only the string and the conversation ID.
      * @param message The actual message as typed by the user
      * @param conversationID The ConversationId beloning to the message
-     * @param global Global
+     * @param global The Global class
      * @return
      */
-    public Message makeMessage(String message, int conversationID, Global global) {
+    public static Message makeMessage(String message, int conversationID, Global global) {
         UserData userData = global.getUserData();
         String name = userData.getString(Keys.FULLNAME);
         String sessionToken = userData.getString(Keys.TOKEN);
@@ -149,17 +148,14 @@ public class Message implements Comparable<Message>{
         this.parsed = parsed;
     }
 
-    public String getType() {
-        return null;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public int hashCode()
     {
         return Long.hashCode(this.getTimeStamp());
+    }
+
+    public String getTimeString() {
+        Date date = new Date((long)timeStamp*1000);
+        return date.toString();
     }
 
     @Override
