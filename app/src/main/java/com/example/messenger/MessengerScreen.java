@@ -61,6 +61,7 @@ public class MessengerScreen extends AppCompatActivity {
 
     private SimpleAdapter chat_adapter;
     private List<HashMap<String, String>> chat_array;
+    private HashMap<String, Conversation> chat_ids;
     public static SimpleAdapter contact_adapter;
     private List<HashMap<String, String>> contact_array;
 
@@ -127,6 +128,7 @@ public class MessengerScreen extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> adapterview, View view, int i, long l) {
                         Intent j = new Intent(MessengerScreen.this, ChatWindow.class);
+                        j.putExtra("conversation", chat_array.get(i).get("convId"));
                         startActivity(j);
                     }
                 });
@@ -295,7 +297,7 @@ public class MessengerScreen extends AppCompatActivity {
         HashMap<Integer, Conversation> ConvoMap = ch.ch().getConversations(50);
 
         for(Conversation convo : ConvoMap.values()) {
-            HashMap<String, String> hm = new HashMap<String, String>();
+            HashMap<String, String> hm = new HashMap<>();
             // username of recipient
             hm.put("listview_title", convo.recipient(ud.getString(Keys.USERNAME)));
 
@@ -307,7 +309,12 @@ public class MessengerScreen extends AppCompatActivity {
 
             // profile image of recipient/sender
             hm.put("listview_image", Integer.toString(R.drawable.icon_default_profile));
+
+            // The conversation ID
+            hm.put("convId", Integer.toString(convo.getID()));
+
             chat_array.add(hm);
+
         }
 
         /*

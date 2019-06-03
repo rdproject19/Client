@@ -30,6 +30,10 @@ public class Conversation
         return conversationId;
     }
 
+    public ArrayList<String> getParticipants() {
+        return participants;
+    }
+
     /**
      * Puts a message object in current conversation
 =     * @param msg message object

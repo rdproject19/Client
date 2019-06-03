@@ -9,6 +9,8 @@ import com.example.messenger.Global;
 
 import org.json.*;
 
+import java.util.Date;
+
 /**
  *
  * @author Cas Haaijman (s4372662)
@@ -147,6 +149,11 @@ public class Message implements Comparable<Message>{
     public int hashCode()
     {
         return Long.hashCode(this.getTimeStamp());
+    }
+
+    public String getTimeString() {
+        Date date = new Date((long)timeStamp*1000);
+        return date.toString();
     }
 
     @Override

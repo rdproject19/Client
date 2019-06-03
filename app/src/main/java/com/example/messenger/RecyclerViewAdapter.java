@@ -10,23 +10,20 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.messenger.system.Message;
+
 import java.util.ArrayList;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
-    String user1, user2;
-    ArrayList<String> messages = new ArrayList<>();
-    ArrayList<String> time = new ArrayList<>();
-    ArrayList<Boolean> sent = new ArrayList<>();
+    String username;
+    ArrayList<Message> messages = new ArrayList<>();
 
     private Context mContext;
 
-    public RecyclerViewAdapter(String user1, String user2, ArrayList<String> messages, ArrayList<String> time, ArrayList<Boolean> sent, Context mContext) {
-        this.user1 = user1;
-        this.user2 = user2;
+    public RecyclerViewAdapter(String username, ArrayList<Message> messages, Context mContext) {
+        this.username = username;
         this.messages = messages;
-        this.time = time;
-        this.sent = sent;
         this.mContext = mContext;
     }
 
@@ -40,10 +37,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        if (sent.get(i)) { //sent messages
-            viewHolder.user.setText(user1);
-            viewHolder.message.setText(messages.get(i));
-            viewHolder.time.setText(time.get(i));
+        Message message = messages.get(i);
+
+        if (username == message.getSenderID()) { //sent messages
+            viewHolder.user.setText(username);
+
+            viewHolder.message.setText(message.getMessage());
+            viewHolder.time.setText(message.getTimeString());
 
             viewHolder.user.setBackgroundColor(Color.GRAY);
             viewHolder.message.setBackgroundColor(Color.GRAY);
@@ -60,9 +60,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             viewHolder.time.setLayoutParams(params);
 
         } else { //recieved messages
-            viewHolder.user.setText(user2);
-            viewHolder.message.setText(messages.get(i));
-            viewHolder.time.setText(time.get(i));
+            viewHolder.user.setText("Other Guy");
+
+            viewHolder.message.setText(message.getMessage());
+            viewHolder.time.setText(message.getTimeString());
 
             viewHolder.user.setBackgroundColor(Color.GREEN);
             viewHolder.message.setBackgroundColor(Color.GREEN);

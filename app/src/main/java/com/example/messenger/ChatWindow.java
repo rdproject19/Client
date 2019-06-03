@@ -1,6 +1,7 @@
 package com.example.messenger;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,33 +22,44 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.messenger.system.Conversation;
+import com.example.messenger.system.Keys;
+import com.example.messenger.system.Message;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class ChatWindow extends AppCompatActivity {
 
     EditText et;
-    String message;
+    String messageText;
+    Conversation conversation;
     Button sendButton;
 
-    String user1, user2;
-    ArrayList<String> messages = new ArrayList<>();
-    ArrayList<String> times = new ArrayList<>();
-    ArrayList<Boolean> sent = new ArrayList<>();
-
+    String username;
+    ArrayList<String> participants;
+    ArrayList<Message> messages = new ArrayList<>();
+    Global global;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        global = ((Global) this.getApplication());
+        Intent i = getIntent();
+
+        //Get the conversation from it's id.
+        conversation = global.getChatHandler().ch().getConversation(Integer.parseInt(i.getStringExtra("convId")));
+
         setContentView(R.layout.chat_window);
 
 
         sendButton = findViewById(R.id.sendButton);
         et = findViewById(R.id.messageField);
 
-        //get the users
-        user1 = "user1";
-        user2 = "user2";
+        //get the participants
+        username = global.getUserData().getString(Keys.FULLNAME);
+        participants = conversation.getParticipants();
 
         et.addTextChangedListener(new TextWatcher() {
             @Override
@@ -58,8 +70,8 @@ public class ChatWindow extends AppCompatActivity {
             //enabling and disabling the send button
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                message = et.getText().toString();
-                if(message.isEmpty()) {
+                messageText = et.getText().toString();
+                if(messageText.isEmpty()) {
                     sendButton.setEnabled(false);
                 } else {
                     sendButton.setEnabled(true);
@@ -72,10 +84,10 @@ public class ChatWindow extends AppCompatActivity {
             }
         });
 
-        fillArrays();
+        //fillArrays();
     }
 
-    public void fillArrays(){
+    /*public void fillArrays(){
         //real case - get the messages from shared preferences
 
         messages.add("Heey!");
@@ -108,21 +120,24 @@ public class ChatWindow extends AppCompatActivity {
 
 
         initRecyclerView();
-    }
+    }*/
 
     private void initRecyclerView(){
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(user1, user2, messages, times, sent, this);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(username, messages, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.scrollToPosition(messages.size()-1);
     }
 
     public void sendMessage(View view){
-        message = et.getText().toString();
+
+        String messageText = et.getText().toString();
+        Message message = Message.makeMessage(messageText, conversation.getID(), global);
+
+        global.getChatHandler().sendMessage(message);
+
         messages.add(message);
-        times.add("20:20");
-        sent.add(true);
         et.setText("");
 
         initRecyclerView();
@@ -131,10 +146,8 @@ public class ChatWindow extends AppCompatActivity {
     }
 
     //this method should be called if user is looking at particular chat and receives a message in a mean time
-    public void receiveMessage(String message, String time){
+    public void receiveMessage(Message message){
         messages.add(message);
-        times.add(time);
-        sent.add(false);
 
         initRecyclerView();
     }
