@@ -3,6 +3,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import org.json.*;
 
@@ -16,6 +17,7 @@ public class Message implements Comparable<Message>{
     private String type;
 
     @PrimaryKey
+    @NonNull
     private String senderID;
 
     @ColumnInfo(name = "timeStamp")
@@ -111,6 +113,14 @@ public class Message implements Comparable<Message>{
 
     public void setParsed(boolean parsed) {
         this.parsed = parsed;
+    }
+
+    public String getType() {
+        return null;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public int hashCode()

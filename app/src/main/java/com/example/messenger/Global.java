@@ -4,6 +4,7 @@ import android.app.Application;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 
+import com.amitshekhar.DebugDB;
 import com.example.messenger.system.AppDatabase;
 import com.example.messenger.system.ChatHandler;
 import com.example.messenger.system.UserData;
@@ -41,7 +42,7 @@ public class Global extends Application {
      * If app starts for first time, the chathandler must be initialised.
      */
     public void initChatHandler() {
-        this.chatHandler = new ChatHandler();
+        this.chatHandler = new ChatHandler(this.getApplicationContext());
     }
 
 
@@ -61,6 +62,7 @@ public class Global extends Application {
     public void onCreate()
     {
         super.onCreate();
+        System.out.println(DebugDB.getAddressLog());
         this.context = getApplicationContext();
         this.chatHandler = new ChatHandler(context);
         this.userdata = new UserData(this.context);
