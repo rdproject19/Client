@@ -10,7 +10,7 @@ import java.net.URI;
 public class ChatHandler
 {
 
-    CommunicationHandler ch;
+    private CommunicationHandler ch;
 
     public ChatHandler(Context context)
     {
@@ -18,9 +18,11 @@ public class ChatHandler
 
         URI uri = null;
         try {
-            uri = new URI("ws://134.209.205.126port:7070");
+            uri = new URI("ws://134.209.205.126:7070");
             Socket socket = new Socket(uri, this.ch, context);
-        } catch(Exception e) {
+        }
+        catch(Exception e)
+        {
             e.printStackTrace();
         }
 
@@ -30,7 +32,7 @@ public class ChatHandler
 
     public CommunicationHandler ch()
     {
-        return this.ch();
+        return this.ch;
     }
 
 }

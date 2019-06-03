@@ -10,7 +10,7 @@ public class CommunicationHandler
 
     CommunicationHandler()
     {
-
+        this.conversations = new HashMap<>();
     }
 
     /**

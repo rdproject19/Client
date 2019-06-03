@@ -62,7 +62,7 @@ public class Global extends Application {
     public void onCreate()
     {
         super.onCreate();
-        System.out.println(DebugDB.getAddressLog());
+
         this.context = getApplicationContext();
         this.chatHandler = new ChatHandler(context);
         this.userdata = new UserData(this.context);
