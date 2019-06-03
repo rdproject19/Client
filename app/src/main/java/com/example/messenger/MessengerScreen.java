@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +32,7 @@ import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amitshekhar.DebugDB;
 import com.example.messenger.system.ChatHandler;
 import com.example.messenger.system.Conversation;
 
@@ -38,7 +40,11 @@ import com.example.messenger.system.Keys;
 import com.example.messenger.system.Message;
 import com.example.messenger.system.UserData;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
@@ -58,9 +64,29 @@ public class MessengerScreen extends AppCompatActivity {
     public static SimpleAdapter contact_adapter;
     private List<HashMap<String, String>> contact_array;
 
+    public String getLocalIpAddress() {
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress()) {
+                        return inetAddress.getHostAddress().toString();
+                    }
+                }
+            }
+        } catch (SocketException ex) {
+            Log.e("XD", ex.toString());
+        }
+        return null;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        System.out.println(getLocalIpAddress());
+
         setContentView(R.layout.tab_screen);
 
         toolbar = findViewById(R.id.toolbar);
@@ -130,7 +156,7 @@ public class MessengerScreen extends AppCompatActivity {
                                 startActivity(j);
                             }
                         });
-                        ShowChats();
+                         ShowChats();
                     }
                 }, 20);
                 break;

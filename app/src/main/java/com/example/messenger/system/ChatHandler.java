@@ -20,7 +20,9 @@ public class ChatHandler
         try {
             uri = new URI("ws://134.209.205.126:7070");
             Socket socket = new Socket(uri, this.ch, context);
-        } catch(Exception e) {
+        }
+        catch(Exception e)
+        {
             e.printStackTrace();
         }
 
