@@ -18,13 +18,13 @@ import java.net.URI;
 public class Socket extends WebSocketClient {
 
     CommunicationHandler ch;
-    Context context;
+    Global global;
 
-    public Socket(URI uri, CommunicationHandler ch, Context context)
+    public Socket(URI uri, CommunicationHandler ch, Global global)
     {
         super(uri);
         this.ch = ch;
-        this.context = context;
+        this.global = global;
     }
 
     private void handleUpdate(JSONObject jsonUpdate) {
@@ -97,7 +97,7 @@ public class Socket extends WebSocketClient {
     @Override
     public void onOpen(ServerHandshake handshakedata) {
         Gson gson = new Gson();
-        UserData prefs = new UserData(context);
+        UserData prefs = new UserData(global.getApplicationContext());
 
         //making the handshake
         String userId = prefs.getString(Keys.USERNAME);

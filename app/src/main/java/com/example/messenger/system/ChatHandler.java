@@ -2,6 +2,8 @@ package com.example.messenger.system;
 
 import android.content.Context;
 
+import com.example.messenger.Global;
+
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -12,14 +14,14 @@ public class ChatHandler
 
     private CommunicationHandler ch;
 
-    public ChatHandler(Context context)
+    public ChatHandler(Global global)
     {
         this.ch = new CommunicationHandler();
 
         URI uri = null;
         try {
             uri = new URI("ws://134.209.205.126:7070");
-            Socket socket = new Socket(uri, this.ch, context);
+            Socket socket = new Socket(uri, this.ch, global);
         }
         catch(Exception e)
         {

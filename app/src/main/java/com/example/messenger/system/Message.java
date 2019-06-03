@@ -18,7 +18,7 @@ public class Message implements Comparable<Message>{
     @ColumnInfo(name = "type")
     private String type;
 
-    @PrimaryKey @NonNull
+    @ColumnInfo(name = "senderID")
     private String senderID;
 
     @ColumnInfo(name = "timeStamp")
