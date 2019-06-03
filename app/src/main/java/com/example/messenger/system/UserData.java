@@ -4,41 +4,6 @@
         import android.content.Context;
         import android.content.SharedPreferences;
 
-/**
- * Auxiliary enum for consistent keys.
- */
-
-enum Keys {
-    USERNAME("Username", String.class, false),
-    FULLNAME("Fullname", String.class, true),
-    TOKEN("Token", int.class, false),
-    COUNTER("TokenCount", long.class, true),
-    SEED("TokenSeed", String.class, false),
-    REMEMBER("Remember", boolean.class, false);
-
-
-    String key;
-    Class<?> type;
-    boolean hasConstraints;
-
-    Keys(String key, Class<?> type, boolean hasConstraints) {
-        this.key = key;
-        this.type = type;
-        this.hasConstraints = hasConstraints;
-    }
-
-
-    public String getName()
-    {
-        return this.key;
-    }
-
-    public Class<?> getType() { return this.type; }
-
-    public boolean hasConstraints() {
-        return this.hasConstraints;
-    }
-
 
 /**
  * Store and access user data
@@ -177,6 +142,11 @@ public class UserData
      */
     public long getLong(Keys key) { return this.sp.getLong(key.getName(), 0); }
 
+    /**
+     * Sets any string preference if it doesn't have a restriction
+     * @param key The name of the preference
+     * @param string The string to set it to
+     */
     public void setString(Keys key, String string) {
         if(!key.hasConstraints()) {
             this.insert(key, string);
@@ -185,6 +155,11 @@ public class UserData
         }
     }
 
+    /**
+     * Sets any int preference if it doesn't have a restriction
+     * @param key The name of the preference
+     * @param val The value to set it to
+     */
     public void setInt(Keys key, int val) {
         if(!key.hasConstraints()) {
             this.insert(key, val);
@@ -193,6 +168,11 @@ public class UserData
         }
     }
 
+    /**
+     * Sets any long preference if it doesn't have a restriction
+     * @param key The name of the preference
+     * @param val The value to set it to
+     */
     public void setLong(Keys key, long val) {
         if(!key.hasConstraints()) {
             this.insert(key, val);
@@ -201,6 +181,11 @@ public class UserData
         }
     }
 
+    /**
+     * Sets any boolean preference if it doesn't have a restriction
+     * @param key The name of the preference
+     * @param bool the value to set it to
+     */
     public void setBoolean(Keys key, boolean bool) {
         if(!key.hasConstraints()) {
             this.insert(key, bool);
