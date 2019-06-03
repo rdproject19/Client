@@ -10,16 +10,21 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.example.messenger.system.Conversation;
+
 import java.util.HashMap;
 import java.util.List;
 
 public class AddChatScreen extends AppCompatActivity {
 
     private ListView add_chat_list;
+    Global global;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        global = ((Global) this.getApplication());
+
         setContentView(R.layout.addchat_screen);
         add_chat_list = findViewById(R.id.addchatlist);
         add_chat_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
