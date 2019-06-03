@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import com.example.messenger.system.ChatHandler;
 import com.example.messenger.system.Conversation;
+
 import com.example.messenger.system.Keys;
 import com.example.messenger.system.Message;
 import com.example.messenger.system.UserData;
@@ -166,11 +167,9 @@ public class MessengerScreen extends AppCompatActivity {
     }
 
     private void addButtonListener(ImageButton btn) {
-        btn.setOnClickListener(new View.OnClickListener()
-        {
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 switch(tab_pos) {
                     case 0: {
                         startActivity(new Intent(MessengerScreen.this, AddChatScreen.class));
@@ -269,8 +268,7 @@ public class MessengerScreen extends AppCompatActivity {
 
         HashMap<Integer, Conversation> ConvoMap = ch.ch().getConversations(50);
 
-        for(Conversation convo : ConvoMap.values())
-        {
+        for(Conversation convo : ConvoMap.values()) {
             HashMap<String, String> hm = new HashMap<String, String>();
             // username of recipient
             hm.put("listview_title", convo.recipient(ud.getString(Keys.USERNAME)));

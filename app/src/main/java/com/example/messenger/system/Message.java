@@ -16,8 +16,7 @@ public class Message implements Comparable<Message>{
     @ColumnInfo(name = "type")
     private String type;
 
-    @PrimaryKey
-    @NonNull
+    @PrimaryKey @NonNull
     private String senderID;
 
     @ColumnInfo(name = "timeStamp")
@@ -106,6 +105,7 @@ public class Message implements Comparable<Message>{
     public String getMessageID() {
         return messageID;
     }
+
 
     public boolean isParsed() {
         return parsed;
