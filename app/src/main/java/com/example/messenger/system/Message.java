@@ -15,9 +15,6 @@ import org.json.*;
  */
 @Entity
 public class Message implements Comparable<Message>{
-    @ColumnInfo(name = "type")
-    private String type;
-
     @ColumnInfo(name = "senderID")
     private String senderID;
 
@@ -145,14 +142,6 @@ public class Message implements Comparable<Message>{
 
     public void setParsed(boolean parsed) {
         this.parsed = parsed;
-    }
-
-    public String getType() {
-        return null;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public int hashCode()
