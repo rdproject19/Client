@@ -39,14 +39,6 @@ public class Global extends Application {
     }
 
     /**
-     * If app starts for first time, the chathandler must be initialised.
-     */
-    public void initChatHandler() {
-        this.chatHandler = new ChatHandler(this.getApplicationContext());
-    }
-
-
-    /**
      * Access database instance
      * @return AppDatabase
      */

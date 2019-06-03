@@ -5,7 +5,11 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import com.example.messenger.Global;
+
 import org.json.*;
+
+import java.sql.Time;
 
 /**
  *
@@ -82,6 +86,22 @@ public class Message implements Comparable<Message>{
         this.parsed = false;
     }
 
+    /**
+     * Used for generating Message class giving only the string and the conversation ID.
+     * @param message
+     * @param global
+     * @return
+     */
+    public Message makeMessage(String message, int conversationID, Global global) {
+        UserData userData = global.getUserData();
+        String name = userData.getString(Keys.FULLNAME);
+        return new Message (name, new Date().getTime()
+
+        )
+
+    }
+
+    //Getters and setters
     public String getSenderID() {
         return senderID;
     }
