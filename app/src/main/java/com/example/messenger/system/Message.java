@@ -32,7 +32,7 @@ public class Message implements Comparable<Message>{
     private String sessionToken;
 
     @PrimaryKey(autoGenerate = true)
-    private String messageID;
+    private int messageID;
 
     @Ignore
     private boolean parsed;
@@ -51,7 +51,6 @@ public class Message implements Comparable<Message>{
         message = json.getString("MESSAGE");
         conversationID = json.getInt("CONVERSATION_ID");
         sessionToken = json.getString("SESSION_TOKEN");
-        messageID = json.getString("MESSAGE_ID");
         parsed = false;
     }
 
@@ -70,18 +69,49 @@ public class Message implements Comparable<Message>{
      * @param message The substance of the message
      * @param conversationID The ID of the conversation
      * @param sessionToken
-     * @param messageID
      */
-    public Message(String senderID, long timeStamp, String message, int conversationID, String sessionToken, String messageID) {
+    public Message(String senderID, long timeStamp, String message, int conversationID, String sessionToken) {
         this.senderID = senderID;
         this.timeStamp = timeStamp;
         this.message = message;
         this.conversationID = conversationID;
         this.sessionToken = sessionToken;
-        this.messageID = messageID;
         this.parsed = false;
     }
 
+    /**
+     * Used for generating Message class giving only the string and the conversation ID.
+     * @param message The actual message as typed by the user
+     * @param conversationID The ConversationId beloning to the message
+     * @param global Global
+     * @return
+     */
+    public Message makeMessage(String message, int conversationID, Global global) {
+        UserData userData = global.getUserData();
+        String name = userData.getString(Keys.FULLNAME);
+        String sessionToken = userData.getString(Keys.TOKEN);
+        return new Message (
+                name,
+                (int) (System.currentTimeMillis() / 1000L),
+                message,
+                conversationID,
+                sessionToken
+        );
+
+    }
+
+    public String toJSON() {
+        return "{" +
+                "TYPE: \"message\"" +
+                "SENDER_ID:\"" + senderID + "\"," +
+                "TIMESTAMP:" + timeStamp + "," +
+                "MESSAGE:\"" + message + "\"," +
+                "CONVERSATION_ID: " + conversationID + "," +
+                "SESSION_TOKEN:\"" + sessionToken + "\"," +
+                "}";
+    }
+
+    //Getters and setters
     public String getSenderID() {
         return senderID;
     }
@@ -102,7 +132,7 @@ public class Message implements Comparable<Message>{
         return sessionToken;
     }
 
-    public String getMessageID() {
+    public int getMessageID() {
         return messageID;
     }
 

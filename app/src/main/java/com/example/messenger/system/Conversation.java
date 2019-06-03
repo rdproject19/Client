@@ -32,12 +32,11 @@ public class Conversation
 
     /**
      * Puts a message object in current conversation
-     * @param msgId identifier for message object
-     * @param msg message object
+=     * @param msg message object
      */
-    public void putMessage(Integer msgId, Message msg)
+    public void putMessage(Message msg)
     {
-        this.messages.put(msgId, msg);
+        this.messages.put(msg.getMessageID(), msg);
     }
 
     public void addParticipant(String participant) {
