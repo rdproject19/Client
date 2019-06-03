@@ -88,6 +88,8 @@ public class Socket extends WebSocketClient {
                     conv.addParticipant(name);
                 }
 
+                global.db().conversationDao().putConversation(conv);
+
             }
         } catch (Exception e) {
             e.printStackTrace();

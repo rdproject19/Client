@@ -8,15 +8,12 @@ import android.arch.persistence.room.Query;
 import java.util.List;
 
 @Dao
-public interface MessageDao
+public interface ConversationDao
 {
-    @Query("SELECT * FROM Message")
-    List<Message> getAll();
-
-    @Query("SELECT * FROM Message WHERE ConvId = :convId")
-    List<Message> getFromConversation(int convId);
+    @Query("SELECT * FROM Conversation")
+    List<Conversation> getAll();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void putMessage(Message msg);
+    void putConversation(Conversation c);
 
 }

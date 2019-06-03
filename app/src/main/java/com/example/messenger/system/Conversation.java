@@ -1,16 +1,20 @@
 package com.example.messenger.system;
 
 import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+
+import com.example.messenger.Global;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.TreeMap;
 
-
-public class Conversation
+@Entity
+public class Conversation implements Comparable<Conversation>
 {
     @PrimaryKey
     private final int conversationId;
@@ -20,16 +24,30 @@ public class Conversation
 
     @Ignore
     private HashMap<Integer, Message> messages;
+    @Ignore
+    private Global global;
 
-    public Conversation (int id)
+
+    public Conversation(int conversationId, Global global)
     {
-        this.conversationId = id;
+        this(conversationId);
+        this.global = global;
+    }
+
+    public Conversation(int conversationId)
+    {
+        this.conversationId = conversationId;
     }
 
     public int getID() {
         return conversationId;
     }
+    public int getConversationId() {return this.conversationId; }
+    public void setConversationId(int convId) { return;  }
 
+    public ArrayList<String> getParticipants()
+    {return this.participants; }
+    public void setParticipants(ArrayList<String> x) { return; }
     /**
      * Puts a message object in current conversation
 =     * @param msg message object
@@ -42,6 +60,17 @@ public class Conversation
     public void addParticipant(String participant) {
         if(!participants.contains(participant)) {
             participants.add(participant);
+        }
+    }
+
+    /**
+     * Update instance to newest database information
+     */
+    public void update()
+    {
+        List<Message> messages = this.global.db().messageDao().getFromConversation(this.conversationId);
+        for(Message msg : messages) {
+            this.messages.putIfAbsent(msg.getMessageID(), msg);
         }
     }
 
@@ -76,7 +105,12 @@ public class Conversation
     }
 
     public int HashCode()
-    {
+    { // conversationID is unique
         return this.conversationId;
+    }
+
+    @Override
+    public int compareTo(Conversation conversation) {
+        return 0;
     }
 }

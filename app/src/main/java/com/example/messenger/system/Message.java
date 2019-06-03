@@ -5,6 +5,8 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import com.example.messenger.Global;
+
 import org.json.*;
 
 /**
@@ -135,6 +137,8 @@ public class Message implements Comparable<Message>{
     public int getMessageID() {
         return messageID;
     }
+
+    public void setMessageID(int j) { this.messageID=j;}
 
 
     public boolean isParsed() {
