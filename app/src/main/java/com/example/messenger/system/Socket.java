@@ -8,11 +8,8 @@ import com.google.gson.JsonElement;
 
 import org.java_websocket.WebSocket;
 import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.handshake.ServerHandshake;
-import org.java_websocket.server.WebSocketServer;
 import org.json.*;
-import java.net.InetSocketAddress;
 import java.net.URI;
 
 public class Socket extends WebSocketClient {
@@ -63,7 +60,7 @@ public class Socket extends WebSocketClient {
                 ch.putConversation(conv);
             }
 
-            //conv.putMessage(msg);
+            conv.putMessage(msg);
 
         } catch (Exception e) {
             e.printStackTrace();

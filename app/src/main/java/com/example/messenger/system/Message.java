@@ -33,8 +33,8 @@ public class Message implements Comparable<Message>{
     @ColumnInfo(name = "sessionToken")
     private String sessionToken;
 
-    @ColumnInfo(name = "messageId")
-    private String messageID;
+    @PrimaryKey(autoGenerate = true)
+    private int messageID;
 
     @Ignore
     private boolean parsed;
@@ -134,7 +134,7 @@ public class Message implements Comparable<Message>{
         return sessionToken;
     }
 
-    public String getMessageID() {
+    public int getMessageID() {
         return messageID;
     }
 
