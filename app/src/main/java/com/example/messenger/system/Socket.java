@@ -60,6 +60,8 @@ public class Socket extends WebSocketClient {
                 ch.putConversation(conv);
             }
 
+            global.db().messageDao().putMessage(msg);
+
             conv.putMessage(msg);
 
         } catch (Exception e) {
@@ -72,7 +74,8 @@ public class Socket extends WebSocketClient {
         Gson gson = new Gson();
 
         try {
-            if (jsonConvo.has("PARTICIPANTS")) {
+            if (jsonConvo.has("PARTICIPANTS"))
+            {
                 int convId = jsonConvo.getInt("CONVERSATION_ID");
                 Conversation conv;
                 if(this.ch.conversationExists(convId)) {

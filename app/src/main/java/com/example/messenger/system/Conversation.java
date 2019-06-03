@@ -1,5 +1,10 @@
 package com.example.messenger.system;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.TreeMap;
@@ -7,15 +12,18 @@ import java.util.TreeMap;
 
 public class Conversation
 {
+    @PrimaryKey
     private final int conversationId;
-    private LinkedList<String> participants;
 
+    @ColumnInfo(name = "participants")
+    private ArrayList<String> participants;
+
+    @Ignore
     private HashMap<Integer, Message> messages;
 
-    Conversation (int id)
+    public Conversation (int id)
     {
         this.conversationId = id;
-
     }
 
     public int getID() {
@@ -47,10 +55,10 @@ public class Conversation
         if(participants.size() == 2)
         {
 
-            if(!this.participants.getFirst().equals(self))
-                return this.participants.getFirst();
+            if(!this.participants.get(0).equals(self))
+                return this.participants.get(0);
             else
-                return this.participants.getLast();
+                return this.participants.get(1);
         }
         return "GROUP";
     }

@@ -5,8 +5,6 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-import com.example.messenger.Global;
-
 import org.json.*;
 
 /**
