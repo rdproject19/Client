@@ -5,6 +5,8 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import com.example.messenger.Global;
+
 import org.json.*;
 
 /**
@@ -80,10 +82,10 @@ public class Message implements Comparable<Message>{
      * Used for generating Message class giving only the string and the conversation ID.
      * @param message The actual message as typed by the user
      * @param conversationID The ConversationId beloning to the message
-     * @param global Global
+     * @param global The Global class
      * @return
      */
-    public Message makeMessage(String message, int conversationID, Global global) {
+    public static Message makeMessage(String message, int conversationID, Global global) {
         UserData userData = global.getUserData();
         String name = userData.getString(Keys.FULLNAME);
         String sessionToken = userData.getString(Keys.TOKEN);

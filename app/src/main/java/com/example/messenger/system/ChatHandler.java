@@ -13,6 +13,7 @@ public class ChatHandler
 {
 
     private CommunicationHandler ch;
+    Socket socket;
 
     public ChatHandler(Global global)
     {
@@ -21,13 +22,17 @@ public class ChatHandler
         URI uri = null;
         try {
             uri = new URI("ws://134.209.205.126:7070");
-            Socket socket = new Socket(uri, this.ch, global);
+            socket = new Socket(uri, this.ch, global);
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
 
+    }
+
+    public void sendMessage(Message message) {
+        socket.send(message.toJSON());
     }
 
 
