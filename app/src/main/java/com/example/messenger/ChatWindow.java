@@ -84,43 +84,21 @@ public class ChatWindow extends AppCompatActivity {
             }
         });
 
-        //fillArrays();
+        fillArrays();
     }
 
-    /*public void fillArrays(){
-        //real case - get the messages from shared preferences
+    /**
+     * Fills the messages array with the sorted messages from the conversation
+     */
+    public void fillArrays(){
 
-        messages.add("Heey!");
-        times.add("10:15");
-        sent.add(true);
-
-        messages.add("Hello");
-        times.add("10:16");
-        sent.add(false);
-
-        messages.add("How are you?");
-        times.add("10:16");
-        sent.add(false);
-
-        messages.add("blabla?");
-        times.add("10:16");
-        sent.add(true);
-
-        messages.add("How are you?");
-        times.add("10:16");
-        sent.add(true);
-
-        messages.add("fine?");
-        times.add("10:16");
-        sent.add(false);
-
-        messages.add("fine?");
-        times.add("10:16");
-        sent.add(false);
-
+        conversation.update();
+        for( Message message : conversation.getSortedMessages().values()){
+            messages.add(message);
+        }
 
         initRecyclerView();
-    }*/
+    }
 
     private void initRecyclerView(){
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
@@ -132,9 +110,13 @@ public class ChatWindow extends AppCompatActivity {
 
     public void sendMessage(View view){
 
-        String messageText = et.getText().toString();
-        Message message = Message.makeMessage(messageText, conversation.getID(), global);
 
+        String messageText = et.getText().toString();
+
+        //make a Message class from the message
+        Message message = makeMessage(messageText);
+
+        //actually send the message.
         global.getChatHandler().sendMessage(message);
 
         messages.add(message);
@@ -143,6 +125,15 @@ public class ChatWindow extends AppCompatActivity {
         initRecyclerView();
 
         //send message to server missing
+    }
+
+    /**
+     * Makes a Message class out of a string.
+     * @param messageText The text of the message
+     * @return Message
+     */
+    private Message makeMessage(String messageText) {
+        return Message.makeMessage(messageText, conversation.getID(), global);
     }
 
     //this method should be called if user is looking at particular chat and receives a message in a mean time
