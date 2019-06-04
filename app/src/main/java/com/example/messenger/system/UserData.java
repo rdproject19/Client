@@ -105,6 +105,11 @@ public class UserData
         return true;
     }
 
+    public void increaseCounter() {
+        long count = sp.getLong(Keys.COUNTER.getName(), 0);
+        insert(Keys.COUNTER, count+1);
+    }
+
 
     /**
      * Get preference that is of type String

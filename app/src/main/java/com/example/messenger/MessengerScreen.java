@@ -294,7 +294,7 @@ public class MessengerScreen extends AppCompatActivity {
         ChatHandler ch = ((Global) this.getApplication()).getChatHandler();
         UserData ud = ((Global) this.getApplication()).getUserData();
 
-        HashMap<Integer, Conversation> ConvoMap = ch.ch().getConversations(50);
+        HashMap<String, Conversation> ConvoMap = ch.ch().getConversations(50);
 
         for(Conversation convo : ConvoMap.values()) {
             HashMap<String, String> hm = new HashMap<>();
@@ -311,7 +311,7 @@ public class MessengerScreen extends AppCompatActivity {
             hm.put("listview_image", Integer.toString(R.drawable.icon_default_profile));
 
             // The conversation ID
-            hm.put("convId", Integer.toString(convo.getID()));
+            hm.put("convId", convo.getConversationId());
 
             chat_array.add(hm);
 
