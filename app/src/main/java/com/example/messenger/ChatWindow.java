@@ -93,8 +93,11 @@ public class ChatWindow extends AppCompatActivity {
     public void fillArrays(){
 
         conversation.update();
-        for( Message message : conversation.getSortedMessages().values()){
-            messages.add(message);
+
+        if(conversation.getSortedMessages().size() != 0) {
+            for (Message message : conversation.getSortedMessages().values()) {
+                messages.add(message);
+            }
         }
 
         initRecyclerView();
@@ -109,8 +112,6 @@ public class ChatWindow extends AppCompatActivity {
     }
 
     public void sendMessage(View view){
-
-
         String messageText = et.getText().toString();
 
         //make a Message class from the message

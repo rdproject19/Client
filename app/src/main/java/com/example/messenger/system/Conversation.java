@@ -23,7 +23,7 @@ public class Conversation implements Comparable<Conversation>
     private ArrayList<String> participants = new ArrayList<String>();
 
     @Ignore
-    private HashMap<Integer, Message> messages;
+    private HashMap<Integer, Message> messages = new HashMap<>();
     @Ignore
     private Global global;
 
@@ -100,7 +100,12 @@ public class Conversation implements Comparable<Conversation>
      */
     public TreeMap<Integer, Message> getSortedMessages()
     {
-        TreeMap<Integer, Message> sorted = new TreeMap<>(this.messages);
+        TreeMap<Integer, Message> sorted = new TreeMap<>();
+
+        if(messages.size() != 0) {
+            sorted.putAll(this.messages);
+        }
+
         return sorted;
     }
 

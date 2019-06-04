@@ -22,7 +22,7 @@ public class ChatHandler
         URI uri = null;
         try {
             uri = new URI("ws://35.180.29.4:8080");
-            Socket socket = new Socket(uri, this.ch, global);
+            socket = new Socket(uri, this.ch, global);
         }
         catch(Exception e)
         {
