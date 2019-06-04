@@ -60,14 +60,27 @@ public class Socket extends WebSocketClient {
                 ch.putConversation(conv);
             }
 
+            // Stores the message in the database
             global.db().messageDao().putMessage(msg);
 
+            // Sends a receipt to confirm it was recieved
+            sendReceipt(msg);
+
+            // Puts the message in the correct conversation
             conv.putMessage(msg);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+
+    private void sendReceipt(Message msg) {
+        this.send(
+                    "{TYPE=\"receipt\"," +
+                         "MESSAGE_ID=" + msg.getMessageID() +
+                         "}"
+        );
     }
 
     private void handleConversation(JSONObject jsonConvo) {
@@ -92,6 +105,20 @@ public class Socket extends WebSocketClient {
                 }
 
                 global.db().conversationDao().putConversation(conv);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleReceipt(JSONObject jsonReceipt) {
+        try {
+            if (jsonReceipt.has("MESSAGE_ID"))
+            {
+                int msgId = jsonReceipt.getInt("MESSAGE_ID");
+                Message msg = global.db().messageDao().getMessage(msgId);
+                msg.setParsed(true);
 
             }
         } catch (Exception e) {
@@ -134,6 +161,7 @@ public class Socket extends WebSocketClient {
                 case "update": handleUpdate(json); break;
                 case "message": handleMessage(json); break;
                 case "conversation" : handleConversation(json); break;
+                case "receipt" : handleReceipt(json); break;
             }
         } catch (Exception e) {
             e.printStackTrace();

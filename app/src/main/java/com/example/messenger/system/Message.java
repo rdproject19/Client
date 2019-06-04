@@ -101,6 +101,11 @@ public class Message implements Comparable<Message>{
 
     }
 
+    /**
+     * Makes a JSON string of a message that conforms to our server protocol.
+     * Requires a message ID (So save first)
+     * @return
+     */
     public String toJSON() {
         return "{" +
                 "TYPE: \"message\"" +
@@ -109,6 +114,7 @@ public class Message implements Comparable<Message>{
                 "MESSAGE:\"" + message + "\"," +
                 "CONVERSATION_ID: " + conversationID + "," +
                 "SESSION_TOKEN:\"" + sessionToken + "\"," +
+                "MESSAGE_ID:" + messageID +
                 "}";
     }
 
