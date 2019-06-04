@@ -10,16 +10,23 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.example.messenger.system.Conversation;
+import com.example.messenger.system.Keys;
+import com.example.messenger.system.UserData;
+
 import java.util.HashMap;
 import java.util.List;
 
 public class AddChatScreen extends AppCompatActivity {
 
     private ListView add_chat_list;
+    Global global;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        global = ((Global) this.getApplication());
+
         setContentView(R.layout.addchat_screen);
         add_chat_list = findViewById(R.id.addchatlist);
         add_chat_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -45,6 +52,7 @@ public class AddChatScreen extends AppCompatActivity {
         String contact = sp.getString("pref_contacts", "");
         String[] savedcontacts = contact.split(",");
 
+        /*
         if(sp.contains("pref_chats")) {
             string.append(sp.getString("pref_chats", "")).append(savedcontacts[number] + ",");
         }
@@ -54,6 +62,12 @@ public class AddChatScreen extends AppCompatActivity {
 
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("pref_chats", string.toString());
-        editor.apply();
+        editor.apply();*/
+
+        UserData ud = ((Global) this.getApplication()).getUserData();
+
+        Conversation c = new Conversation(1, ((Global) this.getApplication()));
+        c.addParticipant(savedcontacts[number]);
+        c.addParticipant(ud.getString(Keys.USERNAME));
     }
 }

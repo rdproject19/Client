@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,9 +32,22 @@ import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amitshekhar.DebugDB;
+import com.example.messenger.system.ChatHandler;
+import com.example.messenger.system.Conversation;
+
+import com.example.messenger.system.Keys;
+import com.example.messenger.system.Message;
+import com.example.messenger.system.UserData;
+
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 public class MessengerScreen extends AppCompatActivity {
 
@@ -47,12 +61,33 @@ public class MessengerScreen extends AppCompatActivity {
 
     private SimpleAdapter chat_adapter;
     private List<HashMap<String, String>> chat_array;
+    private HashMap<String, Conversation> chat_ids;
     public static SimpleAdapter contact_adapter;
     private List<HashMap<String, String>> contact_array;
+
+    public String getLocalIpAddress() {
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress()) {
+                        return inetAddress.getHostAddress().toString();
+                    }
+                }
+            }
+        } catch (SocketException ex) {
+            Log.e("XD", ex.toString());
+        }
+        return null;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        System.out.println(getLocalIpAddress());
+
         setContentView(R.layout.tab_screen);
 
         toolbar = findViewById(R.id.toolbar);
@@ -93,6 +128,7 @@ public class MessengerScreen extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> adapterview, View view, int i, long l) {
                         Intent j = new Intent(MessengerScreen.this, ChatWindow.class);
+                        j.putExtra("conversation", chat_array.get(i).get("convId"));
                         startActivity(j);
                     }
                 });
@@ -122,7 +158,7 @@ public class MessengerScreen extends AppCompatActivity {
                                 startActivity(j);
                             }
                         });
-                        ShowChats();
+                         ShowChats();
                     }
                 }, 20);
                 break;
@@ -159,11 +195,9 @@ public class MessengerScreen extends AppCompatActivity {
     }
 
     private void addButtonListener(ImageButton btn) {
-        btn.setOnClickListener(new View.OnClickListener()
-        {
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 switch(tab_pos) {
                     case 0: {
                         startActivity(new Intent(MessengerScreen.this, AddChatScreen.class));
@@ -254,6 +288,36 @@ public class MessengerScreen extends AppCompatActivity {
     }
 
     private void ShowChats() {
+
+        chat_array.clear();
+
+        ChatHandler ch = ((Global) this.getApplication()).getChatHandler();
+        UserData ud = ((Global) this.getApplication()).getUserData();
+
+        HashMap<Integer, Conversation> ConvoMap = ch.ch().getConversations(50);
+
+        for(Conversation convo : ConvoMap.values()) {
+            HashMap<String, String> hm = new HashMap<>();
+            // username of recipient
+            hm.put("listview_title", convo.recipient(ud.getString(Keys.USERNAME)));
+
+            // last message in conversation
+            TreeMap<Integer, Message> sorted = convo.getSortedMessages();
+            Message last = sorted.lastEntry().getValue();
+
+            hm.put("listview_discription", last.getSenderID() + ": " + last.getMessage());
+
+            // profile image of recipient/sender
+            hm.put("listview_image", Integer.toString(R.drawable.icon_default_profile));
+
+            // The conversation ID
+            hm.put("convId", Integer.toString(convo.getID()));
+
+            chat_array.add(hm);
+
+        }
+
+
         chat_array.clear();
         SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
 
@@ -271,6 +335,7 @@ public class MessengerScreen extends AppCompatActivity {
                 }
             }
         }
+
     }
 
     @Override
