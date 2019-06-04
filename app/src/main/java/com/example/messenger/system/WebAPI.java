@@ -46,7 +46,7 @@ public class WebAPI
     private String getResponse(String IP, int port) throws Exception
     {
 
-        String url = null;
+        String url = URL(this.IP + ":" + this.port);
 
         JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
