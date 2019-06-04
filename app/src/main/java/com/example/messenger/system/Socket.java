@@ -101,9 +101,12 @@ public class Socket extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake handshakedata) {
+
         Gson gson = new Gson();
         UserData prefs = new UserData(global.getApplicationContext());
-
+        prefs.setLong(Keys.COUNTER, 10);
+        String encoded = GFG.encryptThisString("hello");
+        prefs.setSeed(encoded);
         //making the handshake
         String userId = prefs.getString(Keys.USERNAME);
         LSFR lsfr = new LSFR(prefs.getString(Keys.SEED), prefs.getLong(Keys.COUNTER));
@@ -124,6 +127,7 @@ public class Socket extends WebSocketClient {
 
     @Override
     public void onMessage(String message) {
+
         try {
             JSONObject json = new JSONObject(message);
             String type = json.getString("TYPE");
