@@ -65,7 +65,6 @@ public class Global extends Application {
         super.onCreate();
 
         this.context = getApplicationContext();
-        this.chatHandler = new ChatHandler(this);
         this.userdata = new UserData(this.context);
 
         /* @TODO remove allowMainThreadQueries */

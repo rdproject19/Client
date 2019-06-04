@@ -98,7 +98,7 @@ public class UserData
      * @param i
      * @return true on success
      */
-    public boolean setCounter(int i)
+    public boolean setCounter(long i)
     {
         if(i < 0) return false;
         this.insert(Keys.COUNTER, i);

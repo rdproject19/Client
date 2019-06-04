@@ -81,6 +81,7 @@ public class LoginScreen extends AppCompatActivity {
         else {
             sp.edit().clear().apply();
         }
+        ((Global) this.getApplication()).initChatHandler();
 
         startActivity(new Intent(LoginScreen.this, MessengerScreen.class));
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
