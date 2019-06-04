@@ -155,6 +155,7 @@ public class MessengerScreen extends AppCompatActivity {
                             @Override
                             public void onItemClick(AdapterView<?> adapterview, View view, int i, long l) {
                                 Intent j = new Intent(MessengerScreen.this, ChatWindow.class);
+                                j.putExtra("conversation", chat_array.get(i).get("convId"));
                                 startActivity(j);
                             }
                         });
@@ -310,6 +311,8 @@ public class MessengerScreen extends AppCompatActivity {
 
             // profile image of recipient/sender
             hm.put("listview_image", Integer.toString(R.drawable.icon_default_profile));
+
+            hm.put("convId", Integer.toString(convo.getID()));
 
             chat_array.add(hm);
 

@@ -17,6 +17,7 @@ import com.example.messenger.system.UserData;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class AddChatScreen extends AppCompatActivity {
 
@@ -68,7 +69,7 @@ public class AddChatScreen extends AppCompatActivity {
         UserData ud = ((Global) this.getApplication()).getUserData();
         ChatHandler ch = ((Global) this.getApplication()).getChatHandler();
 
-        Conversation c = new Conversation(1, ((Global) this.getApplication()));
+        Conversation c = new Conversation(new Random().nextInt(5000), ((Global) this.getApplication()));
         c.addParticipant(savedcontacts[number]);
         c.addParticipant(ud.getString(Keys.USERNAME));
         ch.ch().putConversation(c);
