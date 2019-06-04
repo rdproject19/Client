@@ -17,66 +17,86 @@ import java.util.List;
  * This class is used to, for example, retrieve a list of conversations
  * and create new conversations.
  */
-public class WebAPI
-{
+public class WebAPI {
 
-    /** The IP of the server on which the http server runs */
+    /**
+     * The IP of the server on which the http server runs
+     */
     private String IP;
-    /** The port of the web server application */
+    /**
+     * The port of the web server application
+     */
     private int port;
 
-    private URL url;
-    private URLConnection con;
+    /** Holds latest response from server, necessary because we cannot
+     * access accessor methods that we add to anonymous methods.
+     */
+    private static JSONObject latestResponse;
 
 
     /**
      * Constructor
-     * @param IP {@see #IP}
+     *
+     * @param IP   {@see #IP}
      * @param port {@see #port}
      */
-    public WebAPI(String IP, int port)
-    {
+    public WebAPI(String IP, int port) {
         this.IP = IP;
         this.port = port;
-
-
-
     }
 
-    private String getResponse(String IP, int port) throws Exception
-    {
+    /**
+     * Let the server know we want a conversation with this list of participants.
+     * On success it will return true, if false then somehow the conversation could not
+     * be initialised.
+     * @param participantId A list of participant IDs
+     * @param isGroup If it is a group
+     * @return True on success
+     */
+    public boolean createConversation(List<String> participantId, boolean isGroup) {
 
-        String url = URL(this.IP + ":" + this.port);
-
-        JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                System.out.println("");
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("An error occurred, could not get response from HTTP Api");
-            }
-        });
-        return "";
-
-    }
-
-    public boolean createConversation(List<String> participantId, boolean isGroup)
-    {
         StringBuilder sb = new StringBuilder();
-        for(String p : participantId)
-        {
-            sb.append(p + ",");
+        for (String p : participantId) {
+            sb.append(p);
+            sb.append(",");
         }
 
 
-        return true;
+        String url = this.IP + ":" + this.port + "/conversations/create";
+        JSONObject request = new JSONObject();
+        try {
+            request.put("members", sb.toString());
+            request.put("isgroup", isGroup);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, url, request,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        WebAPI.latestResponse = response;
+                    }
+                }
+                , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    WebAPI.latestResponse = new JSONObject().put("error", true);
+                } catch (Exception e)  {
+                    e.printStackTrace();
+                }
+                System.out.println("An error occurred, could not get response from HTTP Api");
+            }
+        });
+
+        return !latestResponse.has("error");
+
 
     }
 
 
+    
 
 
 
