@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.example.messenger.system.ChatHandler;
 import com.example.messenger.system.Conversation;
 import com.example.messenger.system.Keys;
 import com.example.messenger.system.UserData;
@@ -65,9 +66,11 @@ public class AddChatScreen extends AppCompatActivity {
         editor.apply();*/
 
         UserData ud = ((Global) this.getApplication()).getUserData();
+        ChatHandler ch = ((Global) this.getApplication()).getChatHandler();
 
         Conversation c = new Conversation(1, ((Global) this.getApplication()));
         c.addParticipant(savedcontacts[number]);
         c.addParticipant(ud.getString(Keys.USERNAME));
+        ch.ch().putConversation(c);
     }
 }

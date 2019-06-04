@@ -302,22 +302,20 @@ public class MessengerScreen extends AppCompatActivity {
             hm.put("listview_title", convo.recipient(ud.getString(Keys.USERNAME)));
 
             // last message in conversation
-            TreeMap<Integer, Message> sorted = convo.getSortedMessages();
-            Message last = sorted.lastEntry().getValue();
+            //TreeMap<Integer, Message> sorted = convo.getSortedMessages();
+            //Message last = sorted.lastEntry().getValue();
 
-            hm.put("listview_discription", last.getSenderID() + ": " + last.getMessage());
+            //hm.put("listview_discription", last.getSenderID() + ": " + last.getMessage());
+            hm.put("listview_discription", "hoi");
 
             // profile image of recipient/sender
             hm.put("listview_image", Integer.toString(R.drawable.icon_default_profile));
-
-            // The conversation ID
-            hm.put("convId", Integer.toString(convo.getID()));
 
             chat_array.add(hm);
 
         }
 
-
+/*
         chat_array.clear();
         SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
 
@@ -334,7 +332,7 @@ public class MessengerScreen extends AppCompatActivity {
                     chat_array.add(hm);
                 }
             }
-        }
+        }*/
 
     }
 
