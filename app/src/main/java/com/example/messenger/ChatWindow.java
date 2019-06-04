@@ -37,7 +37,7 @@ public class ChatWindow extends AppCompatActivity {
     Button sendButton;
 
     String username;
-    ArrayList<String> participants;
+    ArrayList<String> participants = new ArrayList<>();
     ArrayList<Message> messages = new ArrayList<>();
     Global global;
 
