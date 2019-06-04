@@ -10,8 +10,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.example.messenger.system.AppDatabase;
 import com.example.messenger.system.ChatHandler;
 import com.example.messenger.system.Conversation;
+import com.example.messenger.system.ConversationDao;
 import com.example.messenger.system.Keys;
 import com.example.messenger.system.UserData;
 
@@ -44,7 +46,7 @@ public class AddChatScreen extends AppCompatActivity {
             public void run() {
                 add_chat_list.setAdapter(MessengerScreen.contact_adapter);
             }
-        }, 200);
+        }, 500);
     }
 
     private void SaveChat(int number) {
@@ -66,12 +68,14 @@ public class AddChatScreen extends AppCompatActivity {
         editor.putString("pref_chats", string.toString());
         editor.apply();*/
 
+        ConversationDao cd = ((Global) this.getApplication()).db().conversationDao();
         UserData ud = ((Global) this.getApplication()).getUserData();
         ChatHandler ch = ((Global) this.getApplication()).getChatHandler();
 
         Conversation c = new Conversation(new Random().nextInt(5000), ((Global) this.getApplication()));
-        c.addParticipant(savedcontacts[number]);
         c.addParticipant(ud.getString(Keys.USERNAME));
+        c.addParticipant(savedcontacts[number]);
         ch.ch().putConversation(c);
+        cd.putConversation(c);
     }
 }

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.TreeMap;
 
 @Entity
@@ -54,7 +55,11 @@ public class Conversation implements Comparable<Conversation>
      */
     public void putMessage(Message msg)
     {
-        this.messages.put(msg.getMessageID(), msg);
+        int id = new Random().nextInt(50000);
+        while(messages.containsKey(id)) {
+            id = new Random().nextInt(50000);
+        }
+        this.messages.put(id, msg);
     }
 
     public void addParticipant(String participant) {
@@ -83,7 +88,6 @@ public class Conversation implements Comparable<Conversation>
     {
         if(participants.size() == 2)
         {
-
             if(!this.participants.get(0).equals(self))
                 return this.participants.get(0);
             else

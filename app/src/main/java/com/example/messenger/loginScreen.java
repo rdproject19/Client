@@ -9,10 +9,15 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.messenger.system.ChatHandler;
+import com.example.messenger.system.UserData;
+
 public class LoginScreen extends AppCompatActivity {
 
     private EditText username, password;
     private TextView error_text;
+    private ChatHandler ch;
+    private UserData ud;
 
     private CheckBox remember_me;
 
@@ -26,6 +31,9 @@ public class LoginScreen extends AppCompatActivity {
         error_text = findViewById(R.id.invalid);
         remember_me = findViewById(R.id.rememberMe);
         username.requestFocus();
+
+        ch = ((Global) this.getApplication()).getChatHandler();
+        ud = ((Global) this.getApplication()).getUserData();
 
         getPreferencesData();
     }
@@ -69,6 +77,7 @@ public class LoginScreen extends AppCompatActivity {
             error_text.setText(invalid_login_details);
         }*/
 
+        /*
         SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
 
         if(remember_me.isChecked()) {
@@ -77,11 +86,13 @@ public class LoginScreen extends AppCompatActivity {
             editor.putString("pref_pw", password.getText().toString());
             editor.putBoolean("pref_check", true);
             editor.apply();
+            ud.setUsername(username.getText().toString());
         }
         else {
             sp.edit().clear().apply();
-        }
+        }*/
 
+        ud.setUsername(username.getText().toString());
         startActivity(new Intent(LoginScreen.this, MessengerScreen.class));
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }

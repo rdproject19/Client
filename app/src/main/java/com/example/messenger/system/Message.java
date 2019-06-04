@@ -9,6 +9,7 @@ import com.example.messenger.Global;
 
 import org.json.*;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -89,7 +90,7 @@ public class Message implements Comparable<Message>{
      */
     public static Message makeMessage(String message, int conversationID, Global global) {
         UserData userData = global.getUserData();
-        String name = userData.getString(Keys.FULLNAME);
+        String name = userData.getString(Keys.USERNAME);
         String sessionToken = userData.getString(Keys.TOKEN);
         return new Message (
                 name,
@@ -154,8 +155,10 @@ public class Message implements Comparable<Message>{
     }
 
     public String getTimeString() {
-        Date date = new Date((long)timeStamp*1000);
-        return date.toString();
+        Calendar calendar = Calendar.getInstance();
+        String time = calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE)
+                + "   " + calendar.get(Calendar.DAY_OF_MONTH) + "-" + calendar.get(Calendar.MONTH);
+        return time;
     }
 
     @Override

@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,15 +32,14 @@ import java.util.Collections;
 
 public class ChatWindow extends AppCompatActivity {
 
-    EditText et;
-    String messageText;
-    Conversation conversation;
-    Button sendButton;
+    private EditText et;
+    private String messageText;
+    private Conversation conversation;
+    private ImageButton sendButton;
 
-    String username;
-    ArrayList<String> participants;
-    ArrayList<Message> messages = new ArrayList<>();
-    Global global;
+    private ArrayList<String> participants;
+    private ArrayList<Message> messages = new ArrayList<>();
+    private Global global;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,6 @@ public class ChatWindow extends AppCompatActivity {
         et = findViewById(R.id.messageField);
 
         //get the participants
-        username = global.getUserData().getString(Keys.FULLNAME);
         participants = conversation.getParticipants();
 
         et.addTextChangedListener(new TextWatcher() {
@@ -105,7 +104,7 @@ public class ChatWindow extends AppCompatActivity {
 
     private void initRecyclerView(){
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(username, messages, this);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(participants, messages, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.scrollToPosition(messages.size()-1);
@@ -118,9 +117,10 @@ public class ChatWindow extends AppCompatActivity {
         Message message = makeMessage(messageText);
 
         //actually send the message.
-        global.getChatHandler().sendMessage(message);
+        //global.getChatHandler().sendMessage(message);
 
         messages.add(message);
+        conversation.putMessage(message);
         et.setText("");
 
         initRecyclerView();
