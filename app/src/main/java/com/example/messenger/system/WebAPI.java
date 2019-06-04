@@ -86,7 +86,7 @@ public class WebAPI {
                 } catch (Exception e)  {
                     e.printStackTrace();
                 }
-                System.out.println("An error occurred, could not get response from HTTP Api");
+                System.out.println("An error occurred, could not get response from HTTP Api (Create Conversation)");
             }
         });
 
@@ -96,7 +96,85 @@ public class WebAPI {
     }
 
 
-    
+    /**
+     * Authenticate user with given credentials
+     * @param userID Username/UserID
+     * @param password Plain text password, will be hashed before sending over internet
+     * @return boolean
+     */
+    public boolean userLogin(String userID, String password)
+    {
+        String sha256 = GFG.encryptThisString(password);
+        String url = this.IP + ":" + this.port + "/user/login";
+        JSONObject request = new JSONObject();
+        try {
+            request.put("uname", userID);
+            request.put("pass", sha256);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, url, request,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        WebAPI.latestResponse = response;
+                    }
+                }
+                , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    WebAPI.latestResponse = new JSONObject().put("error", true);
+                } catch (Exception e)  {
+                    e.printStackTrace();
+                }
+                System.out.println("An error occurred, could not get response from HTTP Api (UserLogin())");
+            }
+        });
+
+
+        return !latestResponse.has("error");
+    }
+
+
+    public boolean createUser(String userID, String password, String fullname, boolean hasImage)
+    {
+        String sha256 = GFG.encryptThisString(password);
+        String url = this.IP + ":" + this.port + "/user/new";
+        JSONObject request = new JSONObject();
+        try {
+            request.put("uname", userID);
+            request.put("pwd", sha256);
+            request.put("fullname", fullname);
+            request.put("hasImage", false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, url, request,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        WebAPI.latestResponse = response;
+                    }
+                }
+                , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    WebAPI.latestResponse = new JSONObject().put("error", true);
+                } catch (Exception e)  {
+                    e.printStackTrace();
+                }
+                System.out.println("An error occurred, could not get response from HTTP Api (UserLogin())");
+            }
+        });
+
+
+        return !latestResponse.has("error");
+
+    }
 
 
 
