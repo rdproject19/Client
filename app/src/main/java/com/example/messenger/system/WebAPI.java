@@ -138,6 +138,14 @@ public class WebAPI {
     }
 
 
+    /**
+     * Request server to create a user with these parameters.
+     * @param userID Username
+     * @param password Password
+     * @param fullname Fullname
+     * @param hasImage If the user has a profile pciture
+     * @return true on success
+     */
     public boolean createUser(String userID, String password, String fullname, boolean hasImage)
     {
         String sha256 = GFG.encryptThisString(password);
@@ -167,7 +175,7 @@ public class WebAPI {
                 } catch (Exception e)  {
                     e.printStackTrace();
                 }
-                System.out.println("An error occurred, could not get response from HTTP Api (UserLogin())");
+                System.out.println("An error occurred, could not get response from HTTP Api (createUser())");
             }
         });
 
