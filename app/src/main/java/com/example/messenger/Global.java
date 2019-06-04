@@ -7,7 +7,6 @@ import android.content.Context;
 import com.amitshekhar.DebugDB;
 import com.example.messenger.system.AppDatabase;
 import com.example.messenger.system.ChatHandler;
-import com.example.messenger.system.Keys;
 import com.example.messenger.system.Message;
 import com.example.messenger.system.UserData;
 
@@ -66,12 +65,11 @@ public class Global extends Application {
         super.onCreate();
 
         this.context = getApplicationContext();
+        this.chatHandler = new ChatHandler(this);
         this.userdata = new UserData(this.context);
 
         /* @TODO remove allowMainThreadQueries */
         this.db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database").allowMainThreadQueries().build();
-
-
     }
 
 

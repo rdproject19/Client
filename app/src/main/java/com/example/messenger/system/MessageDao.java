@@ -13,8 +13,10 @@ public interface MessageDao
     @Query("SELECT * FROM Message")
     List<Message> getAll();
 
+
     @Query("SELECT * FROM Message WHERE messageID = :msgId LIMIT 1")
     Message getMessage(int msgId);
+
 
     @Query("SELECT * FROM Message WHERE ConvId = :convId")
     List<Message> getFromConversation(int convId);

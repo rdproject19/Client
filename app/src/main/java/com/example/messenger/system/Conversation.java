@@ -20,7 +20,9 @@ public class Conversation implements Comparable<Conversation>
     private final int conversationId;
 
     @ColumnInfo(name = "participants")
-    private ArrayList<String> participants;
+
+    private ArrayList<String> participants = new ArrayList<String>();
+
 
     @Ignore
     private HashMap<Integer, Message> messages;

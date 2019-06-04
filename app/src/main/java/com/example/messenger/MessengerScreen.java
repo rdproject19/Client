@@ -155,10 +155,11 @@ public class MessengerScreen extends AppCompatActivity {
                             @Override
                             public void onItemClick(AdapterView<?> adapterview, View view, int i, long l) {
                                 Intent j = new Intent(MessengerScreen.this, ChatWindow.class);
+                                j.putExtra("conversation", chat_array.get(i).get("convId"));
                                 startActivity(j);
                             }
                         });
-                         ShowChats();
+                        ShowChats();
                     }
                 }, 20);
                 break;
@@ -302,29 +303,27 @@ public class MessengerScreen extends AppCompatActivity {
             hm.put("listview_title", convo.recipient(ud.getString(Keys.USERNAME)));
 
             // last message in conversation
-            TreeMap<Integer, Message> sorted = convo.getSortedMessages();
-            Message last = sorted.lastEntry().getValue();
+            //TreeMap<Integer, Message> sorted = convo.getSortedMessages();
+            //Message last = sorted.lastEntry().getValue();
 
-            hm.put("listview_discription", last.getSenderID() + ": " + last.getMessage());
+            //hm.put("listview_discription", last.getSenderID() + ": " + last.getMessage());
+            hm.put("listview_discription", "hoi");
 
             // profile image of recipient/sender
             hm.put("listview_image", Integer.toString(R.drawable.icon_default_profile));
 
-            // The conversation ID
             hm.put("convId", Integer.toString(convo.getID()));
 
             chat_array.add(hm);
 
         }
 
-        /*
+/*
         chat_array.clear();
         SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
-
         if(sp.contains("pref_chats")) {
             String list = sp.getString("pref_chats", "");
             String[] savedchats = list.split(",");
-
             if(savedchats.length > 0) {
                 for(String c:savedchats) {
                     HashMap<String, String> hm = new HashMap<String, String>();
@@ -334,8 +333,8 @@ public class MessengerScreen extends AppCompatActivity {
                     chat_array.add(hm);
                 }
             }
-        }
-        */
+        }*/
+
     }
 
     @Override

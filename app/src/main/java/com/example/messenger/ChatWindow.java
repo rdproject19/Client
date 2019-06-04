@@ -49,7 +49,7 @@ public class ChatWindow extends AppCompatActivity {
         Intent i = getIntent();
 
         //Get the conversation from it's id.
-        conversation = global.getChatHandler().ch().getConversation(Integer.parseInt(i.getStringExtra("convId")));
+        conversation = global.getChatHandler().ch().getConversation(Integer.parseInt(i.getStringExtra("conversation")));
 
         setContentView(R.layout.chat_window);
 
