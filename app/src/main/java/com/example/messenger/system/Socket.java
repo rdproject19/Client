@@ -104,12 +104,11 @@ public class Socket extends WebSocketClient {
 
         Gson gson = new Gson();
         UserData prefs = new UserData(global.getApplicationContext());
-        prefs.setLong(Keys.COUNTER, 10);
-        String encoded = GFG.encryptThisString("hello");
-        prefs.setSeed(encoded);
         //making the handshake
         String userId = prefs.getString(Keys.USERNAME);
-        LSFR lsfr = new LSFR(prefs.getString(Keys.SEED), prefs.getLong(Keys.COUNTER));
+        String seed = prefs.getString(Keys.SEED);
+        long counter = prefs.getLong(Keys.COUNTER);
+        LSFR lsfr = new LSFR(seed , counter);
         int authToken = lsfr.shift();
         prefs.setInt(Keys.TOKEN, authToken);
 
