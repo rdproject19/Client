@@ -1,8 +1,16 @@
 package com.example.messenger.system;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONObject;
+
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
+
 
 /**
  * A class that is compatible with the http API of the server.
@@ -31,14 +39,27 @@ public class WebAPI
         this.IP = IP;
         this.port = port;
 
-        try {
 
-            this.url = new URL("http://" + this.IP + ":" + this.port);
-            this.con = url.openConnection();
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
+
+    }
+
+    private String getResponse(String IP, int port) throws Exception
+    {
+
+        String url = null;
+
+        JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                System.out.println("");
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("An error occurred, could not get response from HTTP Api");
+            }
+        });
+        return "";
 
     }
 
@@ -51,7 +72,7 @@ public class WebAPI
         }
 
 
-
+        return true;
 
     }
 
