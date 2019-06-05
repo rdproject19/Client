@@ -71,7 +71,7 @@ public class Global extends Application {
         this.userdata = new UserData(this.context);
 
         /* @TODO remove allowMainThreadQueries */
-        this.db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database").allowMainThreadQueries().build();
+        this.db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database").build();
 
 
     }

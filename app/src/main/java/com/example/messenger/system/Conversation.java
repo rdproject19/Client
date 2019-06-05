@@ -38,6 +38,8 @@ public class Conversation implements Comparable<Conversation>
     public Conversation(String conversationId)
     {
         this.conversationId = conversationId;
+        this.participants = new ArrayList<>();
+        this.messages = new HashMap<>();
     }
 
     /*public static Conversation createConversation() {
