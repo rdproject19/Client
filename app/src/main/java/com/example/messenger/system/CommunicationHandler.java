@@ -34,6 +34,7 @@ public class CommunicationHandler {
         conversations = new HashMap<>();
         List<Conversation> conversationList = global.db().conversationDao().getAll();
         for (Conversation conv : conversationList) {
+            conv.update(global);
             this.conversations.put(conv.getConversationId(), conv);
         }
     }

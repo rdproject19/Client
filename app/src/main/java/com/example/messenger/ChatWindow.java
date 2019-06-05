@@ -65,6 +65,7 @@ public class ChatWindow extends AppCompatActivity {
         et = findViewById(R.id.messageField);
 
         //get the participants
+        conversation.update(global);
         participants = conversation.getParticipants();
 
         et.addTextChangedListener(new TextWatcher() {

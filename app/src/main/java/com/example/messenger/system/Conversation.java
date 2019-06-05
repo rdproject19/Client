@@ -21,16 +21,15 @@ public class Conversation implements Comparable<Conversation> {
     @NonNull
     private String conversationId;
 
-    @TypeConverters(Converter.class)
     @ColumnInfo(name = "participants")
-    private ArrayList<String> participants;
-
+    private String participantsString;
 
     @Ignore
     private HashMap<Integer, Message> messages;
     @Ignore
     private Global global;
-
+    @Ignore
+    private ArrayList<String> participants;
 
     public Conversation(String conversationId, Global global) {
         this(conversationId);
@@ -39,6 +38,7 @@ public class Conversation implements Comparable<Conversation> {
 
     public Conversation(String conversationId) {
         this.conversationId = conversationId;
+        this.participantsString = new String();
         this.participants = new ArrayList<>();
         this.messages = new HashMap<>();
     }
@@ -51,8 +51,16 @@ public class Conversation implements Comparable<Conversation> {
         this.conversationId = conversationId;
     }
 
+    public void setParticipantsString(String participantsString) {
+        this.participantsString = participantsString;
+    }
+
     public String getConversationId() {
         return this.conversationId;
+    }
+
+    public String getParticipantsString() {
+        return participantsString;
     }
 
     public void setConversationId(int convId) {
@@ -78,6 +86,7 @@ public class Conversation implements Comparable<Conversation> {
     public void addParticipant(String participant) {
         if (!participants.contains(participant) || !global.getUserData().getString(Keys.USERNAME).equals(participant)) {
             participants.add(participant);
+            participantsString = Converter.fromArrayList(participants);
         }
     }
 
@@ -90,6 +99,7 @@ public class Conversation implements Comparable<Conversation> {
         for (Message msg : messages) {
             this.messages.putIfAbsent(msg.getMessageID(), msg);
         }
+        participants = Converter.fromString(participantsString);
     }
 
     public static Conversation newConversation(String conversationId, Global global) {
