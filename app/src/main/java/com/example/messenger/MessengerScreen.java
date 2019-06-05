@@ -32,10 +32,10 @@ import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amitshekhar.DebugDB;
 import com.example.messenger.system.ChatHandler;
 import com.example.messenger.system.Conversation;
 
+import com.example.messenger.system.ConversationDao;
 import com.example.messenger.system.Keys;
 import com.example.messenger.system.Message;
 import com.example.messenger.system.UserData;
@@ -136,6 +136,16 @@ public class MessengerScreen extends AppCompatActivity {
                 addButtonListener(action_button);
             }
         }, 10);
+
+        ConversationDao cd = ((Global) this.getApplication()).db().conversationDao();
+        ChatHandler ch = ((Global) this.getApplication()).getChatHandler();
+
+        List<Conversation> old = cd.getAll();
+
+        for(int i = 0; i < old.size(); i++) {
+            Conversation c = old.get(i);
+            ch.ch().putConversation(c);
+        }
     }
 
     private void InitTabs() {

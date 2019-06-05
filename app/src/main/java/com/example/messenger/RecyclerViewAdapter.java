@@ -16,13 +16,17 @@ import java.util.ArrayList;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
-    String username;
-    ArrayList<Message> messages = new ArrayList<>();
+    private String sender;
+    private String receiver;
+    private ArrayList<String> participants = new ArrayList<>();
+    private ArrayList<Message> messages = new ArrayList<>();
 
     private Context mContext;
 
-    public RecyclerViewAdapter(String username, ArrayList<Message> messages, Context mContext) {
-        this.username = username;
+    public RecyclerViewAdapter(ArrayList<String> participants, ArrayList<Message> messages, Context mContext) {
+        this.participants = participants;
+        this.sender = participants.get(0);
+        this.receiver = participants.get(1);
         this.messages = messages;
         this.mContext = mContext;
     }
@@ -39,15 +43,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         Message message = messages.get(i);
 
-        if (username == message.getSenderID()) { //sent messages
-            viewHolder.user.setText(username);
+        if (sender == message.getSenderID()) { //sent messages
+            viewHolder.user.setText(sender);
 
             viewHolder.message.setText(message.getMessage());
             viewHolder.time.setText(message.getTimeString());
 
-            viewHolder.user.setBackgroundColor(Color.GRAY);
-            viewHolder.message.setBackgroundColor(Color.GRAY);
-            viewHolder.time.setBackgroundColor(Color.GRAY);
+            viewHolder.user.setBackgroundResource(R.drawable.sender_top);
+            viewHolder.message.setBackgroundResource(R.drawable.sender_middle);
+            viewHolder.time.setBackgroundResource(R.drawable.sender_bottom);
 
             //margins
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -55,19 +59,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
             params.setMargins(250, 0, 0, 0);
+
             viewHolder.user.setLayoutParams(params);
             viewHolder.message.setLayoutParams(params);
             viewHolder.time.setLayoutParams(params);
 
+            viewHolder.time.setPadding(0, 0, 35, 0);
+
         } else { //recieved messages
-            viewHolder.user.setText("Other Guy");
+            viewHolder.user.setText(receiver);
 
             viewHolder.message.setText(message.getMessage());
             viewHolder.time.setText(message.getTimeString());
 
-            viewHolder.user.setBackgroundColor(Color.GREEN);
-            viewHolder.message.setBackgroundColor(Color.GREEN);
-            viewHolder.time.setBackgroundColor(Color.GREEN);
+            viewHolder.user.setBackgroundResource(R.drawable.receiver_top);
+            viewHolder.message.setBackgroundResource(R.drawable.receiver_middle);
+            viewHolder.time.setBackgroundResource(R.drawable.receiver_bottom);
 
             //margins
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -75,9 +82,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
             params.setMargins(0, 0, 250, 0);
+
             viewHolder.user.setLayoutParams(params);
             viewHolder.message.setLayoutParams(params);
             viewHolder.time.setLayoutParams(params);
+
+            viewHolder.time.setPadding(35, 0, 0, 0);
 
         }
     }
