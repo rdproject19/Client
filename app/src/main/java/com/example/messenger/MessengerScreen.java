@@ -142,8 +142,10 @@ public class MessengerScreen extends AppCompatActivity {
 
         List<Conversation> old = cd.getAll();
 
+
         for(int i = 0; i < old.size(); i++) {
             Conversation c = old.get(i);
+            c.update((Global) this.getApplication());
             ch.ch().putConversation(c);
         }
     }

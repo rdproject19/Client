@@ -98,7 +98,7 @@ public class ChatWindow extends AppCompatActivity {
      */
     public void fillArrays(){
 
-        conversation.update();
+        conversation.update(global);
 
         if(conversation.getSortedMessages().size() != 0) {
             for (Message message : conversation.getSortedMessages().values()) {

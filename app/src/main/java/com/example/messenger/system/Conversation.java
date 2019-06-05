@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 
 import com.example.messenger.Global;
@@ -20,6 +21,7 @@ public class Conversation implements Comparable<Conversation> {
     @NonNull
     private String conversationId;
 
+    @TypeConverters(Converter.class)
     @ColumnInfo(name = "participants")
     private ArrayList<String> participants;
 
@@ -82,7 +84,8 @@ public class Conversation implements Comparable<Conversation> {
     /**
      * Update instance to newest database information
      */
-    public void update() {
+    public void update(Global global) {
+        this.global = global;
         List<Message> messages = this.global.db().messageDao().getFromConversation(this.conversationId);
         for (Message msg : messages) {
             this.messages.putIfAbsent(msg.getMessageID(), msg);
