@@ -29,8 +29,8 @@ public class Message implements Comparable<Message>{
     @ColumnInfo(name = "convID")
     private String conversationID;
 
-    @ColumnInfo(name = "sessionToken")
-    private String sessionToken;
+    //@ColumnInfo(name = "sessionToken")
+    //private String sessionToken;
 
     @PrimaryKey(autoGenerate = true)
     private int messageID;
@@ -44,14 +44,14 @@ public class Message implements Comparable<Message>{
      * @throws JSONException If the required data is not present
      */
     public Message (JSONObject json) throws JSONException {
-        if (json.getString("TYPE") != "message") {
+        String s = json.getString("TYPE");
+        if (!s.equals("message")) {
             throw new JSONException("Wrong message type");
         }
         senderID = json.getString("SENDER_ID");
         timeStamp = json.getLong("TIMESTAMP");
         message = json.getString("MESSAGE");
         conversationID = json.getString("CONVERSATION_ID");
-        sessionToken = json.getString("SESSION_TOKEN");
         parsed = false;
     }
 
@@ -69,14 +69,12 @@ public class Message implements Comparable<Message>{
      * @param timeStamp Timestamp in unixtime
      * @param message The substance of the message
      * @param conversationID The ID of the conversation
-     * @param sessionToken
      */
-    public Message(String senderID, long timeStamp, String message, String conversationID, String sessionToken) {
+    public Message(String senderID, long timeStamp, String message, String conversationID) {
         this.senderID = senderID;
         this.timeStamp = timeStamp;
         this.message = message;
         this.conversationID = conversationID;
-        this.sessionToken = sessionToken;
         this.parsed = false;
     }
 
@@ -95,8 +93,7 @@ public class Message implements Comparable<Message>{
                 name,
                 (int) (System.currentTimeMillis() / 1000L),
                 message,
-                conversationID,
-                sessionToken
+                conversationID
         );
 
     }
@@ -113,7 +110,6 @@ public class Message implements Comparable<Message>{
                 "TIMESTAMP:" + timeStamp + "," +
                 "MESSAGE:\"" + message + "\"," +
                 "CONVERSATION_ID: \"" + conversationID + "\"," +
-                "SESSION_TOKEN:\"" + sessionToken + "\"," +
                 "MESSAGE_ID:" + messageID +
                 "}";
     }
@@ -133,10 +129,6 @@ public class Message implements Comparable<Message>{
 
     public String getConversationID() {
         return conversationID;
-    }
-
-    public String getSessionToken() {
-        return sessionToken;
     }
 
     public int getMessageID() {

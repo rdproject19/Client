@@ -52,12 +52,13 @@ public class Socket extends WebSocketClient {
         try {
             Message msg = new Message(jsonMessage);
             String convId = msg.getConversationID();
+            String userId = global.getUserData().getString(Keys.USERNAME);
 
             Conversation conv;
             if(this.ch.conversationExists(convId)) {
                 conv = this.ch.getConversation(convId);
             } else {
-                this.send(String.format("{TYPE: \"conversation_request\", CONVERSATION_ID:%d}", convId));
+                this.send("{TYPE: \"update\", USER_ID:"+ userId + "}");
                 conv = new Conversation(convId);
                 ch.putConversation(conv);
             }
@@ -140,13 +141,13 @@ public class Socket extends WebSocketClient {
         LSFR lsfr = new LSFR(seed, counter);
         int authToken = lsfr.shift();
         prefs.setInt(Keys.TOKEN, authToken);
-
         String myHandshake =
                 "{TYPE: \"handshake\"," +
                         "USER_ID:\"" +
                         userId +
                         "\", AUTHENTICATION_TOKEN: " +
-                        authToken +
+                        //authToken +
+                        1337 +
                         "}";
 
         //Send Handshake
@@ -202,8 +203,8 @@ public class Socket extends WebSocketClient {
     private void handleConnected(JSONObject json) {
         UserData prefs = new UserData(global.getApplicationContext());
         prefs.increaseCounter();
-        /*this.send("{TYPE:\"message\", SENDER_ID:\"koen1\", TIMESTAMP:12345656, MESSAGE:\"Hello\", " +
-                        "CONVERSATION_ID:\"5cf0f1c78bd43f6613fbe21e\", MESSAGE_ID:12345}");*/
+        this.send("{TYPE:\"message\", SENDER_ID:\"koen1\", TIMESTAMP:12345656, MESSAGE:\"Hello\", " +
+                        "CONVERSATION_ID:\"5cf0f1c78bd43f6613fbe21e\", MESSAGE_ID:12345}");
     }
 
     @Override
