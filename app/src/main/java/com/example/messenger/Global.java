@@ -10,6 +10,7 @@ import com.example.messenger.system.ChatHandler;
 import com.example.messenger.system.Keys;
 import com.example.messenger.system.Message;
 import com.example.messenger.system.UserData;
+import com.example.messenger.system.WebAPI;
 
 /**
  * Class that handles global logic
@@ -21,6 +22,7 @@ public class Global extends Application {
     private UserData userdata;
     private Context context;
     private AppDatabase db;
+    private WebAPI webAPI;
 
     /**
      * Get current chatHandler object
