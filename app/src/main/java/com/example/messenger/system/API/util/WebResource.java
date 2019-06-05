@@ -23,7 +23,7 @@ public class WebResource
     private String url;
     private final String USER_AGENT = "Mozilla/5.0";
     private HashMap<String, String> headers;
-    private HashMap<String, String> arguments;
+    private HashMap<String, String> arguments = new HashMap<>();
     private String lastResponseBody;
     private int lastResponseCode;
 
@@ -132,7 +132,7 @@ public class WebResource
             urlParams.append(entry.getValue());
             urlParams.append("&");
         }
-        urlParams.deleteCharAt(urlParams.length());
+        urlParams.deleteCharAt(urlParams.length()-1);
 
         return urlParams.toString();
     }
