@@ -21,7 +21,6 @@ public class Conversation implements Comparable<Conversation>
     private String conversationId;
 
     @ColumnInfo(name = "participants")
-
     private ArrayList<String> participants;
 
 
