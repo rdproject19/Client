@@ -17,7 +17,7 @@ public class ChatHandler
 
     public ChatHandler(Global global)
     {
-        this.ch = new CommunicationHandler();
+        this.ch = new CommunicationHandler(global);
 
         URI uri = null;
         try {

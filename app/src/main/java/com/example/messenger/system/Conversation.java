@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.TreeMap;
 
 @Entity
-public class Conversation implements Comparable<Conversation>
-{
-    @PrimaryKey @NonNull
+public class Conversation implements Comparable<Conversation> {
+    @PrimaryKey
+    @NonNull
     private String conversationId;
 
     @ColumnInfo(name = "participants")
@@ -30,14 +30,12 @@ public class Conversation implements Comparable<Conversation>
     private Global global;
 
 
-    public Conversation(String conversationId, Global global)
-    {
+    public Conversation(String conversationId, Global global) {
         this(conversationId);
         this.global = global;
     }
 
-    public Conversation(String conversationId)
-    {
+    public Conversation(String conversationId) {
         this.conversationId = conversationId;
         this.participants = new ArrayList<>();
         this.messages = new HashMap<>();
@@ -51,23 +49,32 @@ public class Conversation implements Comparable<Conversation>
         this.conversationId = conversationId;
     }
 
-    public String getConversationId() {return this.conversationId; }
-    public void setConversationId(int convId) { return;  }
+    public String getConversationId() {
+        return this.conversationId;
+    }
 
-    public ArrayList<String> getParticipants()
-    {return this.participants; }
-    public void setParticipants(ArrayList<String> x) { return; }
+    public void setConversationId(int convId) {
+        return;
+    }
+
+    public ArrayList<String> getParticipants() {
+        return this.participants;
+    }
+
+    public void setParticipants(ArrayList<String> x) {
+        return;
+    }
+
     /**
      * Puts a message object in current conversation
-     =     * @param msg message object
+     * =     * @param msg message object
      */
-    public void putMessage(Message msg)
-    {
+    public void putMessage(Message msg) {
         this.messages.put(msg.getMessageID(), msg);
     }
 
     public void addParticipant(String participant) {
-        if(!participants.contains(participant) || !global.getUserData().getString(Keys.USERNAME).equals(participant)) {
+        if (!participants.contains(participant) || !global.getUserData().getString(Keys.USERNAME).equals(participant)) {
             participants.add(participant);
         }
     }
@@ -75,10 +82,9 @@ public class Conversation implements Comparable<Conversation>
     /**
      * Update instance to newest database information
      */
-    public void update()
-    {
+    public void update() {
         List<Message> messages = this.global.db().messageDao().getFromConversation(this.conversationId);
-        for(Message msg : messages) {
+        for (Message msg : messages) {
             this.messages.putIfAbsent(msg.getMessageID(), msg);
         }
     }
@@ -92,14 +98,13 @@ public class Conversation implements Comparable<Conversation>
     /**
      * If a conversation only has 2 participants, that is, it is a peer-to-peer
      * conversation, we can access
+     *
      * @return Username/UserID of participant
      */
-    public String recipient(String self)
-    {
-        if(participants.size() == 2)
-        {
+    public String recipient(String self) {
+        if (participants.size() == 2) {
 
-            if(!this.participants.get(0).equals(self))
+            if (!this.participants.get(0).equals(self))
                 return this.participants.get(0);
             else
                 return this.participants.get(1);
@@ -111,19 +116,17 @@ public class Conversation implements Comparable<Conversation>
     /**
      * Get messages sorted by send date
      *
-     * @return TreeMap<Integer, Message>
+     * @return TreeMap<Integer ,   Message>
      */
-    public TreeMap<Integer, Message> getSortedMessages()
-    {
+    public TreeMap<Integer, Message> getSortedMessages() {
         TreeMap<Integer, Message> sorted = new TreeMap<>();
-        if(messages.size() != 0) {
+        if (messages.size() != 0) {
             sorted.putAll(this.messages);
         }
         return sorted;
     }
 
-    public int HashCode()
-    { // conversationID is unique
+    public int HashCode() { // conversationID is unique
         return conversationId.hashCode();
     }
 
