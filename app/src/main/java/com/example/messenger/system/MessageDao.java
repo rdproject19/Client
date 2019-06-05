@@ -14,7 +14,7 @@ public interface MessageDao
     List<Message> getAll();
 
     @Query("SELECT * FROM Message WHERE ConvId = :convId")
-    List<Message> getFromConversation(int convId);
+    List<Message> getFromConversation(String convId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void putMessage(Message msg);

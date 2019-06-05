@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import com.example.messenger.Global;
 
@@ -11,39 +12,41 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 import java.util.TreeMap;
 
 @Entity
 public class Conversation implements Comparable<Conversation>
 {
-    @PrimaryKey
-    private final int conversationId;
+    @PrimaryKey @NonNull
+    private final String conversationId;
 
     @ColumnInfo(name = "participants")
-    private ArrayList<String> participants = new ArrayList<String>();
+    private ArrayList<String> participants;
 
     @Ignore
-    private HashMap<Integer, Message> messages = new HashMap<>();
+    private HashMap<Integer, Message> messages;
     @Ignore
     private Global global;
 
 
-    public Conversation(int conversationId, Global global)
+    public Conversation(String conversationId, Global global)
     {
         this(conversationId);
         this.global = global;
     }
 
-    public Conversation(int conversationId)
+    public Conversation(String conversationId)
     {
         this.conversationId = conversationId;
+        this.participants = new ArrayList<>();
+        this.messages = new HashMap<>();
     }
 
-    public int getID() {
-        return conversationId;
-    }
-    public int getConversationId() {return this.conversationId; }
+    /*public static Conversation createConversation() {
+        List<String> participantId, boolean isGroup
+    }*/
+
+    public String getConversationId() {return this.conversationId; }
     public void setConversationId(int convId) { return;  }
 
     public ArrayList<String> getParticipants()
@@ -51,19 +54,15 @@ public class Conversation implements Comparable<Conversation>
     public void setParticipants(ArrayList<String> x) { return; }
     /**
      * Puts a message object in current conversation
-=     * @param msg message object
+     =     * @param msg message object
      */
     public void putMessage(Message msg)
     {
-        int id = new Random().nextInt(50000);
-        while(messages.containsKey(id)) {
-            id = new Random().nextInt(50000);
-        }
-        this.messages.put(id, msg);
+        this.messages.put(msg.getMessageID(), msg);
     }
 
     public void addParticipant(String participant) {
-        if(!participants.contains(participant)) {
+        if(!participants.contains(participant) || !global.getUserData().getString(Keys.USERNAME).equals(participant)) {
             participants.add(participant);
         }
     }
@@ -88,6 +87,7 @@ public class Conversation implements Comparable<Conversation>
     {
         if(participants.size() == 2)
         {
+
             if(!this.participants.get(0).equals(self))
                 return this.participants.get(0);
             else
@@ -105,17 +105,15 @@ public class Conversation implements Comparable<Conversation>
     public TreeMap<Integer, Message> getSortedMessages()
     {
         TreeMap<Integer, Message> sorted = new TreeMap<>();
-
         if(messages.size() != 0) {
             sorted.putAll(this.messages);
         }
-
         return sorted;
     }
 
     public int HashCode()
     { // conversationID is unique
-        return this.conversationId;
+        return conversationId.hashCode();
     }
 
     @Override
