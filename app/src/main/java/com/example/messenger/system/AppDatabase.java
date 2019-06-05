@@ -8,7 +8,6 @@ package com.example.messenger.system;
 @Database(
         entities = {Message.class, Conversation.class},
         version = 1, exportSchema = false)
-@TypeConverters({Converter.class})
 
 public abstract class AppDatabase extends RoomDatabase
 {

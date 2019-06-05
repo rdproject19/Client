@@ -13,7 +13,8 @@ public class Converter {
     public static ArrayList<String> fromString(String value) {
         Type listType = new TypeToken<ArrayList<String>>() {
         }.getType();
-        return new Gson().fromJson(value, listType);
+        ArrayList<String> list = new Gson().fromJson(value, listType);
+        return list;
     }
 
     @TypeConverter
