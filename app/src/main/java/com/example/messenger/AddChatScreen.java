@@ -76,6 +76,6 @@ public class AddChatScreen extends AppCompatActivity {
         c.addParticipant(ud.getString(Keys.USERNAME));
         c.addParticipant(savedcontacts[number]);
         ch.ch().putConversation(c);
-        cd.putConversation(c);
+        cd.updateConversation(c);
     }
 }

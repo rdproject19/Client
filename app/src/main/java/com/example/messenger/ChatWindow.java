@@ -52,7 +52,7 @@ public class ChatWindow extends AppCompatActivity {
         Intent i = getIntent();
 
         //Get the conversation from it's id.
-        conversation = global.getChatHandler().ch().getConversation(i.getStringExtra("convId"));
+        conversation = global.getChatHandler().ch().getConversation(i.getStringExtra("conversation"));
 
 
         setContentView(R.layout.chat_window);
@@ -95,7 +95,7 @@ public class ChatWindow extends AppCompatActivity {
      */
     public void fillArrays(){
 
-        conversation.update();
+        conversation.update(global);
 
         if(conversation.getSortedMessages().size() != 0) {
             for (Message message : conversation.getSortedMessages().values()) {

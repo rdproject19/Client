@@ -90,7 +90,6 @@ public class Message implements Comparable<Message>{
         UserData userData = global.getUserData();
         MessageDao db = global.db().messageDao();
         String name = userData.getString(Keys.USERNAME);
-        String sessionToken = userData.getString(Keys.TOKEN);
         Message msg = new Message (
                 name,
                 (int) (System.currentTimeMillis() / 1000L),
