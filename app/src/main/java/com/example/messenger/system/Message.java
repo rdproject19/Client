@@ -9,6 +9,7 @@ import com.example.messenger.Global;
 
 import org.json.*;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -87,22 +88,27 @@ public class Message implements Comparable<Message>{
      */
     public static Message makeMessage(String message, String conversationID, Global global) {
         UserData userData = global.getUserData();
-        String name = userData.getString(Keys.FULLNAME);
+        MessageDao db = global.db().messageDao();
+        String name = userData.getString(Keys.USERNAME);
         String sessionToken = userData.getString(Keys.TOKEN);
-        return new Message (
+        Message msg = new Message (
                 name,
                 (int) (System.currentTimeMillis() / 1000L),
                 message,
                 conversationID
         );
+        db.putMessage(msg);
+        return msg;
 
     }
+
 
     /**
      * Makes a JSON string of a message that conforms to our server protocol.
      * Requires a message ID (So save first)
      * @return
      */
+
     public String toJSON() {
         return "{" +
                 "TYPE: \"message\"" +
@@ -111,6 +117,7 @@ public class Message implements Comparable<Message>{
                 "MESSAGE:\"" + message + "\"," +
                 "CONVERSATION_ID: \"" + conversationID + "\"," +
                 "MESSAGE_ID:" + messageID +
+
                 "}";
     }
 
@@ -152,8 +159,10 @@ public class Message implements Comparable<Message>{
     }
 
     public String getTimeString() {
-        Date date = new Date((long)timeStamp*1000);
-        return date.toString();
+        Calendar calendar = Calendar.getInstance();
+        String time = calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE)
+                + "   " + calendar.get(Calendar.DAY_OF_MONTH) + "-" + calendar.get(Calendar.MONTH);
+        return time;
     }
 
     @Override

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     android:id="@+id/android_list_view_tutorial_with_example2"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,29 +11,34 @@
     <TextView
         android:id="@+id/user"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:paddingLeft="18dp"
         android:text="Mark"
         android:layout_marginLeft="100dp"
-        android:gravity="right"/>
+        android:textColor="#424242"
+        android:background="@drawable/sender_top"/>
 
     <TextView
         android:id="@+id/message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:textStyle="bold"
+        android:textSize="20sp"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
         android:text="jgenrjngjerjgnjergnjerjgnegnjnejjwnejfk\n wujen"
-        android:layout_marginLeft="100dp"/>
+        android:layout_marginLeft="100dp"
+        android:background="@drawable/sender_middle"/>
 
     <TextView
         android:id="@+id/time"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
         android:textSize="20sp"
         android:text="20:15"
         android:layout_marginLeft="100dp"
-        android:gravity="right"/>
+        android:gravity="right"
+        android:background="@drawable/sender_bottom"/>
 
 </LinearLayout>

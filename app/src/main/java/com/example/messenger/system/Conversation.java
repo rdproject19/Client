@@ -18,10 +18,12 @@ import java.util.TreeMap;
 public class Conversation implements Comparable<Conversation>
 {
     @PrimaryKey @NonNull
-    private final String conversationId;
+    private String conversationId;
 
     @ColumnInfo(name = "participants")
+
     private ArrayList<String> participants;
+
 
     @Ignore
     private HashMap<Integer, Message> messages;
@@ -38,11 +40,17 @@ public class Conversation implements Comparable<Conversation>
     public Conversation(String conversationId)
     {
         this.conversationId = conversationId;
+        this.participants = new ArrayList<>();
+        this.messages = new HashMap<>();
     }
 
     /*public static Conversation createConversation() {
         List<String> participantId, boolean isGroup
     }*/
+
+    public void setConversationId(@NonNull String conversationId) {
+        this.conversationId = conversationId;
+    }
 
     public String getConversationId() {return this.conversationId; }
     public void setConversationId(int convId) { return;  }
@@ -52,7 +60,7 @@ public class Conversation implements Comparable<Conversation>
     public void setParticipants(ArrayList<String> x) { return; }
     /**
      * Puts a message object in current conversation
-=     * @param msg message object
+     =     * @param msg message object
      */
     public void putMessage(Message msg)
     {
@@ -74,6 +82,12 @@ public class Conversation implements Comparable<Conversation>
         for(Message msg : messages) {
             this.messages.putIfAbsent(msg.getMessageID(), msg);
         }
+    }
+
+    public static Conversation newConversation(String conversationId, Global global) {
+        Conversation convo = new Conversation(conversationId, global);
+        global.db().conversationDao().putConversation(convo);
+        return convo;
     }
 
     /**
@@ -102,7 +116,10 @@ public class Conversation implements Comparable<Conversation>
      */
     public TreeMap<Integer, Message> getSortedMessages()
     {
-        TreeMap<Integer, Message> sorted = new TreeMap<>(this.messages);
+        TreeMap<Integer, Message> sorted = new TreeMap<>();
+        if(messages.size() != 0) {
+            sorted.putAll(this.messages);
+        }
         return sorted;
     }
 

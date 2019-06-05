@@ -21,9 +21,8 @@ public class ChatHandler
 
         URI uri = null;
         try {
-            uri = new URI("ws://134.209.205.126:7070");
-            Socket socket = new Socket(uri, this.ch, global);
-            socket.connect();
+            uri = new URI("ws://35.180.29.4:8080");
+            socket = new Socket(uri, this.ch, global);
         }
         catch(Exception e)
         {
@@ -43,3 +42,4 @@ public class ChatHandler
     }
 
 }
+

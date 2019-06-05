@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,15 +32,17 @@ import java.util.Collections;
 
 public class ChatWindow extends AppCompatActivity {
 
-    EditText et;
-    String messageText;
-    Conversation conversation;
-    Button sendButton;
+    private EditText et;
+    private String messageText;
+    private Conversation conversation;
+    private ImageButton sendButton;
+
 
     String username;
-    ArrayList<String> participants;
+    ArrayList<String> participants = new ArrayList<>();
     ArrayList<Message> messages = new ArrayList<>();
     Global global;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,7 @@ public class ChatWindow extends AppCompatActivity {
         //Get the conversation from it's id.
         conversation = global.getChatHandler().ch().getConversation(i.getStringExtra("convId"));
 
+
         setContentView(R.layout.chat_window);
 
 
@@ -58,7 +62,6 @@ public class ChatWindow extends AppCompatActivity {
         et = findViewById(R.id.messageField);
 
         //get the participants
-        username = global.getUserData().getString(Keys.FULLNAME);
         participants = conversation.getParticipants();
 
         et.addTextChangedListener(new TextWatcher() {
@@ -93,8 +96,11 @@ public class ChatWindow extends AppCompatActivity {
     public void fillArrays(){
 
         conversation.update();
-        for( Message message : conversation.getSortedMessages().values()){
-            messages.add(message);
+
+        if(conversation.getSortedMessages().size() != 0) {
+            for (Message message : conversation.getSortedMessages().values()) {
+                messages.add(message);
+            }
         }
 
         initRecyclerView();
@@ -102,24 +108,23 @@ public class ChatWindow extends AppCompatActivity {
 
     private void initRecyclerView(){
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(username, messages, this);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(participants, messages, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.scrollToPosition(messages.size()-1);
     }
 
     public void sendMessage(View view){
-
-
         String messageText = et.getText().toString();
 
         //make a Message class from the message
         Message message = makeMessage(messageText);
 
         //actually send the message.
-        global.getChatHandler().sendMessage(message);
+        //global.getChatHandler().sendMessage(message);
 
         messages.add(message);
+        conversation.putMessage(message);
         et.setText("");
 
         initRecyclerView();
