@@ -1,12 +1,11 @@
 package com.example.messenger.system;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 
 public class CommunicationHandler
 {
 
-    HashMap<Integer, Conversation> conversations;
+    HashMap<String, Conversation> conversations;
 
     CommunicationHandler()
     {
@@ -18,7 +17,7 @@ public class CommunicationHandler
      * @param id conversation id
      * @return boolean
      */
-    public boolean conversationExists(int id)
+    public boolean conversationExists(String id)
     {
         return this.conversations.containsKey(id);
     }
@@ -29,7 +28,7 @@ public class CommunicationHandler
      * @param id conversation id
      * @return conversation object
      */
-    public Conversation getConversation(int id)
+    public Conversation getConversation(String id)
     {
         return this.conversations.get(id);
     }
@@ -41,7 +40,7 @@ public class CommunicationHandler
      */
     public void putConversation(Conversation convo)
     {
-        int id = convo.getID();
+        String id = convo.getConversationId();
         this.conversations.put(id, convo);
     }
 
@@ -51,7 +50,7 @@ public class CommunicationHandler
      * @param limit number of conversations to pull from list
      * @return HashMap of conversations
      */
-    public HashMap<Integer, Conversation> getConversations(int limit)
+    public HashMap<String, Conversation> getConversations(int limit)
     {
         return this.conversations;
     }

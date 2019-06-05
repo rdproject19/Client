@@ -11,6 +11,8 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.*;
 import java.net.URI;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Socket extends WebSocketClient {
 
@@ -49,7 +51,7 @@ public class Socket extends WebSocketClient {
     private void handleMessage(JSONObject jsonMessage) {
         try {
             Message msg = new Message(jsonMessage);
-            int convId = msg.getConversationID();
+            String convId = msg.getConversationID();
 
             Conversation conv;
             if(this.ch.conversationExists(convId)) {
@@ -90,7 +92,7 @@ public class Socket extends WebSocketClient {
         try {
             if (jsonConvo.has("PARTICIPANTS"))
             {
-                int convId = jsonConvo.getInt("CONVERSATION_ID");
+                String convId = jsonConvo.getString("CONVERSATION_ID");
                 Conversation conv;
                 if(this.ch.conversationExists(convId)) {
                     conv = ch.getConversation(convId);
@@ -135,7 +137,7 @@ public class Socket extends WebSocketClient {
         String userId = prefs.getString(Keys.USERNAME);
         String seed = prefs.getString(Keys.SEED);
         long counter = prefs.getLong(Keys.COUNTER);
-        LSFR lsfr = new LSFR(seed , counter);
+        LSFR lsfr = new LSFR(seed, counter);
         int authToken = lsfr.shift();
         prefs.setInt(Keys.TOKEN, authToken);
 
@@ -158,6 +160,8 @@ public class Socket extends WebSocketClient {
             JSONObject json = new JSONObject(message);
             String type = json.getString("TYPE");
             switch (type){
+                case "error": handleError(json); break;
+                case "connected": handleConnected(json); break;
                 case "update": handleUpdate(json); break;
                 case "message": handleMessage(json); break;
                 case "conversation" : handleConversation(json); break;
@@ -166,6 +170,40 @@ public class Socket extends WebSocketClient {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+    }
+
+    private void handleError(JSONObject json) {
+        try {
+            if (json.has("CODE")) {
+                int code = json.getInt("CODE");
+                switch (code) {
+                    case 401: sendDesync(); break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendDesync() {
+        long newCount = ThreadLocalRandom.current().nextLong(10000);
+        UserData prefs = new UserData(global.getApplicationContext());
+        LSFR lsfr = new LSFR(prefs.getString(Keys.SEED), newCount);
+        prefs.setCounter(0);
+        //The new seed is the old seed shifted a random amount of times.
+        prefs.setSeed(GFG.encryptThisString(new String(lsfr.getState())));
+        this.send( "{TYPE:desync,USER_ID: \""
+                + prefs.getString(Keys.USERNAME) + "\", " +
+                "COUNT:" + newCount + "}");
+    }
+
+    private void handleConnected(JSONObject json) {
+        UserData prefs = new UserData(global.getApplicationContext());
+        prefs.increaseCounter();
+        /*this.send("{TYPE:\"message\", SENDER_ID:\"koen1\", TIMESTAMP:12345656, MESSAGE:\"Hello\", " +
+                        "CONVERSATION_ID:\"5cf0f1c78bd43f6613fbe21e\", MESSAGE_ID:12345}");*/
     }
 
     @Override

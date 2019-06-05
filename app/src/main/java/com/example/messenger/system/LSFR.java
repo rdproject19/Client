@@ -78,6 +78,10 @@ public class LSFR {
         state = result;
     }
 
+    public byte[] getState() {
+        return state;
+    }
+
     public long getShiftcounter() {
         return shiftcounter;
     }

@@ -27,7 +27,7 @@ public class Message implements Comparable<Message>{
     private String message;
 
     @ColumnInfo(name = "convID")
-    private int conversationID;
+    private String conversationID;
 
     @ColumnInfo(name = "sessionToken")
     private String sessionToken;
@@ -50,7 +50,7 @@ public class Message implements Comparable<Message>{
         senderID = json.getString("SENDER_ID");
         timeStamp = json.getLong("TIMESTAMP");
         message = json.getString("MESSAGE");
-        conversationID = json.getInt("CONVERSATION_ID");
+        conversationID = json.getString("CONVERSATION_ID");
         sessionToken = json.getString("SESSION_TOKEN");
         parsed = false;
     }
@@ -71,7 +71,7 @@ public class Message implements Comparable<Message>{
      * @param conversationID The ID of the conversation
      * @param sessionToken
      */
-    public Message(String senderID, long timeStamp, String message, int conversationID, String sessionToken) {
+    public Message(String senderID, long timeStamp, String message, String conversationID, String sessionToken) {
         this.senderID = senderID;
         this.timeStamp = timeStamp;
         this.message = message;
@@ -87,7 +87,7 @@ public class Message implements Comparable<Message>{
      * @param global The Global class
      * @return
      */
-    public static Message makeMessage(String message, int conversationID, Global global) {
+    public static Message makeMessage(String message, String conversationID, Global global) {
         UserData userData = global.getUserData();
         String name = userData.getString(Keys.FULLNAME);
         String sessionToken = userData.getString(Keys.TOKEN);
@@ -112,7 +112,7 @@ public class Message implements Comparable<Message>{
                 "SENDER_ID:\"" + senderID + "\"," +
                 "TIMESTAMP:" + timeStamp + "," +
                 "MESSAGE:\"" + message + "\"," +
-                "CONVERSATION_ID: " + conversationID + "," +
+                "CONVERSATION_ID: \"" + conversationID + "\"," +
                 "SESSION_TOKEN:\"" + sessionToken + "\"," +
                 "MESSAGE_ID:" + messageID +
                 "}";
@@ -131,7 +131,7 @@ public class Message implements Comparable<Message>{
         return message;
     }
 
-    public int getConversationID() {
+    public String getConversationID() {
         return conversationID;
     }
 
