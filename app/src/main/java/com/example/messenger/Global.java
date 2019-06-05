@@ -8,6 +8,7 @@ import com.example.messenger.system.AppDatabase;
 import com.example.messenger.system.ChatHandler;
 import com.example.messenger.system.Message;
 import com.example.messenger.system.UserData;
+import com.example.messenger.system.WebAPI;
 
 /**
  * Class that handles global logic
@@ -19,6 +20,7 @@ public class Global extends Application {
     private UserData userdata;
     private Context context;
     private AppDatabase db;
+    private WebAPI webAPI;
 
     /**
      * Get current chatHandler object
@@ -69,6 +71,7 @@ public class Global extends Application {
 
         /* @TODO remove allowMainThreadQueries */
         this.db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database").build();
+
     }
 
 

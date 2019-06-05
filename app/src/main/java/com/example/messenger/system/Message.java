@@ -28,10 +28,10 @@ public class Message implements Comparable<Message>{
     private String message;
 
     @ColumnInfo(name = "convID")
-    private int conversationID;
+    private String conversationID;
 
-    @ColumnInfo(name = "sessionToken")
-    private String sessionToken;
+    //@ColumnInfo(name = "sessionToken")
+    //private String sessionToken;
 
     @PrimaryKey(autoGenerate = true)
     private int messageID;
@@ -45,14 +45,14 @@ public class Message implements Comparable<Message>{
      * @throws JSONException If the required data is not present
      */
     public Message (JSONObject json) throws JSONException {
-        if (json.getString("TYPE") != "message") {
+        String s = json.getString("TYPE");
+        if (!s.equals("message")) {
             throw new JSONException("Wrong message type");
         }
         senderID = json.getString("SENDER_ID");
         timeStamp = json.getLong("TIMESTAMP");
         message = json.getString("MESSAGE");
-        conversationID = json.getInt("CONVERSATION_ID");
-        sessionToken = json.getString("SESSION_TOKEN");
+        conversationID = json.getString("CONVERSATION_ID");
         parsed = false;
     }
 
@@ -70,14 +70,12 @@ public class Message implements Comparable<Message>{
      * @param timeStamp Timestamp in unixtime
      * @param message The substance of the message
      * @param conversationID The ID of the conversation
-     * @param sessionToken
      */
-    public Message(String senderID, long timeStamp, String message, int conversationID, String sessionToken) {
+    public Message(String senderID, long timeStamp, String message, String conversationID) {
         this.senderID = senderID;
         this.timeStamp = timeStamp;
         this.message = message;
         this.conversationID = conversationID;
-        this.sessionToken = sessionToken;
         this.parsed = false;
     }
 
@@ -88,7 +86,7 @@ public class Message implements Comparable<Message>{
      * @param global The Global class
      * @return
      */
-    public static Message makeMessage(String message, int conversationID, Global global) {
+    public static Message makeMessage(String message, String conversationID, Global global) {
         UserData userData = global.getUserData();
         MessageDao db = global.db().messageDao();
         String name = userData.getString(Keys.USERNAME);
@@ -97,8 +95,7 @@ public class Message implements Comparable<Message>{
                 name,
                 (int) (System.currentTimeMillis() / 1000L),
                 message,
-                conversationID,
-                sessionToken
+                conversationID
         );
         db.putMessage(msg);
         return msg;
@@ -118,8 +115,7 @@ public class Message implements Comparable<Message>{
                 "SENDER_ID:\"" + senderID + "\"," +
                 "TIMESTAMP:" + timeStamp + "," +
                 "MESSAGE:\"" + message + "\"," +
-                "CONVERSATION_ID: " + conversationID + "," +
-                "SESSION_TOKEN:\"" + sessionToken + "\"," +
+                "CONVERSATION_ID: \"" + conversationID + "\"," +
                 "MESSAGE_ID:" + messageID +
 
                 "}";
@@ -138,12 +134,8 @@ public class Message implements Comparable<Message>{
         return message;
     }
 
-    public int getConversationID() {
+    public String getConversationID() {
         return conversationID;
-    }
-
-    public String getSessionToken() {
-        return sessionToken;
     }
 
     public int getMessageID() {
