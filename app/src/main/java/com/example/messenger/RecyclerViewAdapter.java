@@ -89,11 +89,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             viewHolder.message.setLayoutParams(params);
             viewHolder.time.setLayoutParams(params);
 
-            viewHolder.time.setPadding(35, 0, 0, 0);
+            viewHolder.time.setPadding(0, 0, 35, 0);
 
         }
     }
-
 
     @Override
     public int getItemCount() {

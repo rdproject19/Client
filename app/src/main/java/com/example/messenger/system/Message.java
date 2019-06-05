@@ -9,6 +9,7 @@ import com.example.messenger.Global;
 
 import org.json.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -158,9 +159,7 @@ public class Message implements Comparable<Message>{
     }
 
     public String getTimeString() {
-        Calendar calendar = Calendar.getInstance();
-        String time = calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE)
-                + "   " + calendar.get(Calendar.DAY_OF_MONTH) + "-" + calendar.get(Calendar.MONTH);
+        String time = new SimpleDateFormat("[dd-MM] [HH:mm]").format(timeStamp*1000);
         return time;
     }
 

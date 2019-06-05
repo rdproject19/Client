@@ -22,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.messenger.system.Conversation;
 import com.example.messenger.system.Keys;
@@ -36,7 +37,7 @@ public class ChatWindow extends AppCompatActivity {
     private String messageText;
     private Conversation conversation;
     private ImageButton sendButton;
-
+    private RecyclerView recyclerView;
 
     String username;
     ArrayList<String> participants = new ArrayList<>();
@@ -62,6 +63,7 @@ public class ChatWindow extends AppCompatActivity {
         setContentView(R.layout.chat_window);
         sendButton = findViewById(R.id.sendButton);
         et = findViewById(R.id.messageField);
+        recyclerView = findViewById(R.id.recycler_view);
 
         //get the participants
         conversation.update(global);
@@ -110,7 +112,6 @@ public class ChatWindow extends AppCompatActivity {
     }
 
     private void initRecyclerView(){
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(participants, messages, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -149,7 +150,4 @@ public class ChatWindow extends AppCompatActivity {
 
         initRecyclerView();
     }
-
-
-
 }
