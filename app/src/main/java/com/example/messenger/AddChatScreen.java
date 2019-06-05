@@ -71,7 +71,7 @@ public class AddChatScreen extends AppCompatActivity {
         UserData ud = ((Global) this.getApplication()).getUserData();
         ChatHandler ch = ((Global) this.getApplication()).getChatHandler();
 
-        Conversation c = Conversation.newConversation(Integer.toString( new Random().nextInt(5000)) ,(Global) this.getApplication());
+        Conversation c = Conversation.newConversation(Integer.toString( new Random().nextInt(5000)) ,global);
         c.addParticipant(ud.getString(Keys.USERNAME));
         c.addParticipant(savedcontacts[number]);
         ch.ch().putConversation(c);
