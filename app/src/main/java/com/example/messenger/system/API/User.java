@@ -3,7 +3,9 @@ package com.example.messenger.system.API;
 import com.example.messenger.system.API.util.WebResource;
 import com.example.messenger.system.GFG;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class User extends WebAPI
 {
@@ -45,22 +47,15 @@ public class User extends WebAPI
      * {@link ResponseEnum#GONE} Probably the user does not exist,
      * {@link ResponseEnum#BAD_REQUEST} Probably an illegal argument was passed
      *
-     * @param fullname new fullname
-     * @param password new password
-     * @param username new username
+     * @param values Key/Value map of parameters to be edited
      * @return {@link ResponseEnum}
      *
      *
      *  @todo think about default param values such that a single attribute may be changed
      */
-    public ResponseEnum editUserServlet(String username, String fullname, String password)
+    public ResponseEnum editUserServlet(HashMap<String, String> values)
     {
-        final String sha512 = GFG.encryptThisString(password);
-        HashMap<String, String> params = new HashMap<>();
-        params.putIfAbsent("uname", username);
-        params.putIfAbsent("pwd", sha512);
-        params.putIfAbsent("fullname", fullname);
-        return this.sendPostRequest(SECTION, "edit", params);
+        return this.sendPostRequest(SECTION, "edit", values);
     }
 
 
@@ -76,6 +71,28 @@ public class User extends WebAPI
         return this.sendPostRequest(SECTION, "create", params);
     }
 
+    public List<String> getUserContacts(String username) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("uname", username);
+        String result = this.sendGetRequest(SECTION, "contacts", params);
+        return Arrays.asList(result.split(","));
+    }
 
+    public ResponseEnum addUserContact(String username, String contact) {
+        return editUserContact(true, username, contact);
+    }
 
+    public ResponseEnum removeUserContact(String username, String contact) {
+        return editUserContact(false, username, contact);
+    }
+
+    private ResponseEnum editUserContact(boolean add, String username, String contact) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("uname", username);
+        params.put("contact", contact);
+        if (add)
+            return this.sendPutRequest(SECTION, "contacts/edit", params);
+        else
+            return this.sendDeleteRequest(SECTION, "contacts/edit", params);
+    }
 }

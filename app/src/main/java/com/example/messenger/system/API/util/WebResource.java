@@ -1,5 +1,6 @@
 package com.example.messenger.system.API.util;
 
+import java.time.chrono.MinguoEra;
 import java.util.HashMap;
 
 import java.io.BufferedReader;
@@ -63,46 +64,43 @@ public class WebResource
     public void execute(String Method) throws Exception
     {
         URL obj = new URL(this.url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        HttpURLConnection con;
 
+        String params = mapToParams(this.arguments);
 
-        if(Method.equals("GET"))
-            con.setRequestMethod("GET");
-        else if(Method.equals("POST"))
-            con.setRequestMethod("POST");
-        else
-            throw new IllegalArgumentException("POST or GET, other methods are invalid");
-
-        // adding all headers to request
-        con.setRequestProperty("User-Agent", USER_AGENT);
-        for (Map.Entry<String, String> entry : this.headers.entrySet()) {
-            final String key = entry.getKey();
-            final String value = entry.getValue();
-            con.setRequestProperty(key, value);
-        }
-
-
-        if(Method.equals("POST") /* Sending post data */)
-        {
+        if(Method.equals("POST") || Method.equals("PUT") || Method.equals("DELETE") /* Sending post data */) {
             // Send post request
+            con = (HttpURLConnection) obj.openConnection();
+            con.setRequestMethod(Method);
+            // adding all headers to request
+            con.setRequestProperty("User-Agent", USER_AGENT);
+            for (Map.Entry<String, String> entry : this.headers.entrySet()) {
+                final String key = entry.getKey();
+                final String value = entry.getValue();
+                con.setRequestProperty(key, value);
+            }
+
             con.setDoOutput(true);
             DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-            StringBuilder urlParams = new StringBuilder();
 
-            for(Map.Entry<String, String> entry : this.arguments.entrySet())
-            {
-               urlParams.append(entry.getKey());
-               urlParams.append("=");
-               urlParams.append(entry.getValue());
-               urlParams.append("&");
-            }
-            urlParams.deleteCharAt(urlParams.length()); /* @TODO Check if this is right */
-
-            wr.writeBytes(urlParams.toString());
+            wr.writeBytes(params);
             wr.flush();
             wr.close();
-            System.out.println("Post parameters : " + urlParams);
+            System.out.println("Post parameters : " + params);
+        } else if (Method.equals("GET")) {
+            obj = new URL(this.url + "?" + params);
+            con = (HttpURLConnection) obj.openConnection();
+            // adding all headers to request
+            con.setRequestProperty("User-Agent", USER_AGENT);
+            for (Map.Entry<String, String> entry : this.headers.entrySet()) {
+                final String key = entry.getKey();
+                final String value = entry.getValue();
+                con.setRequestProperty(key, value);
+            }
 
+            con.setRequestMethod(Method);
+        } else {
+            throw new IllegalArgumentException("Invalid HTTP method " + Method);
         }
 
 
@@ -123,6 +121,20 @@ public class WebResource
 
         this.lastResponseBody = response.toString();
         this.lastResponseCode = responseCode;
+    }
+
+    private static String mapToParams(Map<String, String> params) {
+        StringBuilder urlParams = new StringBuilder();
+
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            urlParams.append(entry.getKey());
+            urlParams.append("=");
+            urlParams.append(entry.getValue());
+            urlParams.append("&");
+        }
+        urlParams.deleteCharAt(urlParams.length());
+
+        return urlParams.toString();
     }
 
     public int getResponseCode() { return this.lastResponseCode; }

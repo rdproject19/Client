@@ -74,4 +74,35 @@ public abstract class WebAPI
         else
             return "SERVER ERROR: " + wr.getResponseBody();
     }
+
+    protected ResponseEnum sendPutRequest(String section, String command, HashMap<String, String> map) {
+        WebResource wr = new WebResource(URL + section + command);
+
+        for(Map.Entry<String, String> entry : map.entrySet())
+            wr.addArgument(entry.getKey(), entry.getValue());
+
+        try {
+            wr.execute("PUT");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return WebAPI.Response(wr.getResponseCode());
+    }
+
+    protected ResponseEnum sendDeleteRequest(String section, String command, HashMap<String, String> map) {
+        WebResource wr = new WebResource(URL + section + command);
+
+        for(Map.Entry<String, String> entry : map.entrySet())
+            wr.addArgument(entry.getKey(), entry.getValue());
+
+        try {
+            wr.execute("DELETE");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return WebAPI.Response(wr.getResponseCode());
+    }
 }
+
