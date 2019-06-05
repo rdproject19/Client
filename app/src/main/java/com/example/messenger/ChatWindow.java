@@ -55,11 +55,10 @@ public class ChatWindow extends AppCompatActivity {
         if(!global.getChatHandler().ch().hasConversations()) {
             // No conversation exists apparently
         } else {
-            conversation = global.getChatHandler().ch().getConversation(i.getStringExtra("convId"));
+            conversation = global.getChatHandler().ch().getConversation(i.getStringExtra("conversation"));
         }
 
         //Get the conversation from it's id.
-
         setContentView(R.layout.chat_window);
         sendButton = findViewById(R.id.sendButton);
         et = findViewById(R.id.messageField);
@@ -128,7 +127,6 @@ public class ChatWindow extends AppCompatActivity {
         //global.getChatHandler().sendMessage(message);
 
         messages.add(message);
-        conversation.putMessage(message);
         et.setText("");
 
         initRecyclerView();

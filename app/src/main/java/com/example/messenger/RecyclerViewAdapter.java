@@ -43,7 +43,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         Message message = messages.get(i);
 
-        if (sender == message.getSenderID()) { //sent messages
+        String id = message.getSenderID();
+
+        if (sender.equals(id)) { //sent messages
             viewHolder.user.setText(sender);
 
             viewHolder.message.setText(message.getMessage());

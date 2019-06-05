@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.messenger.system.ChatHandler;
+import com.example.messenger.system.Keys;
 import com.example.messenger.system.UserData;
 
 public class LoginScreen extends AppCompatActivity {
@@ -33,62 +34,27 @@ public class LoginScreen extends AppCompatActivity {
         ch = ((Global) this.getApplication()).getChatHandler();
         ud = ((Global) this.getApplication()).getUserData();
 
-        getPreferencesData();
+        if(ud.getBool(Keys.REMEMBER)) {
+            NextScene();
+        }
     }
 
-    private void getPreferencesData() {
-        SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
-        if(sp.contains("pref_un")) {
-            String un = sp.getString("pref_un", "not found.");
-            username.setText(un);
-        }
-        if(sp.contains("pref_pw")) {
-            String pw = sp.getString("pref_pw", "not found.");
-            password.setText(pw);
-        }
-        if(sp.contains("pref_check")) {
-            Boolean check = sp.getBoolean("pref_check", false);
-            remember_me.setChecked(check);
-        }
-    }
     public void openChats(View v) {
-        //get the username and password, check if they are correct - login (open main activity)
-        //prevent login
-        /*
-        String placeholder_un = "Hoi".toLowerCase();
-        String placeholder_pw = "hoi".toLowerCase();
-        String un = ((TextView) username).getText().toString().toLowerCase();
-        String pw = ((TextView) password).getText().toString().toLowerCase();
-        if(un.equals(placeholder_un) && pw.equals(placeholder_pw)) {
-            startActivity(new Intent(LoginScreen.this, MessengerScreen.class));
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        }
-        else {
-            String invalid_login_details = "Please enter a valid username/password";
-            error_text.setText(invalid_login_details);
-        }*/
-
-        /*
-        SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
         if(remember_me.isChecked()) {
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putString("pref_un", username.getText().toString());
-            editor.putString("pref_pw", password.getText().toString());
-            editor.putBoolean("pref_check", true);
-            editor.apply();
-            ud.setUsername(username.getText().toString());
+            ud.setBoolean(Keys.REMEMBER, true);
         }
-        else {
-            sp.edit().clear().apply();
-        }
-        }*/
-
         ud.setUsername(username.getText().toString());
-        startActivity(new Intent(LoginScreen.this, MessengerScreen.class));
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+        NextScene();
     }
+
     public void openRegisterScreen(View v) {
         startActivity(new Intent(LoginScreen.this, RegisterScreen.class));
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
+    private void NextScene() {
+        startActivity(new Intent(LoginScreen.this, MessengerScreen.class));
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }
