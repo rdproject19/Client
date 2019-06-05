@@ -49,16 +49,19 @@ public abstract class WebAPI {
         for (Map.Entry<String, String> entry : map.entrySet())
             wr.addArgument(entry.getKey(), entry.getValue());
 
-        try {
+        try
+        {
             wr.execute("POST");
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
-            lastResponseCode=500;
+            lastResponseCode = 500;
             return ResponseEnum.SERVER_ERROR;
         }
 
         lastResponseBody = wr.getResponseBody();
-        lastResponseCode = wr.getResponseCode();
+        lastResponseCode = 500;
 
 
         return WebAPI.Response(wr.getResponseCode());
