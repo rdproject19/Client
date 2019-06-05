@@ -71,6 +71,8 @@ public class Global extends Application {
         this.chatHandler = new ChatHandler(this);
         this.userdata = new UserData(this.context);
 
+
+        this.chatHandler.ch().newConversationWith("koen1");
     }
 
 

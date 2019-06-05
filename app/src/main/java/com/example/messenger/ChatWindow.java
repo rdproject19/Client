@@ -45,19 +45,22 @@ public class ChatWindow extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         global = ((Global) this.getApplication());
         Intent i = getIntent();
 
-        //Get the conversation from it's id.
-        conversation = global.getChatHandler().ch().getConversation(i.getStringExtra("convId"));
+        if(!global.getChatHandler().ch().hasConversations()) {
+            // No conversation exists apparently
+        } else {
+            conversation = global.getChatHandler().ch().getConversation(i.getStringExtra("convId"));
+        }
 
+        //Get the conversation from it's id.
 
         setContentView(R.layout.chat_window);
-
-
         sendButton = findViewById(R.id.sendButton);
         et = findViewById(R.id.messageField);
 

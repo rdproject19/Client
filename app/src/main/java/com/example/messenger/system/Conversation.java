@@ -93,7 +93,7 @@ public class Conversation implements Comparable<Conversation> {
         Conversation convo = new Conversation(conversationId, global);
         global.db().conversationDao().putConversation(convo);
         return convo;
-    }
+    }  
 
     /**
      * If a conversation only has 2 participants, that is, it is a peer-to-peer

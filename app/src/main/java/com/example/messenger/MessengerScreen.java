@@ -305,7 +305,15 @@ public class MessengerScreen extends AppCompatActivity {
         ChatHandler ch = ((Global) this.getApplication()).getChatHandler();
         UserData ud = ((Global) this.getApplication()).getUserData();
 
-        HashMap<String, Conversation> ConvoMap = ch.ch().getConversations(50);
+
+        HashMap<String, Conversation> ConvoMap;
+        try {
+            ConvoMap = ch.ch().getConversations(50); }
+        catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
 
         for(Conversation convo : ConvoMap.values()) {
             HashMap<String, String> hm = new HashMap<>();

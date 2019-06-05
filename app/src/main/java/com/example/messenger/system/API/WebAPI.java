@@ -13,9 +13,11 @@ import java.util.Map;
  *
  * @author Karim Abdulahi
  */
-public abstract class WebAPI
-{
+public abstract class WebAPI {
     static final String URL = "http://134.209.205.126:8080/";
+    private String lastResponseBody;
+    private int lastResponseCode;
+
 
     /**
      * Find a response from the {@link ResponseEnum} enum
@@ -26,7 +28,7 @@ public abstract class WebAPI
      * it will hilariously let us know its a teapot *_*
      */
     public static ResponseEnum Response(int code) {
-        for(ResponseEnum r : ResponseEnum.values())
+        for (ResponseEnum r : ResponseEnum.values())
             if (r.getCode() == code)
                 return r;
         return ResponseEnum.IM_A_TEAPOT;
@@ -35,41 +37,51 @@ public abstract class WebAPI
     /**
      * For example, to send a login request to /user/login/?uname=123&password=1234
      * you'd do
+     *
      * @param section user
      * @param command login
-     * @param map map of parameters [uname=123, password=1234]
+     * @param map     map of parameters [uname=123, password=1234]
      * @return {@link ResponseEnum} of this request
      */
-    protected ResponseEnum sendPostRequest(String section, String command, HashMap<String, String> map)
-    {
+    protected ResponseEnum sendPostRequest(String section, String command, HashMap<String, String> map) {
         WebResource wr = new WebResource(URL + section + command);
 
-        for(Map.Entry<String, String> entry : map.entrySet())
+        for (Map.Entry<String, String> entry : map.entrySet())
             wr.addArgument(entry.getKey(), entry.getValue());
 
         try {
             wr.execute("POST");
         } catch (Exception e) {
             e.printStackTrace();
+            lastResponseCode=500;
+            return ResponseEnum.SERVER_ERROR;
         }
+
+        lastResponseBody = wr.getResponseBody();
+        lastResponseCode = wr.getResponseCode();
+
 
         return WebAPI.Response(wr.getResponseCode());
     }
 
-    /** Find more elegant way to handle errors with responseBodies */
-    protected String sendGetRequest(String section, String command, HashMap<String, String> map)
-    {
+    /**
+     * Find more elegant way to handle errors with responseBodies
+     */
+    protected String sendGetRequest(String section, String command, HashMap<String, String> map) {
         WebResource wr = new WebResource(URL + section + command);
 
-        for(Map.Entry<String, String> entry : map.entrySet())
+        for (Map.Entry<String, String> entry : map.entrySet())
             wr.addArgument(entry.getKey(), entry.getValue());
+
+        lastResponseBody = wr.getResponseBody();
+        lastResponseCode = wr.getResponseCode();
 
         try {
             wr.execute("GET");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(wr.getResponseCode() == 200)
+        if (wr.getResponseCode() == 200)
             return wr.getResponseBody();
         else
             return "SERVER ERROR: " + wr.getResponseBody();
@@ -78,7 +90,7 @@ public abstract class WebAPI
     protected ResponseEnum sendPutRequest(String section, String command, HashMap<String, String> map) {
         WebResource wr = new WebResource(URL + section + command);
 
-        for(Map.Entry<String, String> entry : map.entrySet())
+        for (Map.Entry<String, String> entry : map.entrySet())
             wr.addArgument(entry.getKey(), entry.getValue());
 
         try {
@@ -87,13 +99,15 @@ public abstract class WebAPI
             e.printStackTrace();
         }
 
+        lastResponseBody = wr.getResponseBody();
+        lastResponseCode = wr.getResponseCode();
         return WebAPI.Response(wr.getResponseCode());
     }
 
     protected ResponseEnum sendDeleteRequest(String section, String command, HashMap<String, String> map) {
         WebResource wr = new WebResource(URL + section + command);
 
-        for(Map.Entry<String, String> entry : map.entrySet())
+        for (Map.Entry<String, String> entry : map.entrySet())
             wr.addArgument(entry.getKey(), entry.getValue());
 
         try {
@@ -101,8 +115,18 @@ public abstract class WebAPI
         } catch (Exception e) {
             e.printStackTrace();
         }
+        lastResponseBody = wr.getResponseBody();
+        lastResponseCode = wr.getResponseCode();
 
         return WebAPI.Response(wr.getResponseCode());
+    }
+
+    public int getResponseCode() {
+        return this.lastResponseCode;
+    }
+
+    public String getResponseBody() {
+        return this.lastResponseBody;
     }
 }
 
