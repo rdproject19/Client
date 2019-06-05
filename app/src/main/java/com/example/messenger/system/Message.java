@@ -90,15 +90,18 @@ public class Message implements Comparable<Message>{
      */
     public static Message makeMessage(String message, int conversationID, Global global) {
         UserData userData = global.getUserData();
+        MessageDao db = global.db().messageDao();
         String name = userData.getString(Keys.USERNAME);
         String sessionToken = userData.getString(Keys.TOKEN);
-        return new Message (
+        Message msg = new Message (
                 name,
                 (int) (System.currentTimeMillis() / 1000L),
                 message,
                 conversationID,
                 sessionToken
         );
+        db.putMessage(msg);
+        return msg;
 
     }
 
