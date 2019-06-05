@@ -18,7 +18,7 @@ import java.util.TreeMap;
 public class Conversation implements Comparable<Conversation>
 {
     @PrimaryKey @NonNull
-    private final String conversationId;
+    private String conversationId;
 
     @ColumnInfo(name = "participants")
 
@@ -31,15 +31,14 @@ public class Conversation implements Comparable<Conversation>
     private Global global;
 
 
-    public Conversation(String conversationId, Global global)
+    private Conversation(Global global)
     {
-        this(conversationId);
+        this();
         this.global = global;
     }
 
-    public Conversation(String conversationId)
+    private Conversation()
     {
-        this.conversationId = conversationId;
         this.participants = new ArrayList<>();
         this.messages = new HashMap<>();
     }
@@ -78,6 +77,12 @@ public class Conversation implements Comparable<Conversation>
         for(Message msg : messages) {
             this.messages.putIfAbsent(msg.getMessageID(), msg);
         }
+    }
+
+    public static Conversation newConversation(Global global) {
+        Conversation convo = new Conversation(global);
+        global.db().conversationDao().putConversation(convo);
+        return convo;
     }
 
     /**
