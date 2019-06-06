@@ -1,10 +1,13 @@
 package com.example.messenger;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -39,16 +42,20 @@ public class ChatWindow extends AppCompatActivity {
     private ImageButton sendButton;
     private RecyclerView recyclerView;
 
-    String username;
-    ArrayList<String> participants = new ArrayList<>();
-    ArrayList<Message> messages = new ArrayList<>();
-    Global global;
+    private String username;
+    private ArrayList<String> participants = new ArrayList<>();
+    private ArrayList<Message> messages = new ArrayList<>();
+    private Global global;
 
+    private NotificationCompat.Builder notification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        notification = new NotificationCompat.Builder(ChatWindow.this, "2");
+        notification.setAutoCancel(true);
 
         global = ((Global) this.getApplication());
         Intent i = getIntent();
@@ -133,6 +140,8 @@ public class ChatWindow extends AppCompatActivity {
         initRecyclerView();
         global.getChatHandler().sendMessage(message);
         //send message to server missing
+
+        sendNotification(messages.get(messages.size()-1));
     }
 
     /**
@@ -147,7 +156,28 @@ public class ChatWindow extends AppCompatActivity {
     //this method should be called if user is looking at particular chat and receives a message in a mean time
     public void receiveMessage(Message message){
         messages.add(message);
+        sendNotification(message);
 
         initRecyclerView();
+    }
+
+    public void sendNotification(Message last_message){
+
+        //build the notification
+        notification.setSmallIcon(R.drawable.icon_chat);
+        notification.setTicker("You have a new message!");
+        notification.setWhen(System.currentTimeMillis());
+        notification.setContentTitle(last_message.getSenderID());
+        notification.setContentText(last_message.getMessage());
+
+
+        //select what happens, when user clicks the notification
+        Intent intent = new Intent(this, ChatWindow.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        notification.setContentIntent(pendingIntent);
+
+        //"send" the notification
+        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        nm.notify(4, notification.build());
     }
 }
