@@ -95,7 +95,8 @@ public class Message implements Comparable<Message>{
                 name,
                 (int) (System.currentTimeMillis() / 1000L),
                 message,
-                conversationID
+                //conversationID
+                "5cf0f1c78bd43f6613fbe21e"
         );
         db.putMessage(msg);
         return msg;
@@ -111,12 +112,12 @@ public class Message implements Comparable<Message>{
 
     public String toJSON() {
         return "{" +
-                "TYPE: \"message\"" +
-                "SENDER_ID:\"" + senderID + "\"," +
-                "TIMESTAMP:" + timeStamp + "," +
-                "MESSAGE:\"" + message + "\"," +
-                "CONVERSATION_ID: \"" + conversationID + "\"," +
-                "MESSAGE_ID:" + messageID +
+                "\"TYPE\": \"message\"," +
+                "\"SENDER_ID\":\"" + senderID + "\"," +
+                "\"TIMESTAMP\":" + timeStamp + "," +
+                "\"MESSAGE\":\"" + message + "\"," +
+                "\"CONVERSATION_ID\": \"" + conversationID + "\"," +
+                "\"MESSAGE_ID\":" + messageID +
 
                 "}";
     }

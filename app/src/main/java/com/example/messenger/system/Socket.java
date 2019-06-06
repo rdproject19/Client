@@ -26,6 +26,13 @@ public class Socket extends WebSocketClient {
         this.global = global;
     }
 
+    /**
+     * Whenever a message with type 'update' is recieved, this function is called.
+     * The 'update' message is combination of possibly multiple new conversations and/or messages.
+     * The function therefor calls the handleMessage and handleConversation functions the required
+     * amount of times.
+     * @param jsonUpdate The message as a JSON object
+     */
     private void handleUpdate(JSONObject jsonUpdate) {
         Gson gson = new Gson();
 
@@ -48,6 +55,13 @@ public class Socket extends WebSocketClient {
         }
     }
 
+    /**
+     * Whenever a message with type 'message' is recieved, this function is called.
+     * The function creates a Message that gets added to the correct conversation in memory.
+     * If that conversation does not yet exist in memory, a new one is created and a message
+     * to the server is created to get the participants.
+     * @param jsonMessage The message as a JSON object
+     */
     private void handleMessage(JSONObject jsonMessage) {
         try {
             Message msg = new Message(jsonMessage);
@@ -59,7 +73,7 @@ public class Socket extends WebSocketClient {
                 conv = this.ch.getConversation(convId);
             } else {
                 this.send("{TYPE: \"update\", USER_ID:"+ userId + "}");
-                conv = new Conversation(convId);
+                conv = Conversation.newConversation(convId, global);
                 ch.putConversation(conv);
             }
 
@@ -78,6 +92,10 @@ public class Socket extends WebSocketClient {
 
     }
 
+    /**
+     * Sends a receipt that a Message was recieved correctly.
+     * @param msg the message that was recieved (only the ID matters)
+     */
     private void sendReceipt(Message msg) {
         this.send(
                     "{TYPE=\"receipt\"," +
@@ -86,10 +104,14 @@ public class Socket extends WebSocketClient {
         );
     }
 
+    /**
+     * Whenever a message with type 'conversation' is recieved, this function is called.
+     * If the conversation exists in the communicationHandler, it simply adds the participants
+     * to that conversation. If it did not yet exist, a new one is created.
+     * @param jsonConvo The message as a JSON object
+     */
     private void handleConversation(JSONObject jsonConvo) {
         Gson gson = new Gson();
-        String userName = global.getUserData().getString(Keys.FULLNAME);
-
         try {
             if (jsonConvo.has("PARTICIPANTS"))
             {
@@ -98,16 +120,12 @@ public class Socket extends WebSocketClient {
                 if(this.ch.conversationExists(convId)) {
                     conv = ch.getConversation(convId);
                 } else {
-                    conv = new Conversation(convId);
+                    conv = Conversation.newConversation(convId, global);
                     ch.putConversation(conv);
                 }
                 for (String name : gson.fromJson((JsonElement) jsonConvo.get("PARTICIPANTS"), String[].class)) {
-                    if (name != userName) {
-                        conv.addParticipant(name);
-                    }
+                    conv.addParticipant(name);
                 }
-
-                global.db().conversationDao().putConversation(conv);
 
             }
         } catch (Exception e) {
@@ -115,6 +133,11 @@ public class Socket extends WebSocketClient {
         }
     }
 
+    /**
+     * Whenever a message with type 'update' is recieved, this function is called.
+     * This function sets the parsed tag of the message that was recieved to true.
+     * @param jsonReceipt The message as a JSON object
+     */
     private void handleReceipt(JSONObject jsonReceipt) {
         try {
             if (jsonReceipt.has("MESSAGE_ID"))
@@ -174,6 +197,8 @@ public class Socket extends WebSocketClient {
 
 
     }
+    //this.send("{TYPE:\"message\", SENDER_ID:\"koen1\", TIMESTAMP:12345656, MESSAGE:\"Hello\", " +
+    //                           "CONVERSATION_ID:\"5cf0f1c78bd43f6613fbe21e\", MESSAGE_ID:12345}");
 
     private void handleError(JSONObject json) {
         try {
@@ -203,8 +228,6 @@ public class Socket extends WebSocketClient {
     private void handleConnected(JSONObject json) {
         UserData prefs = new UserData(global.getApplicationContext());
         prefs.increaseCounter();
-        this.send("{TYPE:\"message\", SENDER_ID:\"koen1\", TIMESTAMP:12345656, MESSAGE:\"Hello\", " +
-                        "CONVERSATION_ID:\"5cf0f1c78bd43f6613fbe21e\", MESSAGE_ID:12345}");
     }
 
     @Override

@@ -131,7 +131,7 @@ public class ChatWindow extends AppCompatActivity {
         et.setText("");
 
         initRecyclerView();
-
+        global.getChatHandler().sendMessage(message);
         //send message to server missing
     }
 

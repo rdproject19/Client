@@ -1,11 +1,9 @@
 package com.example.messenger.system;
 
-import android.content.Context;
-
 import com.example.messenger.Global;
 
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
+import org.java_websocket.enums.ReadyState;
+
 import java.net.URI;
 
 
@@ -21,8 +19,10 @@ public class ChatHandler
 
         URI uri = null;
         try {
-            uri = new URI("ws://35.180.29.4:8080");
+            uri = new URI("ws://134.209.205.126:7070");
             socket = new Socket(uri, this.ch, global);
+            socket.connect();
+            ReadyState state = socket.getReadyState();
         }
         catch(Exception e)
         {

@@ -88,6 +88,9 @@ public class Conversation implements Comparable<Conversation> {
             participants.add(participant);
             participantsString = Converter.fromArrayList(participants);
         }
+
+        global.db().conversationDao().putConversation(this);
+
     }
 
     /**
