@@ -59,7 +59,6 @@ public class ChatWindow extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener dateListener;
     private TimePickerDialog.OnTimeSetListener timeListener;
     private final String TAG = "ChatWindow";
-    private Long unix_time;
     private int y;
     private int m;
     private int d;
@@ -131,8 +130,8 @@ public class ChatWindow extends AppCompatActivity {
                 cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 cal.set(Calendar.MINUTE, minute);
                 Date date = cal.getTime();
-                unix_time = new Long(date.getTime()/1000);
-                System.out.println(unix_time);
+                Long unix_time = new Long(date.getTime()/1000);
+                sendMessage(unix_time);
             }
         };
 
@@ -163,21 +162,16 @@ public class ChatWindow extends AppCompatActivity {
         recyclerView.scrollToPosition(messages.size()-1);
     }
 
-    public void sendMessage(View view){
+    public void sendMessage(Long time_message){
         String messageText = et.getText().toString();
 
-        //make a Message class from the message
-        Message message = makeMessage(messageText);
-
-        //actually send the message.
-        //global.getChatHandler().sendMessage(message);
+        Message message = (time_message > 0) ? makeTimedMessage(messageText, time_message) : makeMessage(messageText);
 
         messages.add(message);
         et.setText("");
 
         initRecyclerView();
         global.getChatHandler().sendMessage(message);
-        //send message to server missing
     }
 
     /**
@@ -187,6 +181,10 @@ public class ChatWindow extends AppCompatActivity {
      */
     private Message makeMessage(String messageText) {
         return Message.makeMessage(messageText, conversation.getConversationId(), global);
+    }
+
+    private Message makeTimedMessage(String messageText, Long time) {
+        return Message.makeMessage(messageText, conversation.getConversationId(), time, global);
     }
 
     //this method should be called if user is looking at particular chat and receives a message in a mean time
