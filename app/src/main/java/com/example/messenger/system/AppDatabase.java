@@ -6,7 +6,7 @@ package com.example.messenger.system;
 
 
 @Database(
-        entities = {Message.class, Conversation.class},
+        entities = {Message.class, Conversation.class, Contact.class},
         version = 1, exportSchema = false)
 
 public abstract class AppDatabase extends RoomDatabase
