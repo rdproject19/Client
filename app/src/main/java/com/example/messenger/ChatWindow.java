@@ -162,6 +162,10 @@ public class ChatWindow extends AppCompatActivity {
         recyclerView.scrollToPosition(messages.size()-1);
     }
 
+    public void send(View view) {
+        sendMessage((long)0);
+    }
+
     public void sendMessage(Long time_message){
         String messageText = et.getText().toString();
 
