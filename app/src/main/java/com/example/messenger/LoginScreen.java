@@ -39,7 +39,6 @@ public class LoginScreen extends AppCompatActivity {
 
         ch = global.getChatHandler();
         ud = global.getUserData();
-        startAlarm();
 
         if(ud.getBool(Keys.REMEMBER)) {
             NextScene();
@@ -75,6 +74,7 @@ public class LoginScreen extends AppCompatActivity {
 
     private void NextScene() {
         global.initialize();
+        startAlarm();
         startActivity(new Intent(LoginScreen.this, MessengerScreen.class));
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
