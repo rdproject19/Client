@@ -12,10 +12,12 @@ public class ChatHandler
 
     private CommunicationHandler ch;
     Socket socket;
+    Global global;
 
     public ChatHandler(Global global)
     {
         this.ch = new CommunicationHandler(global);
+        this.global = global;
 
         URI uri = null;
         try {
@@ -44,10 +46,16 @@ public class ChatHandler
     }
 
 
+
     public CommunicationHandler ch()
     {
         return this.ch;
     }
 
+    public void sendUpdateRequest() {
+        socket.send("{" +
+                "\"TYPE\":”update”," +
+                "\"SENDER_ID\": " + global.getUserData().getString(Keys.USERNAME) + "}");
+    }
 }
 
