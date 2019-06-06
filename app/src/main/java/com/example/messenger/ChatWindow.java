@@ -140,8 +140,6 @@ public class ChatWindow extends AppCompatActivity {
         initRecyclerView();
         global.getChatHandler().sendMessage(message);
         //send message to server missing
-
-        sendNotification(messages.get(messages.size()-1));
     }
 
     /**
@@ -154,30 +152,8 @@ public class ChatWindow extends AppCompatActivity {
     }
 
     //this method should be called if user is looking at particular chat and receives a message in a mean time
-    public void receiveMessage(Message message){
-        messages.add(message);
-        sendNotification(message);
-
+    public void receiveMessage(){
         initRecyclerView();
     }
 
-    public void sendNotification(Message last_message){
-
-        //build the notification
-        notification.setSmallIcon(R.drawable.icon_chat);
-        notification.setTicker("You have a new message!");
-        notification.setWhen(System.currentTimeMillis());
-        notification.setContentTitle(last_message.getSenderID());
-        notification.setContentText(last_message.getMessage());
-
-
-        //select what happens, when user clicks the notification
-        Intent intent = new Intent(this, ChatWindow.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        notification.setContentIntent(pendingIntent);
-
-        //"send" the notification
-        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        nm.notify(4, notification.build());
-    }
 }

@@ -79,6 +79,8 @@ public class Socket extends WebSocketClient {
                 ch.putConversation(conv);
             }
 
+            global.getUserData().setString(Keys.LASTMESSAGE, msg.toJSON());
+
             // Stores the message in the database
             global.db().messageDao().putMessage(msg);
 

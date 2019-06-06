@@ -10,7 +10,8 @@ public enum Keys
     TOKEN("Token", int.class, false),
     COUNTER("TokenCount", long.class, true),
     SEED("TokenSeed", String.class, false),
-    REMEMBER("Remember", boolean.class, false);
+    REMEMBER("Remember", boolean.class, false),
+    LASTMESSAGE("LastMessage", String.class, false);
 
 
     String key;

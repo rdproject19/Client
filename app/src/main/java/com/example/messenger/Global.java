@@ -74,6 +74,4 @@ public class Global extends Application {
 
         this.chatHandler.ch().newConversationWith("koen1");
     }
-
-
 }
