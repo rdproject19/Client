@@ -13,23 +13,23 @@ import okhttp3.Response;
 
 public class REST
 {
-	protected String hostname;
-	protected HashMap<String, String> params;
+	private String hostname;
+	private HashMap<String, String> params;
 	
 	/** @var The group of commands on the server, like User.* or Conversation.*; */
-	protected String group; 
+	private String group; 
 	/** @var The specfic instruction from this group */
-	protected String instruction;
+	private String instruction;
 	
-	protected HttpUrl httpUrl;
-	protected static OkHttpClient client = new OkHttpClient();
+	private HttpUrl httpUrl;
+	private static OkHttpClient client = new OkHttpClient();
 	
-	protected String lastResponseBody;
-	protected Response lastResponse;
+	private String lastResponseBody;
+	private Response lastResponse;
 
 	/**
 	 * [_url]/[_group]/[_instruction]
-	 * @param _url
+	 * @param _host
 	 * @param _group
 	 * @param _instruction
 	 */
@@ -62,7 +62,7 @@ public class REST
 	 * if not parameters are present, it will return an empty string. 
 	 * @return Query String
 	 */
-	protected String getQueryString()
+	private String getQueryString()
 	{
 		if(params.size() == 0)
 		{
@@ -101,7 +101,31 @@ public class REST
 			return false;
 		}		
 	}
-	
+
+
+	/**
+	 * @return True if request could successfully be sent
+	 */
+	public boolean PUT()
+	{
+		RequestBody requestBody = RequestBody.create(getQueryString(), MediaType.get("application/x-www-form-urlencoded"));
+		Request request = new Request.Builder()
+				.url(httpUrl)
+				.put(requestBody)
+				.build();
+		try {
+			lastResponse = client.newCall(request).execute();
+			lastResponseBody = lastResponse.body().string();
+			if(lastResponse.isSuccessful())
+				return true;
+			else
+				return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	/** 
 	 * @return True if request could successfully be sent
 	 */
@@ -143,6 +167,10 @@ public class REST
 			e.printStackTrace();
 			return false;
 		}		
+	}
+
+	public HttpStatus getHttpStatus() {
+		return HttpStatus.getByCode(this.lastResponse.code());
 	}
 	
 	

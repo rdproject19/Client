@@ -161,6 +161,12 @@ public class Message implements Comparable<Message>{
                 "}";
     }
 
+    public void setDelayed(boolean delayed) {
+        this.delayed = delayed;
+    }
+
+
+
     //Getters and setters
     public String getSenderID() {
         return senderID;
@@ -184,6 +190,7 @@ public class Message implements Comparable<Message>{
 
     public void setMessageID(int j) { this.messageID=j;}
 
+    public void isParsed(boolean v) { parsed = v; }
 
     public boolean isParsed() {
         return parsed;
@@ -198,13 +205,15 @@ public class Message implements Comparable<Message>{
         return Long.hashCode(this.getTimeStamp());
     }
 
-    public String getTimeString() {
+    public String getTimeString()
+    {
         String time = new SimpleDateFormat("[dd-MM] [HH:mm]").format(timeStamp*1000);
         return time;
     }
 
     @Override
-    public int compareTo(Message message) {
+    public int compareTo(Message message)
+    {
         return (int) (this.timeStamp - message.getTimeStamp());
     }
 }
