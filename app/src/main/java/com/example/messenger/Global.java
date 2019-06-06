@@ -78,13 +78,13 @@ public class Global extends Application {
         this.db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database").allowMainThreadQueries().build();
         this.context = getApplicationContext();
         this.userdata = new UserData(this.context);
-        //userdata.setUsername("koen1");
+        userdata.setUsername("koen");
         //Conversation convo = db.conversationDao().getAll().stream().filter((c)->c.getConversationId().equals("5cf0f1c78bd43f6613fbe21e")).findAny().get();
         //Message.makeMessage("banaan", "5cf0f1c78bd43f6613fbe21e", this);
-        //Conversation convo = Conversation.newConversation("5cf0f1c78bd43f6613fbe21e", this);
-        //convo.update(this);
-        //convo.addParticipant("koen1");
-        //convo.addParticipant("koen");
+        Conversation convo = Conversation.newConversation("5cf0f1c78bd43f6613fbe21e", this);
+        convo.update(this);
+        convo.addParticipant("koen1");
+        convo.addParticipant("koen");
         this.chatHandler = new ChatHandler(this);
 
     }

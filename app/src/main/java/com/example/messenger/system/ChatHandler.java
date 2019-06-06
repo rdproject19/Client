@@ -22,7 +22,6 @@ public class ChatHandler
             uri = new URI("ws://134.209.205.126:7070");
             socket = new Socket(uri, this.ch, global);
             socket.connect();
-            ReadyState state = socket.getReadyState();
         }
         catch(Exception e)
         {
@@ -32,6 +31,15 @@ public class ChatHandler
     }
 
     public void sendMessage(Message message) {
+        ReadyState state = socket.getReadyState();
+        while (state.compareTo(ReadyState.OPEN) != 0) {
+            socket.connect();
+            try {
+                wait(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         socket.send(message.toJSON());
     }
 
