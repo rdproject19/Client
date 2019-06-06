@@ -31,7 +31,8 @@ public class ConversationAPI extends WebAPI
             final String H = member + ";";
             participantsList.append(H);
         }
-        participantsList.deleteCharAt(participantsList.length()); /* Remove unnecessary ; at end*/
+
+        participantsList.deleteCharAt(participantsList.length()-1);
 
 
         params.putIfAbsent("members", participantsList.toString());
@@ -44,6 +45,6 @@ public class ConversationAPI extends WebAPI
         if(this.getResponseCode() == 200)
             return this.getResponseBody();
         else
-            throw new Exception("Could not successfully retrieve information from the central server ");
+            throw new Exception("Could not successfully retrieve information from the central server: ERROR CODE " + WebAPI.Response(this.getResponseCode()) + ": " + WebAPI.Response(this.getResponseCode()).getDesc());
     }
 }

@@ -51,17 +51,17 @@ public abstract class WebAPI {
 
         try
         {
-            wr.execute("POST");
+            wr.executePost("POST");
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            lastResponseCode = 500;
+            lastResponseCode = 418;
             return ResponseEnum.SERVER_ERROR;
         }
 
         lastResponseBody = wr.getResponseBody();
-        lastResponseCode = 500;
+        lastResponseCode = 418;
 
 
         return WebAPI.Response(wr.getResponseCode());
@@ -80,7 +80,7 @@ public abstract class WebAPI {
         lastResponseCode = wr.getResponseCode();
 
         try {
-            wr.execute("GET");
+            wr.executeGet();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -97,7 +97,7 @@ public abstract class WebAPI {
             wr.addArgument(entry.getKey(), entry.getValue());
 
         try {
-            wr.execute("PUT");
+            wr.executePost("PUT");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -114,7 +114,7 @@ public abstract class WebAPI {
             wr.addArgument(entry.getKey(), entry.getValue());
 
         try {
-            wr.execute("DELETE");
+            wr.executePost("DELETE");
         } catch (Exception e) {
             e.printStackTrace();
         }
