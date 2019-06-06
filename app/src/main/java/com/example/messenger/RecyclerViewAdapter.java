@@ -23,7 +23,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private String receiver;
     private Conversation conversation;
     private List<String> participants;
-    private Message[] messages;
+    private List<Message> messages;
     private Global global;
     private Context mContext;
 
@@ -33,8 +33,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.participants = conversation.getParticipants();
         this.sender = participants.get(0);
         this.receiver = participants.get(1);
-        this.messages = convo.getSortedMessages().values().toArray(messages);
+        this.messages = global.db().messageDao().getFromConversation(convo.getConversationId());
         this.mContext = global.getApplicationContext();
+    }
+
+    public void update(Message msg) {
+        messages.add(msg);
     }
 
     @NonNull
@@ -47,7 +51,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        Message message = messages[i];
+        Message message = messages.get(i);
 
         String id = message.getSenderID();
 
@@ -102,7 +106,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return messages.length;
+        return messages.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
