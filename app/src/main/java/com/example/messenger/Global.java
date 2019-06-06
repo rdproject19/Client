@@ -7,6 +7,7 @@ import android.content.Context;
 import com.example.messenger.system.AppDatabase;
 import com.example.messenger.system.ChatHandler;
 import com.example.messenger.system.Conversation;
+import com.example.messenger.system.GFG;
 import com.example.messenger.system.Message;
 import com.example.messenger.system.UserData;
 import com.example.messenger.system.WebAPI;
@@ -68,6 +69,28 @@ public class Global extends Application {
     }
 
     /**
+     *
+     */
+    public void initialize() {
+        this.db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database").allowMainThreadQueries().build();
+        this.context = getApplicationContext();
+        this.userdata = new UserData(this.context);
+        //userdata.setUsername("koen");
+        //Conversation convo = db.conversationDao().getAll().stream().filter((c)->c.getConversationId().equals("5cf0f1c78bd43f6613fbe21e")).findAny().get();
+        //Message.makeMessage("banaan", "5cf0f1c78bd43f6613fbe21e", this);
+        //Conversation convo = Conversation.newConversation("5cf0f1c78bd43f6613fbe21e", this);
+        //convo.update(this);
+        //convo.addParticipant("koen1");
+        //convo.addParticipant("koen");
+        this.chatHandler = new ChatHandler(this);
+    }
+
+    public void setData(String username, String password) {
+        userdata.setUsername(username);
+        userdata.setSeed(GFG.encryptThisString(username+password));
+    }
+
+    /**
      * All things to do when application is first started.
      */
     @Override
@@ -75,17 +98,7 @@ public class Global extends Application {
     {
         super.onCreate();
         /* @TODO remove allowMainThreadQueries */
-        this.db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database").allowMainThreadQueries().build();
-        this.context = getApplicationContext();
-        this.userdata = new UserData(this.context);
-        userdata.setUsername("koen");
-        //Conversation convo = db.conversationDao().getAll().stream().filter((c)->c.getConversationId().equals("5cf0f1c78bd43f6613fbe21e")).findAny().get();
-        //Message.makeMessage("banaan", "5cf0f1c78bd43f6613fbe21e", this);
-        Conversation convo = Conversation.newConversation("5cf0f1c78bd43f6613fbe21e", this);
-        convo.update(this);
-        convo.addParticipant("koen1");
-        convo.addParticipant("koen");
-        this.chatHandler = new ChatHandler(this);
+
 
     }
 }
