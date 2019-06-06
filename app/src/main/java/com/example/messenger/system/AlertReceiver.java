@@ -34,6 +34,7 @@ public class AlertReceiver extends BroadcastReceiver {
             Message last_message = new Message(msg);
             if( last_message!=null) {
                 sendNotification(context, last_message);
+                ud.setString(Keys.LASTMESSAGE, null);
             }
         } catch (Exception e) {
             e.printStackTrace();
