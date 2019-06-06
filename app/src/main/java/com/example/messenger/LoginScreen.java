@@ -22,6 +22,7 @@ public class LoginScreen extends AppCompatActivity {
     private TextView error_text;
     private ChatHandler ch;
     private UserData ud;
+    private Global global;
 
     private CheckBox remember_me;
 
@@ -34,10 +35,10 @@ public class LoginScreen extends AppCompatActivity {
         error_text = findViewById(R.id.invalid);
         remember_me = findViewById(R.id.rememberMe);
         username.requestFocus();
+        global = ((Global) this.getApplication());
 
-        ch = ((Global) this.getApplication()).getChatHandler();
-        ud = ((Global) this.getApplication()).getUserData();
-        startAlarm();
+        ch = global.getChatHandler();
+        ud = global.getUserData();
 
         if(ud.getBool(Keys.REMEMBER)) {
             NextScene();
@@ -56,7 +57,12 @@ public class LoginScreen extends AppCompatActivity {
         if(remember_me.isChecked()) {
             ud.setBoolean(Keys.REMEMBER, true);
         }
-        ud.setUsername(username.getText().toString());
+        String name = username.getText().toString();
+        String pass = password.getText().toString();
+
+
+        ud.setUsername(name);
+        global.setData(name, pass);
 
         NextScene();
     }
@@ -67,6 +73,8 @@ public class LoginScreen extends AppCompatActivity {
     }
 
     private void NextScene() {
+        global.initialize();
+        startAlarm();
         startActivity(new Intent(LoginScreen.this, MessengerScreen.class));
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }

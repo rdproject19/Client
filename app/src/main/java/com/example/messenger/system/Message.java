@@ -190,7 +190,21 @@ public class Message implements Comparable<Message>{
 
     public void setMessageID(int j) { this.messageID=j;}
 
-    public void isParsed(boolean v) { parsed = v; }
+    public boolean isDelayed() {
+        return delayed;
+    }
+
+    public void setDelayed(boolean delayed) {
+        this.delayed = delayed;
+    }
+
+    public long getRecieveDate() {
+        return recieveDate;
+    }
+
+    public void setRecieveDate(long recieveDate) {
+        this.recieveDate = recieveDate;
+    }
 
     public boolean isParsed() {
         return parsed;
