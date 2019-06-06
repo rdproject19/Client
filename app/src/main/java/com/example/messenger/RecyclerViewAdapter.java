@@ -10,25 +10,31 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.messenger.system.Conversation;
 import com.example.messenger.system.Message;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
     private String sender;
     private String receiver;
-    private ArrayList<String> participants = new ArrayList<>();
-    private ArrayList<Message> messages = new ArrayList<>();
-
+    private Conversation conversation;
+    private List<String> participants;
+    private Message[] messages;
+    private Global global;
     private Context mContext;
 
-    public RecyclerViewAdapter(ArrayList<String> participants, ArrayList<Message> messages, Context mContext) {
-        this.participants = participants;
+    public RecyclerViewAdapter(Global global, Conversation convo) {
+        this.conversation = convo;
+        conversation.update(global);
+        this.participants = conversation.getParticipants();
         this.sender = participants.get(0);
         this.receiver = participants.get(1);
-        this.messages = messages;
-        this.mContext = mContext;
+        this.messages = convo.getSortedMessages().values().toArray(messages);
+        this.mContext = global.getApplicationContext();
     }
 
     @NonNull
@@ -41,7 +47,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        Message message = messages.get(i);
+        Message message = messages[i];
 
         String id = message.getSenderID();
 
@@ -96,7 +102,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return messages.size();
+        return messages.length;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

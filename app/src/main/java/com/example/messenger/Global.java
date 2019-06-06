@@ -22,6 +22,7 @@ public class Global extends Application {
     private Context context;
     private AppDatabase db;
     private WebAPI webAPI;
+    private RecyclerViewAdapter adapter;
 
     /**
      * Get current chatHandler object
@@ -58,6 +59,14 @@ public class Global extends Application {
         return this.db;
     }
 
+    public RecyclerViewAdapter getAdapter() {
+        return adapter;
+    }
+
+    public void setAdapter(Conversation conversation) {
+        adapter = new RecyclerViewAdapter(this, conversation);
+    }
+
     /**
      * All things to do when application is first started.
      */
@@ -68,11 +77,16 @@ public class Global extends Application {
         /* @TODO remove allowMainThreadQueries */
         this.db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database").allowMainThreadQueries().build();
         this.context = getApplicationContext();
-        this.chatHandler = new ChatHandler(this);
         this.userdata = new UserData(this.context);
+        //userdata.setUsername("koen1");
+        //Conversation convo = db.conversationDao().getAll().stream().filter((c)->c.getConversationId().equals("5cf0f1c78bd43f6613fbe21e")).findAny().get();
+        //Message.makeMessage("test", "5cf0f1c78bd43f6613fbe21e", this);
+        //Conversation convo = Conversation.newConversation("5cf0f1c78bd43f6613fbe21e", this);
+        //convo.update(this);
+        //convo.addParticipant("koen1");
+        //convo.addParticipant("koen");
+        this.chatHandler = new ChatHandler(this);
 
-
-        this.chatHandler.ch().newConversationWith("koen1");
     }
 
 

@@ -88,6 +88,8 @@ public class Socket extends WebSocketClient {
             // Puts the message in the correct conversation
             conv.putMessage(msg);
 
+            // Updates the screen
+            global.getAdapter().notifyDataSetChanged();
 
         } catch (Exception e) {
             e.printStackTrace();
