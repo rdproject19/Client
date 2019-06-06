@@ -38,17 +38,19 @@ public class Socket extends WebSocketClient {
 
         try {
             if (jsonUpdate.has("NEW_CONVERSATIONS")) {
-
-                for(JSONObject convo : gson.fromJson((JsonElement) jsonUpdate.get("NEW_CONVERSATIONS"),JSONObject[].class)) {
-                    handleConversation(convo);
+                JSONArray cons = jsonUpdate.getJSONArray("NEW_CONVERSATIONS");
+                for (int i=0; i<cons.length(); i++) {
+                    handleConversation((JSONObject) cons.get(i));
                 }
 
             }
             if (jsonUpdate.has("NEW_MESSAGES")) {
 
-                for(JSONObject message : gson.fromJson((JsonElement) jsonUpdate.get("NEW_MESSAGES"),JSONObject[].class)) {
-                    handleMessage(message);
+                JSONArray msgs = jsonUpdate.getJSONArray("NEW_MESSAGES");
+                for (int i=0; i<msgs.length(); i++) {
+                    handleMessage((JSONObject) msgs.get(i));
                 }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -85,6 +87,7 @@ public class Socket extends WebSocketClient {
 
             // Puts the message in the correct conversation
             conv.putMessage(msg);
+
 
         } catch (Exception e) {
             e.printStackTrace();
