@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.messenger.system.Conversation;
+import com.example.messenger.system.Keys;
 import com.example.messenger.system.Message;
 
 import java.util.ArrayList;
@@ -31,7 +32,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.conversation = convo;
         conversation.update(global);
         this.participants = conversation.getParticipants();
-        this.sender = participants.get(0);
+        this.sender = global.getUserData().getString(Keys.USERNAME);
+        for(int i = 0; i<2 ; i++) {
+            String person = participants.get(i);
+            if(!person.equals(sender)) {
+                receiver = person;
+            }
+        }
         this.receiver = participants.get(1);
         this.messages = global.db().messageDao().getFromConversation(convo.getConversationId());
         this.mContext = global.getApplicationContext();
