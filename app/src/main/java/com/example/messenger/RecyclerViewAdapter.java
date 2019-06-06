@@ -10,25 +10,42 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.messenger.system.Conversation;
+import com.example.messenger.system.Keys;
 import com.example.messenger.system.Message;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
     private String sender;
     private String receiver;
-    private ArrayList<String> participants = new ArrayList<>();
-    private ArrayList<Message> messages = new ArrayList<>();
-
+    private Conversation conversation;
+    private List<String> participants;
+    private List<Message> messages;
+    private Global global;
     private Context mContext;
 
-    public RecyclerViewAdapter(ArrayList<String> participants, ArrayList<Message> messages, Context mContext) {
-        this.participants = participants;
-        this.sender = participants.get(0);
+    public RecyclerViewAdapter(Global global, Conversation convo) {
+        this.conversation = convo;
+        conversation.update(global);
+        this.participants = conversation.getParticipants();
+        this.sender = global.getUserData().getString(Keys.USERNAME);
+        for(int i = 0; i<2 ; i++) {
+            String person = participants.get(i);
+            if(!person.equals(sender)) {
+                receiver = person;
+            }
+        }
         this.receiver = participants.get(1);
-        this.messages = messages;
-        this.mContext = mContext;
+        this.messages = global.db().messageDao().getFromConversation(convo.getConversationId());
+        this.mContext = global.getApplicationContext();
+    }
+
+    public void update(Message msg) {
+        messages.add(msg);
     }
 
     @NonNull

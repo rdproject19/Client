@@ -3,6 +3,7 @@ package com.example.messenger.system;
 import android.content.Context;
 
 import com.example.messenger.Global;
+import com.example.messenger.RecyclerViewAdapter;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
@@ -90,6 +91,12 @@ public class Socket extends WebSocketClient {
             // Puts the message in the correct conversation
             conv.putMessage(msg);
 
+            // Updates the screen
+            RecyclerViewAdapter adapter = global.getAdapter();
+            if (!(adapter == null)){
+                adapter.update(msg);
+                adapter.notifyDataSetChanged();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -164,11 +171,11 @@ public class Socket extends WebSocketClient {
         UserData prefs = new UserData(global.getApplicationContext());
         //making the handshake
         String userId = prefs.getString(Keys.USERNAME);
-        String seed = prefs.getString(Keys.SEED);
-        long counter = prefs.getLong(Keys.COUNTER);
-        LSFR lsfr = new LSFR(seed, counter);
-        int authToken = lsfr.shift();
-        prefs.setInt(Keys.TOKEN, authToken);
+        //String seed = prefs.getString(Keys.SEED);
+        //long counter = prefs.getLong(Keys.COUNTER);
+        //LSFR lsfr = new LSFR(seed, counter);
+        //int authToken = lsfr.shift();
+        //prefs.setInt(Keys.TOKEN, authToken);
         String myHandshake =
                 "{TYPE: \"handshake\"," +
                         "USER_ID:\"" +

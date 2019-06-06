@@ -119,7 +119,8 @@ public class ChatWindow extends AppCompatActivity {
     }
 
     private void initRecyclerView(){
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(participants, messages, this);
+        global.setAdapter(conversation);
+        RecyclerViewAdapter adapter = global.getAdapter();
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.scrollToPosition(messages.size()-1);
