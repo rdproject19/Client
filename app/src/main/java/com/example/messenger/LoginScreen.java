@@ -1,4 +1,7 @@
 package com.example.messenger;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.messenger.system.AlertReceiver;
 import com.example.messenger.system.ChatHandler;
 import com.example.messenger.system.Keys;
 import com.example.messenger.system.UserData;
@@ -33,10 +37,19 @@ public class LoginScreen extends AppCompatActivity {
 
         ch = ((Global) this.getApplication()).getChatHandler();
         ud = ((Global) this.getApplication()).getUserData();
+        startAlarm();
 
         if(ud.getBool(Keys.REMEMBER)) {
             NextScene();
         }
+    }
+
+    public void startAlarm(){
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 5000, 60000, pendingIntent);
     }
 
     public void openChats(View v) {

@@ -1,5 +1,7 @@
 package com.example.messenger;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,6 +34,7 @@ import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.messenger.system.AlertReceiver;
 import com.example.messenger.system.ChatHandler;
 import com.example.messenger.system.Conversation;
 
@@ -87,7 +90,6 @@ public class MessengerScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         System.out.println(getLocalIpAddress());
-
         setContentView(R.layout.tab_screen);
 
         toolbar = findViewById(R.id.toolbar);
