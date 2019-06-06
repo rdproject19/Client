@@ -49,7 +49,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginRight="8dp"
             android:enabled="false"
-            android:onClick="sendMessage"
+            android:onClick="date"
             app:srcCompat="@drawable/icon_send"
             android:background="@null"
             android:text="Send" />
