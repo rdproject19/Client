@@ -156,7 +156,6 @@ public class ChatWindow extends AppCompatActivity {
 
     //this method should be called if user is looking at particular chat and receives a message in a mean time
     public void receiveMessage(Message message){
-        messages.add(message);
         sendNotification(message);
 
         initRecyclerView();
