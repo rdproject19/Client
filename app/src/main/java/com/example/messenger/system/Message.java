@@ -31,6 +31,12 @@ public class Message implements Comparable<Message>{
     @ColumnInfo(name = "convID")
     private String conversationID;
 
+    @ColumnInfo(name = "delayed")
+    private boolean delayed;
+
+    @ColumnInfo(name = "recieveDate")
+    private long recieveDate;
+
     //@ColumnInfo(name = "sessionToken")
     //private String sessionToken;
 
@@ -72,12 +78,14 @@ public class Message implements Comparable<Message>{
      * @param message The substance of the message
      * @param conversationID The ID of the conversation
      */
-    public Message(String senderID, long timeStamp, String message, String conversationID) {
+    public Message(String senderID, long timeStamp, String message, String conversationID, boolean delayed, long recieveDate) {
         this.senderID = senderID;
         this.timeStamp = timeStamp;
         this.message = message;
         this.conversationID = conversationID;
         this.parsed = false;
+        this.delayed = delayed;
+        this.recieveDate = recieveDate;
     }
 
     /**
@@ -96,7 +104,36 @@ public class Message implements Comparable<Message>{
                 (int) (System.currentTimeMillis() / 1000L),
                 message,
                 //conversationID
-                "5cf0f1c78bd43f6613fbe21e"
+                "5cf0f1c78bd43f6613fbe21e",
+                false,
+                (int) (System.currentTimeMillis() / 1000L)
+        );
+        db.putMessage(msg);
+
+
+        return msg;
+
+    }
+
+    /**
+     * Used for generating Message class giving only the string and the conversation ID.
+     * @param message The actual message as typed by the user
+     * @param conversationID The ConversationId beloning to the message
+     * @param global The Global class
+     * @return
+     */
+    public static Message makeMessage(String message, String conversationID, long recieveDate, Global global) {
+        UserData userData = global.getUserData();
+        MessageDao db = global.db().messageDao();
+        String name = userData.getString(Keys.USERNAME);
+        Message msg = new Message (
+                name,
+                (int) (System.currentTimeMillis() / 1000L),
+                message,
+                //conversationID
+                "5cf0f1c78bd43f6613fbe21e",
+                true,
+                recieveDate
         );
         db.putMessage(msg);
         return msg;
@@ -117,7 +154,9 @@ public class Message implements Comparable<Message>{
                 "\"TIMESTAMP\":" + timeStamp + "," +
                 "\"MESSAGE\":\"" + message + "\"," +
                 "\"CONVERSATION_ID\": \"" + conversationID + "\"," +
-                "\"MESSAGE_ID\":" + messageID +
+                "\"MESSAGE_ID\":" + messageID + "," +
+                "\"DELAYED\":" + delayed + "," +
+                "\"SEND_AT\":" + recieveDate +
 
                 "}";
     }
