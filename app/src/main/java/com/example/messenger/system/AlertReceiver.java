@@ -28,7 +28,9 @@ public class AlertReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         System.out.println("It works");
         boolean a = isAppRunning(context, "com.example.messenger");
-        UserData ud = ((Global) context.getApplicationContext()).getUserData();
+        Global global = ((Global) context.getApplicationContext());
+        UserData ud = global.getUserData();
+        global.getChatHandler().sendUpdateRequest();
         String msg = ud.getString(Keys.LASTMESSAGE);
         try {
             Message last_message = new Message(msg);
