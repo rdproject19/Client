@@ -17,4 +17,4 @@ make sure java jdk 1.8, maven and git are installed, and that ports 7070 and 808
 2. move into the server folder.
 3. maven install, this wil make a target folder with the socket server. move into this target folder and run the .jar.
 4. move into /server/http from here maven package. this will create the target foler. move into it and run the .jar file.
-5. your server is now running. 
+5. your server is now running, you will hae to hardcode the ip into HOSTNAME in the client.
