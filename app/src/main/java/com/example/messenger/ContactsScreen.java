@@ -13,7 +13,7 @@ import java.util.List;
 public class ContactsScreen extends AppCompatActivity {
 
     private EditText search_bar;
-    private List<String> result_list;
+    private String result_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +25,10 @@ public class ContactsScreen extends AppCompatActivity {
 
     public void search(View view) {
         try {
-            result_list= User.getUserContacts(search_bar.toString());
+            result_list= User.getName(search_bar.toString());
             Intent j = new Intent(ContactsScreen.this, ContactResult.class);
-            System.out.println(result_list.toArray());
-            j.putExtra("Result list", result_list.toArray());
+            System.out.println(result_list);
+            j.putExtra("Result list", result_list);
             startActivity(j);
         } catch (Exception e) {
             e.printStackTrace();
