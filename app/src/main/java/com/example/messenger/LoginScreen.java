@@ -63,7 +63,7 @@ public class LoginScreen extends AppCompatActivity {
 
         boolean successful;
         String errorMessage;
-        String fullname;
+        String fullname = null;
         try {
             successful = User.userLogin(name, GFG.encryptThisString(pass));
             fullname = User.getName(name);
