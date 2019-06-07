@@ -31,9 +31,9 @@ public class Conversation {
         if (request.POST())
             return request.getContents();
         else {
-            if (request.getResponse().code() == HttpStatus.BadRequest.getCode()) {
+            if (request.getResponse().status == HttpStatus.BadRequest) {
                 return "";
-            } else if (request.getResponse().code() == HttpStatus.Gone.getCode()) {
+            } else if (request.getResponse().status == HttpStatus.Gone) {
                 return "";
             }
         }
@@ -52,7 +52,7 @@ public class Conversation {
         if (request.GET()) {
             return request.getContents();
         } else {
-            if (request.getResponse().code() == HttpStatus.Gone.getCode()) {
+            if (request.getResponse().status == HttpStatus.Gone) {
                 return "";
             }
         }
@@ -71,7 +71,7 @@ public class Conversation {
         if (request.GET()) {
             return Arrays.asList(request.getContents().split(";"));
         } else {
-            if (request.getResponse().code() == HttpStatus.Gone.getCode()) {
+            if (request.getResponse().status == HttpStatus.Gone) {
                 return null;
             }
         }
@@ -92,9 +92,9 @@ public class Conversation {
         if (request.PUT()) {
             return true;
         } else {
-            if (request.getResponse().code() == HttpStatus.Gone.getCode()) {
+            if (request.getResponse().status == HttpStatus.Gone) {
                 return false;
-            } else if (request.getResponse().code() == HttpStatus.NotModified.getCode()) {
+            } else if (request.getResponse().status == HttpStatus.NotModified) {
                 return false;
             }
         }
@@ -115,9 +115,9 @@ public class Conversation {
         if (request.DELETE()) {
             return true;
         } else {
-            if (request.getResponse().code() == HttpStatus.Gone.getCode()) {
+            if (request.getResponse().status == HttpStatus.Gone) {
                 return false;
-            } else if (request.getResponse().code() == HttpStatus.NotModified.getCode()) {
+            } else if (request.getResponse().status == HttpStatus.NotModified) {
                 return false;
             }
         }

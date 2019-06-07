@@ -40,9 +40,9 @@ public class Image
         if (rest.PUT()) {
             return rest.getContents();
         } else {
-            if (rest.getResponse().code() == HttpStatus.InternalServerError.getCode()) {
+            if (rest.getResponse().status == HttpStatus.InternalServerError) {
                 return "";
-            } else if (rest.getResponse().code() == HttpStatus.Gone.getCode()) {
+            } else if (rest.getResponse().status == HttpStatus.Gone) {
                 return "";
             }
         }
