@@ -16,6 +16,17 @@ public class Contact {
     @ColumnInfo(name = "ImagePath")
     private String imagePath;
 
+    public Contact(@NonNull String username, String fullName) {
+        this.username = username;
+        this.fullName = fullName;
+    }
+
+    public Contact(@NonNull String username, String fullName, String imagePath) {
+        this.username = username;
+        this.fullName = fullName;
+        this.imagePath = imagePath;
+    }
+
     public String getImagePath() {
         return imagePath;
     }

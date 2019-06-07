@@ -43,13 +43,14 @@ public class User
 	 * @return The users full name
 	 * @throws Exception
 	 */
-	public static String getName(String username) throws Exception
+	public static String getName(String username)
 	{
 		REST request = new REST(HOSTNAME, GROUPNAME, "name");
 		request.bindParam("uname", username);
 		if (request.GET())
 			return request.getContents();
-		throw new ResponseException(request.getResponse());
+		else
+			return "";
 	}
 
 	/**
@@ -80,7 +81,7 @@ public class User
 		REST request = new REST(HOSTNAME, GROUPNAME, "new");
 		request.bindParam("uname", 	username);
 		request.bindParam("pwd", 		GFG.encryptThisString(password));
-		request.bindParam("fullname", username);
+		request.bindParam("fullname", fullname);
 		request.bindParam("hasimage", Boolean.toString(hasImage));
 		if(hasImage)
 			request.bindParam("image", image);

@@ -13,12 +13,14 @@ import android.widget.SimpleAdapter;
 
 import com.example.messenger.system.AppDatabase;
 import com.example.messenger.system.ChatHandler;
+import com.example.messenger.system.Contact;
 import com.example.messenger.system.Conversation;
 import com.example.messenger.system.ConversationDao;
 import com.example.messenger.system.Keys;
 import com.example.messenger.system.UserData;
 import com.example.messenger.system.http.ResponseException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -39,6 +41,7 @@ public class AddChatScreen extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterview, View view, int i, long l) {
                 SaveChat(i);
+
                 finish();
             }
         });
@@ -56,7 +59,7 @@ public class AddChatScreen extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
 
         String contact = sp.getString("pref_contacts", "");
-        String[] savedcontacts = contact.split(",");
+        List<Contact> savedcontacts = global.db().contactDao().getAll();
 
         /*
         if(sp.contains("pref_chats")) {
@@ -73,15 +76,17 @@ public class AddChatScreen extends AppCompatActivity {
         UserData ud = ((Global) this.getApplication()).getUserData();
         ChatHandler ch = ((Global) this.getApplication()).getChatHandler();
 
-        Conversation c = Conversation.newConversation(Integer.toString( new Random().nextInt(5000)) ,global);
-        c.addParticipant(ud.getString(Keys.USERNAME));
-        c.addParticipant(savedcontacts[number]);
-        ch.ch().putConversation(c);
-        cd.updateConversation(c);
 
-        List<String> s = c.getParticipants();
+        List<String> s = new ArrayList<>();
+        s.add(ud.getString(Keys.USERNAME));
+        s.add(savedcontacts.get(number).getFullName());
         try {
-            com.example.messenger.system.http.Conversation.createConversation(c.getParticipants(), s.size() > 2);
+            String convID = com.example.messenger.system.http.Conversation.createConversation(s, s.size() > 2);
+            Conversation c = Conversation.newConversation(convID ,global);
+            c.addParticipant(ud.getString(Keys.USERNAME));
+            c.addParticipant(savedcontacts.get(number).getFullName());
+            ch.ch().putConversation(c);
+            cd.updateConversation(c);
         } catch (ResponseException e) {
             e.printStackTrace();
         }

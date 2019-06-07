@@ -27,6 +27,7 @@ public class ContactsScreen extends AppCompatActivity {
         try {
             result_list= User.getUserContacts(search_bar.toString());
             Intent j = new Intent(ContactsScreen.this, ContactResult.class);
+            System.out.println(result_list.toArray());
             j.putExtra("Result list", result_list.toArray());
             startActivity(j);
         } catch (Exception e) {
