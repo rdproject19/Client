@@ -12,8 +12,8 @@ import okhttp3.Response;
 
 public class User
 {
-	private final String HOSTNAME  = "134.209.205.126:8080";
-	private final String GROUPNAME = "user";
+	private static final String HOSTNAME  = "134.209.205.126:8080";
+	private static final String GROUPNAME = "user";
 
 	/**
 	 * Check user credentials
@@ -60,7 +60,7 @@ public class User
 	 * @return Success or not
 	 * @throws Exception
 	 */
-	public boolean createUser(String username, String password, String fullname) throws Exception
+	public static boolean createUser(String username, String password, String fullname) throws Exception
 	{
 		return createUser(username, password, fullname, false, "");
 	}
@@ -75,7 +75,7 @@ public class User
 	 * @return Success or not
 	 * @throws Exception
 	 */
-	public boolean createUser(String username, String password, String fullname, boolean hasImage, String image) throws Exception
+	public static boolean createUser(String username, String password, String fullname, boolean hasImage, String image) throws Exception
 	{
 		REST request = new REST(HOSTNAME, GROUPNAME, "new");
 		request.bindParam("uname", 	username);

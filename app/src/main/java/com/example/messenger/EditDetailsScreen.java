@@ -19,6 +19,7 @@ public class EditDetailsScreen extends AppCompatActivity {
     private EditText new_name;
     private TextView error_text;
     private ImageButton profile_picture;
+    private String profile_pic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,17 +40,17 @@ public class EditDetailsScreen extends AppCompatActivity {
             switch (requestCode) {
                 case 0: {
                     Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                    Bitmap profile_pic = RegisterScreen.circelizeBitmap(bitmap);
-                    profile_picture.setImageBitmap(profile_pic);
-                    RegisterScreen.saveImage(profile_pic, this);
+                    Bitmap p = RegisterScreen.circelizeBitmap(bitmap);
+                    profile_picture.setImageBitmap(p);
+                    RegisterScreen.saveImage(p, this, profile_pic);
                 }
                 case 1: {
                     final Bundle extras = data.getExtras();
                     if (extras != null) {
                         Bitmap bitmap = extras.getParcelable("data");
-                        Bitmap profile_pic = RegisterScreen.circelizeBitmap(bitmap);
-                        profile_picture.setImageBitmap(profile_pic);
-                        RegisterScreen.saveImage(profile_pic, this);
+                        Bitmap p = RegisterScreen.circelizeBitmap(bitmap);
+                        profile_picture.setImageBitmap(p);
+                        RegisterScreen.saveImage(p, this, profile_pic);
                     }
                 }
             }

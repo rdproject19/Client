@@ -2,9 +2,7 @@ package com.example.messenger;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -18,6 +16,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.example.messenger.system.http.User;
+
 import java.io.ByteArrayOutputStream;
 
 public class RegisterScreen extends AppCompatActivity {
@@ -27,6 +28,7 @@ public class RegisterScreen extends AppCompatActivity {
     private EditText full_name, username, password;
     private TextView error_text;
     private ImageButton profile_picture;
+    private String profile_pic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,17 +51,17 @@ public class RegisterScreen extends AppCompatActivity {
             switch (requestCode) {
                 case 0: {
                     Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                    Bitmap profile_pic = circelizeBitmap(bitmap);
-                    profile_picture.setImageBitmap(profile_pic);
-                    saveImage(profile_pic, this);
+                    Bitmap p = circelizeBitmap(bitmap);
+                    profile_picture.setImageBitmap(p);
+                    saveImage(p, this, profile_pic);
                 }
                 case 1: {
                     final Bundle extras = data.getExtras();
                     if (extras != null) {
                         Bitmap bitmap = extras.getParcelable("data");
-                        Bitmap profile_pic = circelizeBitmap(bitmap);
-                        profile_picture.setImageBitmap(profile_pic);
-                        saveImage(profile_pic, this);
+                        Bitmap p = circelizeBitmap(bitmap);
+                        profile_picture.setImageBitmap(p);
+                        saveImage(p, this, profile_pic);
                     }
                 }
             }
@@ -67,12 +69,24 @@ public class RegisterScreen extends AppCompatActivity {
     }
 
     public void openLoginScreen(View v) {
-        if(correctFields()) {
-            SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putString("pref_fn", full_name.getText().toString());
-            editor.apply();
-            finish();
+        String un = username.getText().toString();
+        String pw = password.getText().toString();
+        String fn = password.getText().toString();
+
+        try {
+            if (correctFields()) {
+                if (profile_pic.length() != 0) {
+                    if (User.createUser(un, pw, fn)) {
+                        error_text.setText("The username: " + un + " is already in use.");
+                    }
+                } else {
+                    if (User.createUser(un, pw, fn, true, profile_pic)) {
+                        error_text.setText("The username: " + un + " is already in use.");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -181,16 +195,11 @@ public class RegisterScreen extends AppCompatActivity {
         return canvasBitmap;
     }
 
-    public static void saveImage(Bitmap bitmap, Context context) {
+    public static String saveImage(Bitmap bitmap, Context context, String pic) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] b = baos.toByteArray();
-        String profile_pic = Base64.encodeToString(b, Base64.DEFAULT);
-
-        String prefs_name = "PrefsFile";
-        SharedPreferences sp = context.getSharedPreferences(prefs_name, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString("pref_bm", profile_pic);
-        editor.apply();
+        pic = Base64.encodeToString(b, Base64.DEFAULT);
+        return pic;
     }
 }
