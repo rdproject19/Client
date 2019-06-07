@@ -84,8 +84,8 @@ public class Message implements Comparable<Message>{
         this.message = message;
         this.conversationID = conversationID;
         this.parsed = false;
-        //this.delayed = delayed;
-        //this.recieveDate = recieveDate;
+        this.delayed = delayed;
+        this.recieveDate = recieveDate;
     }
 
     /**
@@ -103,13 +103,12 @@ public class Message implements Comparable<Message>{
                 name,
                 (int) (System.currentTimeMillis() / 1000L),
                 message,
-                //conversationID
-                "5cf0f1c78bd43f6613fbe21e",
+                conversationID,
                 false,
                 (int) (System.currentTimeMillis() / 1000L)
         );
         db.putMessage(msg);
-
+        msg.setMessageID(db.getAll().size());
 
         return msg;
 
@@ -130,12 +129,13 @@ public class Message implements Comparable<Message>{
                 name,
                 (int) (System.currentTimeMillis() / 1000L),
                 message,
-                //conversationID
-                "5cf0f1c78bd43f6613fbe21e",
+                conversationID,
                 true,
                 recieveDate
         );
         db.putMessage(msg);
+        msg.setMessageID(db.getAll().size());
+
         return msg;
 
     }
@@ -155,8 +155,8 @@ public class Message implements Comparable<Message>{
                 "\"MESSAGE\":\"" + message + "\"," +
                 "\"CONVERSATION_ID\": \"" + conversationID + "\"," +
                 "\"MESSAGE_ID\":" + messageID + "," +
-                //"\"DELAYED\":" + delayed + "," +
-                //"\"SEND_AT\":" + recieveDate +
+                "\"DELAYED\":" + delayed + "," +
+                "\"SEND_AT\":" + recieveDate +
 
                 "}";
     }

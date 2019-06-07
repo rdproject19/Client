@@ -78,7 +78,7 @@ public class AddChatScreen extends AppCompatActivity {
 
         List<String> s = new ArrayList<>();
         s.add(ud.getString(Keys.USERNAME));
-        s.add(savedcontacts.get(number).getFullName());
+        s.add(savedcontacts.get(number).getUsername());
         try {
             String convID = com.example.messenger.system.http.Conversation.createConversation(s, s.size() > 2);
             Conversation c = Conversation.newConversation(convID ,global);
