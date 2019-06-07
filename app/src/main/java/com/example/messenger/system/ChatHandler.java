@@ -35,11 +35,6 @@ public class ChatHandler
 
 
     public void sendMessage(Message message) {
-        ReadyState state;
-        do {
-            state = socket.getReadyState();
-            connect();
-        } while (state.compareTo(ReadyState.OPEN) != 0);
         socket.send(message.toJSON());
     }
 
@@ -51,12 +46,6 @@ public class ChatHandler
     }
 
     public void sendUpdateRequest() {
-        ReadyState state;
-        do {
-            state = socket.getReadyState();
-            connect();
-        } while (state.compareTo(ReadyState.OPEN) != 0);
-
         socket.send("{" +
                 "\"TYPE\":\"update\"," +
                 "\"SENDER_ID\": \"" + global.getUserData().getString(Keys.USERNAME) + "\"}");
