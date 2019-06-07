@@ -136,6 +136,7 @@ public class ChatWindow extends AppCompatActivity {
         };
 
         fillArrays();
+        ((Global) this.getApplication()).stopAlarm();
     }
 
     /**
@@ -217,4 +218,15 @@ public class ChatWindow extends AppCompatActivity {
         dialog.show();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((Global) this.getApplication()).startAlarm();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((Global) this.getApplication()).stopAlarm();
+    }
 }

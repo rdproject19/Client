@@ -39,6 +39,7 @@ public class ContactResult extends AppCompatActivity {
         Intent a = getIntent();
         fullname.setText(a.getStringExtra("fullname"));
         username.setText(a.getStringExtra("username"));
+        ((Global) this.getApplication()).stopAlarm();
     }
 
     public void save(View view) {
@@ -58,5 +59,15 @@ public class ContactResult extends AppCompatActivity {
         convDao.putContact(contact);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((Global) this.getApplication()).startAlarm();
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((Global) this.getApplication()).stopAlarm();
+    }
 }

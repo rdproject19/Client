@@ -149,6 +149,8 @@ public class MessengerScreen extends AppCompatActivity {
             c.update((Global) this.getApplication());
             ch.ch().putConversation(c);
         }
+
+        ((Global) this.getApplication()).stopAlarm();
     }
 
     private void InitTabs() {
@@ -361,6 +363,7 @@ public class MessengerScreen extends AppCompatActivity {
     public void onResume()
     {
         super.onResume();
+        ((Global) this.getApplication()).stopAlarm();
         InitTabs();
     }
 
@@ -368,5 +371,17 @@ public class MessengerScreen extends AppCompatActivity {
     public void onBackPressed() {
         ((Global) this.getApplication()).getUserData().setBoolean(Keys.REMEMBER, false);
         this.finish();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ((Global) this.getApplication()).startAlarm();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((Global) this.getApplication()).startAlarm();
     }
 }

@@ -93,5 +93,6 @@ public class LoginScreen extends AppCompatActivity {
         startAlarm();
         startActivity(new Intent(LoginScreen.this, MessengerScreen.class));
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        finish();
     }
 }

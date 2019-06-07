@@ -21,6 +21,7 @@ public class ContactsScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contacts_screen);
         search_bar = findViewById(R.id.searchContactBar);
+        ((Global) this.getApplication()).stopAlarm();
     }
 
     public void search(View view) {
@@ -34,5 +35,17 @@ public class ContactsScreen extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((Global) this.getApplication()).startAlarm();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((Global) this.getApplication()).stopAlarm();
     }
 }
