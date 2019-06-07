@@ -90,6 +90,7 @@ public class RegisterScreen extends AppCompatActivity {
                 }
             }
         } catch (Exception e) {
+            error_text.setText("Connection failed.");
             e.printStackTrace();
         }
     }
