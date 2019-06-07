@@ -23,6 +23,7 @@ public class ContactResult extends AppCompatActivity {
     private ArrayAdapter array_adapter;
     private ArrayList contacts;
     private String contacts_array;
+
     ListView contact_result_list;
 
 
@@ -42,7 +43,6 @@ public class ContactResult extends AppCompatActivity {
         contacts = new ArrayList<>(Arrays.asList(contacts_array, username));
         array_adapter = new ArrayAdapter(getBaseContext(), R.layout.searchlist_layout, R.id.searchlist_contact, contacts);
         contact_result_list.setAdapter(array_adapter);
-
         contact_result_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterview, View view, int i, long l) {
