@@ -43,13 +43,14 @@ public class User
 	 * @return The users full name
 	 * @throws Exception
 	 */
-	public static String getName(String username) throws Exception
+	public static String getName(String username)
 	{
 		REST request = new REST(HOSTNAME, GROUPNAME, "name");
 		request.bindParam("uname", username);
 		if (request.GET())
 			return request.getContents();
-		throw new ResponseException(request.getResponse());
+		else
+			return "";
 	}
 
 	/**
