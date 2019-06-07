@@ -36,6 +36,7 @@ import android.widget.Toast;
 
 import com.example.messenger.system.AlertReceiver;
 import com.example.messenger.system.ChatHandler;
+import com.example.messenger.system.Contact;
 import com.example.messenger.system.Conversation;
 
 import com.example.messenger.system.ConversationDao;
@@ -288,12 +289,12 @@ public class MessengerScreen extends AppCompatActivity {
 
         if(sp.contains("pref_contacts")) {
             String list = sp.getString("pref_contacts", "");
-            String[] savedcontacts = list.split(",");
+            List<Contact> savedcontacts = ((Global) this.getApplication()).db().contactDao().getAll();
 
-            if(savedcontacts.length > 0) {
-                for(String c:savedcontacts) {
+            if(savedcontacts.size() > 0) {
+                for(Contact c:savedcontacts) {
                     HashMap<String, String> hm = new HashMap<String, String>();
-                    hm.put("contactview_title", c);
+                    hm.put("contactview_title", c.getFullName());
                     hm.put("contactview_image", Integer.toString(R.drawable.icon_default_profile));
                     contact_array.add(hm);
                 }
