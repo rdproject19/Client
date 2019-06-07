@@ -27,7 +27,7 @@ public class AlertReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         System.out.println("It works");
-        boolean a = isAppRunning(context, "com.example.messenger");
+        boolean is_running = isAppRunning(context, "com.example.messenger");
         Global global = ((Global) context.getApplicationContext());
         UserData ud = global.getUserData();
         global.getChatHandler().sendUpdateRequest();
@@ -35,7 +35,11 @@ public class AlertReceiver extends BroadcastReceiver {
         try {
             Message last_message = new Message(msg);
             if( last_message!=null) {
-                sendNotification(context, last_message);
+                if(!is_running) {
+                    sendTestNotification(context);
+                } else {
+                    sendNotification(context, last_message);
+                }
                 ud.setString(Keys.LASTMESSAGE, null);
             }
         } catch (Exception e) {
@@ -67,6 +71,27 @@ public class AlertReceiver extends BroadcastReceiver {
         notification.setWhen(System.currentTimeMillis());
         notification.setContentTitle(last_message.getSenderID());
         notification.setContentText(last_message.getMessage());
+
+        //select what happens, when user clicks the notification
+        Intent intent = new Intent(context, ChatWindow.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        notification.setContentIntent(pendingIntent);
+
+        //"send" the notification
+        NotificationManager nm = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        nm.notify(4, notification.build());
+    }
+
+    public void sendTestNotification(Context context){
+        notification = new NotificationCompat.Builder(context, "2");
+        notification.setAutoCancel(true);
+
+        //build the notification
+        notification.setSmallIcon(R.drawable.icon_round);
+        notification.setTicker("You have a new message!");
+        notification.setWhen(System.currentTimeMillis());
+        notification.setContentTitle("boe");
+        notification.setContentText("ba");
 
         //select what happens, when user clicks the notification
         Intent intent = new Intent(context, ChatWindow.class);

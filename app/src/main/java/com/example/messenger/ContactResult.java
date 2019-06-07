@@ -35,7 +35,7 @@ public class ContactResult extends AppCompatActivity {
     private void InitListView(String[] result) {
         contacts_array = result;
         contacts = new ArrayList<>(Arrays.asList(contacts_array));
-        array_adapter = new ArrayAdapter<>(getBaseContext(), R.layout.searchlist_layout, R.id.searchlist_contact, contacts);
+        array_adapter = new ArrayAdapter(getBaseContext(), R.layout.searchlist_layout, R.id.searchlist_contact, contacts);
         contact_result_list.setAdapter(array_adapter);
 
         contact_result_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
