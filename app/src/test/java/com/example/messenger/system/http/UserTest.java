@@ -16,4 +16,14 @@ public class UserTest {
         }
     }
 
+    @Test
+    public void createUser() {
+        try {
+            boolean f = new User().createUser("koen2", "hallo", "ja");
+            assertEquals(true, f);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

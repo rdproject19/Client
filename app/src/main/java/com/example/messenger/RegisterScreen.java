@@ -78,6 +78,8 @@ public class RegisterScreen extends AppCompatActivity {
                 if (profile_pic.length() == 0) {
                     if (!User.createUser(un, pw, fn)) {
                         error_text.setText("The username: " + un + " is already in use.");
+                    } else {
+                        finish();
                     }
                     else {
                         finish();
@@ -85,6 +87,8 @@ public class RegisterScreen extends AppCompatActivity {
                 } else {
                     if (!User.createUser(un, pw, fn, true, profile_pic)) {
                         error_text.setText("The username: " + un + " is already in use.");
+                    } else {
+                        finish();
                     }
                     else {
                         finish();
@@ -92,6 +96,7 @@ public class RegisterScreen extends AppCompatActivity {
                 }
             }
         } catch (Exception e) {
+            error_text.setText("Connection failed.");
             e.printStackTrace();
         }
     }

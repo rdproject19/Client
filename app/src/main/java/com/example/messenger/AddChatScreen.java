@@ -17,6 +17,7 @@ import com.example.messenger.system.Conversation;
 import com.example.messenger.system.ConversationDao;
 import com.example.messenger.system.Keys;
 import com.example.messenger.system.UserData;
+import com.example.messenger.system.http.ResponseException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -77,5 +78,12 @@ public class AddChatScreen extends AppCompatActivity {
         c.addParticipant(savedcontacts[number]);
         ch.ch().putConversation(c);
         cd.updateConversation(c);
+
+        List<String> s = c.getParticipants();
+        try {
+            com.example.messenger.system.http.Conversation.createConversation(c.getParticipants(), s.size() > 2);
+        } catch (ResponseException e) {
+            e.printStackTrace();
+        }
     }
 }
