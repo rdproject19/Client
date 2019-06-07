@@ -13,6 +13,17 @@ public class Contact {
     @ColumnInfo(name = "full name")
     private String fullName;
 
+    @ColumnInfo(name = "ImagePath")
+    private String imagePath;
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
     @NonNull
     public String getUsername() {
         return username;
