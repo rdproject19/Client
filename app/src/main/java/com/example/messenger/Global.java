@@ -14,7 +14,7 @@ import com.example.messenger.system.WebAPI;
 
 /**
  * Class that handles global logic
- * @author Karim Abdulahi
+ * @author Karim Abdulahi and others
  */
 public class Global extends Application {
 

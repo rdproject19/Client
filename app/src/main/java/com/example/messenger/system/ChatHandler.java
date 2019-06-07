@@ -53,6 +53,15 @@ public class ChatHandler
     }
 
     public void sendUpdateRequest() {
+        ReadyState state = socket.getReadyState();
+        while (state.compareTo(ReadyState.OPEN) != 0) {
+            socket.connect();
+            try {
+                wait(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         socket.send("{" +
                 "\"TYPE\":”update”," +
                 "\"SENDER_ID\": " + global.getUserData().getString(Keys.USERNAME) + "}");
