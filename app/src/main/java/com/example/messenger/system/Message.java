@@ -161,12 +161,6 @@ public class Message implements Comparable<Message>{
                 "}";
     }
 
-    public void setDelayed(boolean delayed) {
-        this.delayed = delayed;
-    }
-
-
-
     //Getters and setters
     public String getSenderID() {
         return senderID;
@@ -192,10 +186,6 @@ public class Message implements Comparable<Message>{
 
     public boolean isDelayed() {
         return delayed;
-    }
-
-    public void setDelayed(boolean delayed) {
-        this.delayed = delayed;
     }
 
     public long getRecieveDate() {
