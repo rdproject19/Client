@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.example.messenger.system.GFG;
 
@@ -23,7 +24,9 @@ public class Conversation {
      */
     public static String createConversation(List<String> members, boolean group) throws ResponseException {
         REST request = new REST(HOSTNAME, GROUPNAME, "new");
-        request.bindParam("members", String.join(";", members));
+        String list = members.stream()
+                .collect(Collectors.joining(";"));
+        request.bindParam("members", list);
         request.bindParam("isgroup", Boolean.toString(group));
         if (request.POST())
             return request.getContents();
