@@ -136,7 +136,7 @@ public class MessengerScreen extends AppCompatActivity {
 
                 addButtonListener(action_button);
             }
-        }, 100);
+        }, 200);
 
         ConversationDao cd = ((Global) this.getApplication()).db().conversationDao();
         ChatHandler ch = ((Global) this.getApplication()).getChatHandler();

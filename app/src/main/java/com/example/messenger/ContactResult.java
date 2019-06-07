@@ -33,7 +33,7 @@ public class ContactResult extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contact_resultscreen);
-        resultbtn = findViewById(R.id.Resultbutton);
+        resultbtn = findViewById(R.id.resultButton);
         fullname = findViewById(R.id.res_fullname);
         username = findViewById(R.id.res_username);
         Intent a = getIntent();
