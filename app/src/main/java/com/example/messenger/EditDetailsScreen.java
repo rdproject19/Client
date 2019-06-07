@@ -3,6 +3,7 @@ package com.example.messenger;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +11,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import com.example.messenger.system.Keys;
 import com.example.messenger.system.http.User;
 
 import java.util.HashMap;
@@ -29,6 +28,9 @@ public class EditDetailsScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editdetails_screen);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         new_name = findViewById(R.id.newname);
         error_text = findViewById(R.id.newinvalid);
@@ -67,7 +69,7 @@ public class EditDetailsScreen extends AppCompatActivity {
             hm.put("fullname", ((TextView) new_name).getText().toString());
             try {
                 if(!User.editUser(hm)) {
-                    //failed
+                    error_text.setText("Failed to change fullname");
                 }
                 else {
                     finish();
