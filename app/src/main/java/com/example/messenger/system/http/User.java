@@ -80,7 +80,7 @@ public class User
 		REST request = new REST(HOSTNAME, GROUPNAME, "new");
 		request.bindParam("uname", 	username);
 		request.bindParam("pwd", 		GFG.encryptThisString(password));
-		request.bindParam("fullname", username);
+		request.bindParam("fullname", fullname);
 		request.bindParam("hasimage", Boolean.toString(hasImage));
 		if(hasImage)
 			request.bindParam("image", image);
