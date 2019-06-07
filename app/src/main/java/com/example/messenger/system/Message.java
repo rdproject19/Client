@@ -161,12 +161,6 @@ public class Message implements Comparable<Message>{
                 "}";
     }
 
-    public void setDelayed(boolean delayed) {
-        this.delayed = delayed;
-    }
-
-
-
     //Getters and setters
     public String getSenderID() {
         return senderID;
