@@ -169,17 +169,16 @@ public class Socket extends WebSocketClient {
         UserData prefs = new UserData(global.getApplicationContext());
         //making the handshake
         String userId = prefs.getString(Keys.USERNAME);
-        //String seed = prefs.getString(Keys.SEED);
-        //long counter = prefs.getLong(Keys.COUNTER);
-        //LSFR lsfr = new LSFR(seed, counter);
-        //int authToken = lsfr.shift();
-        //prefs.setInt(Keys.TOKEN, authToken);
+        String seed = prefs.getString(Keys.SEED);
+        long counter = prefs.getLong(Keys.COUNTER);
+        LSFR lsfr = new LSFR(seed, counter);
+        int authToken = lsfr.shift();
+        prefs.setInt(Keys.TOKEN, authToken);
         String myHandshake =
                 "{TYPE: \"handshake\"," +
                         "USER_ID:\"" +
                         userId +
                         "\", AUTHENTICATION_TOKEN: " +
-                        //authToken +
                         1337 +
                         "}";
 
