@@ -130,8 +130,7 @@ public class Message implements Comparable<Message>{
                 name,
                 (int) (System.currentTimeMillis() / 1000L),
                 message,
-                //conversationID
-                "5cf0f1c78bd43f6613fbe21e",
+                conversationID,
                 true,
                 recieveDate
         );
@@ -155,8 +154,8 @@ public class Message implements Comparable<Message>{
                 "\"MESSAGE\":\"" + message + "\"," +
                 "\"CONVERSATION_ID\": \"" + conversationID + "\"," +
                 "\"MESSAGE_ID\":" + messageID + "," +
-                //"\"DELAYED\":" + delayed + "," +
-                //"\"SEND_AT\":" + recieveDate +
+                "\"DELAYED\":" + delayed + "," +
+                "\"SEND_AT\":" + recieveDate +
 
                 "}";
     }
