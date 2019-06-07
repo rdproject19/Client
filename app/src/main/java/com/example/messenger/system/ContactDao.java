@@ -16,5 +16,5 @@ public interface ContactDao {
     Contact getFullName(String usrname);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void putConversation(Conversation c);
+    void putContact(Contact c);
 }

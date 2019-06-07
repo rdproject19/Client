@@ -10,6 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.example.messenger.system.Contact;
+import com.example.messenger.system.ContactDao;
+import com.example.messenger.system.Conversation;
+import com.example.messenger.system.ConversationDao;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -47,20 +52,11 @@ public class ContactResult extends AppCompatActivity {
         });
     }
 
-    private void SaveContact(String name) {
+    private void SaveContact(String username, String fullname) {
         StringBuilder string = new StringBuilder();
-        SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
-
-        if(sp.contains("pref_contacts")) {
-            string.append(sp.getString("pref_contacts", "")).append(name + ",");
-        }
-        else {
-            string.append(name + ",");
-        }
-
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString("pref_contacts", string.toString());
-        editor.apply();
+        Contact contact = new Contact(username, fullname);
+        ContactDao convDao = ((Global) this.getApplication()).db().contactDao();
+        convDao.putContact(contact);
     }
 
 
