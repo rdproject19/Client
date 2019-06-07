@@ -1,11 +1,11 @@
 To start a chat between two clients:
 
 1. Create 2 accounts using the sign up buton on the login screen
-2. login to an account, offcourse you can also log into to both. 
+2. login to an account, offcourse you can also log into both. 
 3. Add one of the accounts a contact, you do this from the contact tab and pressing the little meeple with the plus sign. 
-4. start a conversation with the other account. you do this from the left most tab 
-with the cloud plus button in the left bottem corner.
-5. unfortunatly for the reciepient to see the conversation you will have to close down and open up the app, 
+4. start a conversation with the other account. you do this from the chat tab 
+with the cloud plus button in bottem right corner.
+5. unfortunatly for the reciepient to see the conversation you will have to close down the reciepent app and open up the app again, 
 once the conversaton has been added both can chat normally.
 
 The main server and the backup server should be running during grading. If they are not please contact us on 0633915098 or
