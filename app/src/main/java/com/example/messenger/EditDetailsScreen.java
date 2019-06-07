@@ -11,6 +11,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.example.messenger.system.Keys;
+import com.example.messenger.system.UserData;
 import com.example.messenger.system.http.User;
 
 import java.util.HashMap;
@@ -66,13 +69,17 @@ public class EditDetailsScreen extends AppCompatActivity {
     public void openMessengerScreen(View v) {
         if(correctFields()) {
             HashMap<String, String> hm = new HashMap<>();
-            hm.put("fullname", ((TextView) new_name).getText().toString());
+            UserData prefs = ((Global) this.getApplication()).getUserData();
+            String fullname = ((TextView) new_name).getText().toString();
+            hm.put("fullname", fullname);
+            hm.put("uname", prefs.getString(Keys.USERNAME));
             try {
-                if(!User.editUser(hm)) {
-                    error_text.setText("Failed to change fullname");
+                if(User.editUser(hm)) {
+                    prefs.setFullname(fullname);
+                    finish();
                 }
                 else {
-                    finish();
+                    error_text.setText("Failed to change fullname");
                 }
             }
             catch (Exception e) {

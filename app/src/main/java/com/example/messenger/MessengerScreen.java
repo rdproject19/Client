@@ -367,4 +367,10 @@ public class MessengerScreen extends AppCompatActivity {
         super.onResume();
         InitTabs();
     }
+
+    @Override
+    public void onBackPressed() {
+        ((Global) this.getApplication()).getUserData().setBoolean(Keys.REMEMBER, false);
+        this.finish();
+    }
 }
