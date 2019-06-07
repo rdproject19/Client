@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.messenger.Global;
 import com.example.messenger.RecyclerViewAdapter;
+import com.example.messenger.system.http.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
@@ -70,17 +71,13 @@ public class Socket extends WebSocketClient {
             Message msg = new Message(jsonMessage);
             String convId = msg.getConversationID();
             String userId = global.getUserData().getString(Keys.USERNAME);
+            UserData prefs = global.getUserData();
 
             Conversation conv;
-            if(this.ch.conversationExists(convId)) {
-                conv = this.ch.getConversation(convId);
-            } else {
-                this.send("{TYPE: \"update\", USER_ID:"+ userId + "}");
-                conv = Conversation.newConversation(convId, global);
-                ch.putConversation(conv);
-            }
+            conv = this.ch.getConversation(convId);
+            conv.putMessage(msg);
 
-            global.getUserData().setString(Keys.LASTMESSAGE, msg.toJSON());
+            prefs.setString(Keys.LASTMESSAGE, msg.toJSON());
 
             // Stores the message in the database
             global.db().messageDao().putMessage(msg);
@@ -89,7 +86,6 @@ public class Socket extends WebSocketClient {
             sendReceipt(msg);
 
             // Puts the message in the correct conversation
-            conv.putMessage(msg);
 
             // Updates the screen
             RecyclerViewAdapter adapter = global.getAdapter();
@@ -125,20 +121,21 @@ public class Socket extends WebSocketClient {
     private void handleConversation(JSONObject jsonConvo) {
         Gson gson = new Gson();
         try {
-            if (jsonConvo.has("PARTICIPANTS"))
-            {
+            if (jsonConvo.has("CONVERSATION_ID")) {
                 String convId = jsonConvo.getString("CONVERSATION_ID");
                 Conversation conv;
-                if(this.ch.conversationExists(convId)) {
+                if (this.ch.conversationExists(convId)) {
                     conv = ch.getConversation(convId);
                 } else {
                     conv = Conversation.newConversation(convId, global);
-                    ch.putConversation(conv);
                 }
-                for (String name : gson.fromJson((JsonElement) jsonConvo.get("PARTICIPANTS"), String[].class)) {
-                    conv.addParticipant(name);
+                if (jsonConvo.has("PARTICIPANTS")) {
+                    JSONArray parts = jsonConvo.getJSONArray("PARTICIPANTS");
+                    for (int i = 0; i < parts.length(); i++) {
+                        conv.addParticipant((String) parts.get(i));
+                    }
                 }
-
+                ch.putConversation(conv);
             }
         } catch (Exception e) {
             e.printStackTrace();

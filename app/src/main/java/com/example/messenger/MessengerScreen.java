@@ -177,7 +177,7 @@ public class MessengerScreen extends AppCompatActivity {
                         });
                         ShowChats();
                     }
-                }, 1000);
+                }, 2000);
                 break;
             }
             case 1: {
