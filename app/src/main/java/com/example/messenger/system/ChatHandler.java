@@ -18,10 +18,11 @@ public class ChatHandler
     {
         this.ch = new CommunicationHandler(global);
         this.global = global;
+    }
 
-        URI uri = null;
+    private void connect() {
         try {
-            uri = new URI("ws://134.209.205.126:7070");
+            URI uri = new URI("ws://134.209.205.126:7070");
             socket = new Socket(uri, this.ch, global);
             socket.connect();
         }
@@ -29,13 +30,13 @@ public class ChatHandler
         {
             e.printStackTrace();
         }
-
     }
+
 
     public void sendMessage(Message message) {
         ReadyState state = socket.getReadyState();
         while (state.compareTo(ReadyState.OPEN) != 0) {
-            socket.connect();
+            connect();
         }
         socket.send(message.toJSON());
     }
@@ -50,7 +51,7 @@ public class ChatHandler
     public void sendUpdateRequest() {
         ReadyState state = socket.getReadyState();
         while (state.compareTo(ReadyState.OPEN) != 0) {
-            socket.connect();
+            connect();
         }
         socket.send("{" +
                 "\"TYPE\":”update”," +
