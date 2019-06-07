@@ -84,7 +84,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             viewHolder.time.setLayoutParams(params);
 
             viewHolder.time.setPadding(0, 0, 35, 0);
-
+            viewHolder.time.requestFocus();
         } else { //recieved messages
             viewHolder.user.setText(receiver);
 
@@ -107,7 +107,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             viewHolder.time.setLayoutParams(params);
 
             viewHolder.time.setPadding(0, 0, 35, 0);
-
+            viewHolder.time.requestFocus();
         }
     }
 

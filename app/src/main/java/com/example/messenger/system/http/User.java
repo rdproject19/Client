@@ -29,9 +29,9 @@ public class User
 		request.bindParam("pass", password);
 		request.POST();
 		
-		if(request.getResponse().code() == HttpStatus.OK.getCode())
+		if(request.getHttpStatus() == HttpStatus.OK)
 			return true;
-		else if(request.getResponse().code() == HttpStatus.Unauthorized.getCode())
+		else if(request.getHttpStatus() == HttpStatus.Unauthorized)
 			return false;
 
 		throw new ResponseException(request.getResponse());
@@ -87,7 +87,7 @@ public class User
 		if(request.POST())
 			return true;
 		else {
-			if(request.getResponse().code() == HttpStatus.Conflict.getCode()) {
+			if(request.getHttpStatus() == HttpStatus.Conflict) {
 				return false;
 			}
 			throw new ResponseException(request.getResponse());
@@ -105,7 +105,7 @@ public class User
 		REST request = new REST(HOSTNAME, GROUPNAME, "contacts");
 		request.bindParam("uname", username);
 		request.GET();
-		HttpStatus status = HttpStatus.getByCode(request.getResponse().code());
+		HttpStatus status = request.getHttpStatus();
 		if(status == HttpStatus.NoContent) {
 			return new ArrayList<>();
 		} else if(status != HttpStatus.OK) {

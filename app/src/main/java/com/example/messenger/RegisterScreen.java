@@ -75,7 +75,7 @@ public class RegisterScreen extends AppCompatActivity {
     public void openLoginScreen(View v) {
         String un = username.getText().toString();
         String pw = password.getText().toString();
-        String fn = password.getText().toString();
+        String fn = full_name.getText().toString();
 
         try {
             if (correctFields()) {
