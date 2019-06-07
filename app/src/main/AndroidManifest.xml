@@ -21,6 +21,7 @@
         <activity android:name=".EditDetailsScreen" />
         <activity android:name=".ContactsScreen" />
         <activity android:name=".AddChatScreen" />
+        <activity android:name=".ContactResult" />
         <activity android:name=".LoginScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

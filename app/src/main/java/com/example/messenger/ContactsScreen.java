@@ -24,11 +24,14 @@ public class ContactsScreen extends AppCompatActivity {
     }
 
 
-    private void search(View view) throws Exception {
-
-        result_list= User.getUserContacts(search_bar.toString());
-        Intent j = new Intent(ContactsScreen.this, ContactResult.class);
-        j.putExtra("Result list", result_list.toArray());
-        startActivity(j);
+    private void search(View view) {
+        try {
+            result_list= User.getUserContacts(search_bar.toString());
+            Intent j = new Intent(ContactsScreen.this, ContactResult.class);
+            j.putExtra("Result list", result_list.toArray());
+            startActivity(j);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
