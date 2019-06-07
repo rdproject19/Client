@@ -55,8 +55,8 @@ public class ChatHandler
             connect();
         }
         socket.send("{" +
-                "\"TYPE\":”update”," +
-                "\"SENDER_ID\": " + global.getUserData().getString(Keys.USERNAME) + "}");
+                "\"TYPE\":\"update\"," +
+                "\"SENDER_ID\": \"" + global.getUserData().getString(Keys.USERNAME) + "\"}");
     }
 }
 
