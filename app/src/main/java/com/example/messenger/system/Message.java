@@ -194,10 +194,6 @@ public class Message implements Comparable<Message>{
         return delayed;
     }
 
-    public void setDelayed(boolean delayed) {
-        this.delayed = delayed;
-    }
-
     public long getRecieveDate() {
         return recieveDate;
     }

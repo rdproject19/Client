@@ -21,7 +21,7 @@ public class REST
 	/** @var The specfic instruction from this group */
 	private String instruction;
 	
-	private HttpUrl httpUrl;
+	private String httpUrl;
 	private static OkHttpClient client = new OkHttpClient();
 	
 	private String lastResponseBody;
@@ -39,13 +39,8 @@ public class REST
 		hostname 	= _host;
 		group 		= _group;
 		instruction = _instruction;
-		
-		httpUrl = new HttpUrl.Builder()
-			       .scheme("http")
-			       .host(hostname)
-			       .addPathSegment(_group)
-			       .addPathSegment(_instruction)
-			       .build();
+
+		httpUrl = "http://" + hostname + "/" + _group + "/" + _instruction;
 	}
 	/**
 	 * To bind, for example, headers and arguments to the request

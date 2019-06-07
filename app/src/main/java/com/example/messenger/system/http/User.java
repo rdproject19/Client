@@ -12,8 +12,8 @@ import okhttp3.Response;
 
 public class User
 {
-	private final String HOSTNAME  = "";
-	private final String GROUPNAME = "users";
+	private final String HOSTNAME  = "134.209.205.126:8080";
+	private final String GROUPNAME = "user";
 
 	/**
 	 * Check user credentials
@@ -47,7 +47,7 @@ public class User
 	{
 		REST request = new REST(HOSTNAME, GROUPNAME, "name");
 		request.bindParam("uname", username);
-		if(request.GET())
+		if (request.GET())
 			return request.getContents();
 		throw new ResponseException(request.getResponse());
 	}

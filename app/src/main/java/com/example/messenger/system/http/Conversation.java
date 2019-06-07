@@ -11,7 +11,7 @@ import com.example.messenger.system.GFG;
 import okhttp3.Response;
 
 public class Conversation {
-    private final String HOSTNAME = "";
+    private final String HOSTNAME = "134.209.205.126:8080";
     private final String GROUPNAME = "conversations";
 
     /**
