@@ -23,7 +23,6 @@ public class ContactsScreen extends AppCompatActivity {
         search_bar = findViewById(R.id.searchContactBar);
     }
 
-
     public void search(View view) {
         try {
             result_list= User.getUserContacts(search_bar.toString());
