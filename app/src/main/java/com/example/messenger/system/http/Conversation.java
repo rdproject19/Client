@@ -11,8 +11,8 @@ import com.example.messenger.system.GFG;
 import okhttp3.Response;
 
 public class Conversation {
-    private final String HOSTNAME = "134.209.205.126:8080";
-    private final String GROUPNAME = "conversations";
+    private static final String HOSTNAME = "134.209.205.126:8080";
+    private static final String GROUPNAME = "conversations";
 
     /**
      * Creates a new converastion
@@ -21,7 +21,7 @@ public class Conversation {
      * @return the id of the new group, or nothing if an error occured
      * @throws ResponseException
      */
-    public String createConversation(List<String> members, boolean group) throws ResponseException {
+    public static String createConversation(List<String> members, boolean group) throws ResponseException {
         REST request = new REST(HOSTNAME, GROUPNAME, "new");
         request.bindParam("members", String.join(";", members));
         request.bindParam("isgroup", Boolean.toString(group));
@@ -43,7 +43,7 @@ public class Conversation {
      * @return The details of the conversation (as json)
      * @throws ResponseException
      */
-    public String getConversation(String gid) throws ResponseException {
+    public static String getConversation(String gid) throws ResponseException {
         REST request = new REST(HOSTNAME,  GROUPNAME, "/");
         request.bindParam("gid", gid);
         if (request.GET()) {
@@ -62,7 +62,7 @@ public class Conversation {
      * @return A list of user ids
      * @throws ResponseException
      */
-    public List<String> getConversationMembers(String gid) throws ResponseException {
+    public static List<String> getConversationMembers(String gid) throws ResponseException {
         REST request = new REST(HOSTNAME, GROUPNAME, "members");
         request.bindParam("gid", gid);
         if (request.GET()) {
@@ -82,7 +82,7 @@ public class Conversation {
      * @return Success or not
      * @throws ResponseException
      */
-    public boolean addConversationMember(String gid, String contact) throws ResponseException {
+    public static boolean addConversationMember(String gid, String contact) throws ResponseException {
         REST request = new REST(HOSTNAME, GROUPNAME, "members/edit");
         request.bindParam("gid", gid);
         request.bindParam("contact", contact);
@@ -105,7 +105,7 @@ public class Conversation {
      * @return Success or not
      * @throws ResponseException
      */
-    public boolean removeConversationMember(String gid, String contact) throws ResponseException {
+    public static boolean removeConversationMember(String gid, String contact) throws ResponseException {
         REST request = new REST(HOSTNAME, GROUPNAME, "members/edit");
         request.bindParam(" gid", gid);
         request.bindParam("contact", contact);
@@ -127,7 +127,7 @@ public class Conversation {
      * @return Success or not
      * @throws ResponseException
      */
-    public boolean editConversation(HashMap<String, String> parameters) throws ResponseException {
+    public static boolean editConversation(HashMap<String, String> parameters) throws ResponseException {
         REST request = new REST(HOSTNAME, GROUPNAME, "edit");
         for(Map.Entry<String, String> pair : parameters.entrySet())
             request.bindParam(pair.getKey(), pair.getValue());
