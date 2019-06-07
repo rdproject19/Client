@@ -77,7 +77,7 @@ public class Socket extends WebSocketClient {
             if(this.ch.conversationExists(convId)) {
                 conv = this.ch.getConversation(convId);
             } else {
-                this.send("{TYPE: \"update\", USER_ID:"+ userId + "}");
+                this.send("{TYPE: \"update\", USER_ID:\""+ userId + "\"}");
                 conv = Conversation.newConversation(convId, global);
                 ch.putConversation(conv);
                 global.db().conversationDao().putConversation(conv);
