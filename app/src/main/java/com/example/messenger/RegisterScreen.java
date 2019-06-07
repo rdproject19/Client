@@ -28,7 +28,7 @@ public class RegisterScreen extends AppCompatActivity {
     private EditText full_name, username, password;
     private TextView error_text;
     private ImageButton profile_picture;
-    private String profile_pic;
+    private String profile_pic = new String();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +75,19 @@ public class RegisterScreen extends AppCompatActivity {
 
         try {
             if (correctFields()) {
-                if (profile_pic.length() != 0) {
-                    if (User.createUser(un, pw, fn)) {
+                if (profile_pic.length() == 0) {
+                    if (!User.createUser(un, pw, fn)) {
                         error_text.setText("The username: " + un + " is already in use.");
                     }
+                    else {
+                        finish();
+                    }
                 } else {
-                    if (User.createUser(un, pw, fn, true, profile_pic)) {
+                    if (!User.createUser(un, pw, fn, true, profile_pic)) {
                         error_text.setText("The username: " + un + " is already in use.");
+                    }
+                    else {
+                        finish();
                     }
                 }
             }

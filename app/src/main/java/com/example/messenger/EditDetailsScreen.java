@@ -1,7 +1,6 @@
 package com.example.messenger;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -11,6 +10,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.example.messenger.system.Keys;
+import com.example.messenger.system.http.User;
+
+import java.util.HashMap;
 
 public class EditDetailsScreen extends AppCompatActivity {
 
@@ -42,7 +46,7 @@ public class EditDetailsScreen extends AppCompatActivity {
                     Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                     Bitmap p = RegisterScreen.circelizeBitmap(bitmap);
                     profile_picture.setImageBitmap(p);
-                    RegisterScreen.saveImage(p, this, profile_pic);
+                    profile_pic = RegisterScreen.saveImage(p, this, profile_pic);
                 }
                 case 1: {
                     final Bundle extras = data.getExtras();
@@ -50,7 +54,7 @@ public class EditDetailsScreen extends AppCompatActivity {
                         Bitmap bitmap = extras.getParcelable("data");
                         Bitmap p = RegisterScreen.circelizeBitmap(bitmap);
                         profile_picture.setImageBitmap(p);
-                        RegisterScreen.saveImage(p, this, profile_pic);
+                        profile_pic = RegisterScreen.saveImage(p, this, profile_pic);
                     }
                 }
             }
@@ -59,11 +63,19 @@ public class EditDetailsScreen extends AppCompatActivity {
 
     public void openMessengerScreen(View v) {
         if(correctFields()) {
-            SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putString("pref_fn", new_name.getText().toString());
-            editor.apply();
-            finish();
+            HashMap<String, String> hm = new HashMap<>();
+            hm.put("fullname", ((TextView) new_name).getText().toString());
+            try {
+                if(!User.editUser(hm)) {
+                    //failed
+                }
+                else {
+                    finish();
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
