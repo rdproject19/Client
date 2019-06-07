@@ -7,8 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.example.messenger.system.Contact;
 import com.example.messenger.system.ContactDao;
@@ -20,36 +22,25 @@ import java.util.Arrays;
 
 public class ContactResult extends AppCompatActivity {
 
-    private ArrayAdapter array_adapter;
-    private ArrayList contacts;
-    private String contacts_array;
-
-    ListView contact_result_list;
-
+    private TextView fullname;
+    private TextView username;
+    private Button resultbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contact_resultscreen);
-        contact_result_list = findViewById(R.id.contact_result_list);
-        Intent i =getIntent();
-        InitListView(i.getStringExtra("Result list"), i.getStringExtra("username"));
-
+        resultbtn = findViewById(R.id.Resultbutton);
+        fullname = findViewById(R.id.res_fullname);
+        username = findViewById(R.id.res_username);
+        Intent a = getIntent();
+        fullname.setText(a.getStringExtra("fullname"));
+        username.setText(a.getStringExtra("username"));
     }
 
-    private void InitListView(String result, String username) {
-        contacts_array = result;
-        contacts = new ArrayList<>(Arrays.asList(contacts_array, username));
-        array_adapter = new ArrayAdapter(getBaseContext(), R.layout.searchlist_layout, R.id.searchlist_contact, contacts);
-        contact_result_list.setAdapter(array_adapter);
-        contact_result_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterview, View view, int i, long l) {
-                SaveContact(contacts.get(i).toString(), "");
-                finish();
-            }
-        });
+    public void save(View view) {
+        SaveContact(username.getText().toString(), fullname.getText().toString());
     }
 
     private void SaveContact(String username, String fullname) {
