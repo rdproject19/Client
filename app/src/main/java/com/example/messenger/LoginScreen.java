@@ -68,6 +68,7 @@ public class LoginScreen extends AppCompatActivity {
             errorMessage = "Incorrect username/password";
         } catch (Exception e) {
             successful = false;
+            e.printStackTrace();
             errorMessage = "Connection failed";
         }
 

@@ -124,15 +124,13 @@ public class MessengerScreen extends AppCompatActivity {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
+                InitChatList();
                 chatlist = findViewById(R.id.chatlist);
                 chatlist.setAdapter(chat_adapter);
-                chatlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterview, View view, int i, long l) {
-                        Intent j = new Intent(MessengerScreen.this, ChatWindow.class);
-                        j.putExtra("conversation", chat_array.get(i).get("convId"));
-                        startActivity(j);
-                    }
+                chatlist.setOnItemClickListener((adapterview, view, i, l) -> {
+                    Intent j = new Intent(MessengerScreen.this, ChatWindow.class);
+                    j.putExtra("conversation", chat_array.get(i).get("convId"));
+                    startActivity(j);
                 });
 
                 addButtonListener(action_button);
@@ -163,6 +161,7 @@ public class MessengerScreen extends AppCompatActivity {
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {
+                        InitChatList();
                         chatlist = findViewById(R.id.chatlist);
                         chatlist.setAdapter(chat_adapter);
                         chatlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -13,6 +13,7 @@
         android:roundIcon="@drawable/icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         android:name=".Global">
         <activity android:name=".ChatWindow"></activity>
         <activity android:name=".MessengerScreen" />

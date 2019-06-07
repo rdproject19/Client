@@ -33,10 +33,12 @@
             android:textCursorDrawable="@null"
             android:textSize="30sp" />
 
-        <ListView
-            android:id="@+id/contactsListView"
-            android:layout_width="320dp"
-            android:layout_height="500dp" />
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Click here to search"
+            android:onClick="search"/>
 
     </LinearLayout>
 
