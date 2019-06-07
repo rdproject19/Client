@@ -87,6 +87,7 @@ public class REST
 		try {
 			Response res = client.newCall(request).execute();
 			ApiResponse response = new ApiResponse(HttpStatus.getByCode(res.code()), res.body().string());
+			lastResponse = response;
 			lastResponseBody = response.response;
 			if(response.status.getCode() == 200)
 				return true;
@@ -112,6 +113,7 @@ public class REST
 		try {
 			Response res = client.newCall(request).execute();
 			ApiResponse response = new ApiResponse(HttpStatus.getByCode(res.code()), res.body().string());
+			lastResponse = response;
 			lastResponseBody = response.response;
 			if(response.status.getCode() == 200)
 				return true;
@@ -134,6 +136,7 @@ public class REST
 		try {
 			Response res = client.newCall(request).execute();
 			ApiResponse response = new ApiResponse(HttpStatus.getByCode(res.code()), res.body().string());
+			lastResponse = response;
 			lastResponseBody = response.response;
 			if(response.status.getCode() == 200)
 				return true;
@@ -157,6 +160,7 @@ public class REST
 		try {
 			Response res = client.newCall(request).execute();
 			ApiResponse response = new ApiResponse(HttpStatus.getByCode(res.code()), res.body().string());
+			lastResponse = response;
 			lastResponseBody = response.response;
 			if(response.status.getCode() == 200)
 				return true;
