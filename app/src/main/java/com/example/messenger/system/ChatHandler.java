@@ -18,6 +18,7 @@ public class ChatHandler
     {
         this.ch = new CommunicationHandler(global);
         this.global = global;
+        connect();
     }
 
     private void connect() {
