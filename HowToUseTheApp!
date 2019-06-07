@@ -8,7 +8,8 @@ with the cloud plus button in the left bottem corner.
 5. unfortunatly for the reciepient to see the chat you will have to close down and open up the chat, 
 once the conversaton has been added both can chat normally.
 
-The main server and the backup server should be running durring testing. If you decide to deploy your own server follow the steps bellow:
+The main server and the backup server should be running during grading. If they are not please contact us on 0633915098 or
+if you decide to deploy your own server follow the steps bellow:
 
 make sure java jdk 1.8, maven and git are installed, and that ports 7070 and 8080 are open. 
 
