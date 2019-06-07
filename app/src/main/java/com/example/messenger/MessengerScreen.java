@@ -285,19 +285,14 @@ public class MessengerScreen extends AppCompatActivity {
 
     private void ShowContacts() {
         contact_array.clear();
-        SharedPreferences sp = getSharedPreferences("PrefsFile", MODE_PRIVATE);
+        List<Contact> savedcontacts = ((Global) this.getApplication()).db().contactDao().getAll();
 
-        if(sp.contains("pref_contacts")) {
-            String list = sp.getString("pref_contacts", "");
-            List<Contact> savedcontacts = ((Global) this.getApplication()).db().contactDao().getAll();
-
-            if(savedcontacts.size() > 0) {
-                for(Contact c:savedcontacts) {
-                    HashMap<String, String> hm = new HashMap<String, String>();
-                    hm.put("contactview_title", c.getFullName());
-                    hm.put("contactview_image", Integer.toString(R.drawable.icon_default_profile));
-                    contact_array.add(hm);
-                }
+        if(savedcontacts.size() > 0) {
+            for(Contact c:savedcontacts) {
+                HashMap<String, String> hm = new HashMap<String, String>();
+                hm.put("contactview_title", c.getFullName());
+                hm.put("contactview_image", Integer.toString(R.drawable.icon_default_profile));
+                contact_array.add(hm);
             }
         }
     }

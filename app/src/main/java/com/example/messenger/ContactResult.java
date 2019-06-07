@@ -16,6 +16,8 @@ import com.example.messenger.system.Contact;
 import com.example.messenger.system.ContactDao;
 import com.example.messenger.system.Conversation;
 import com.example.messenger.system.ConversationDao;
+import com.example.messenger.system.Keys;
+import com.example.messenger.system.http.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,10 +43,16 @@ public class ContactResult extends AppCompatActivity {
 
     public void save(View view) {
         SaveContact(username.getText().toString(), fullname.getText().toString());
+        finish();
     }
 
     private void SaveContact(String username, String fullname) {
         StringBuilder string = new StringBuilder();
+        try {
+            User.addUserContact(((Global) this.getApplication()).getUserData().getString(Keys.USERNAME), username);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Contact contact = new Contact(username, fullname);
         ContactDao convDao = ((Global) this.getApplication()).db().contactDao();
         convDao.putContact(contact);

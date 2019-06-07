@@ -25,11 +25,12 @@ public class ContactsScreen extends AppCompatActivity {
 
     public void search(View view) {
         try {
-            result_list= User.getName(search_bar.toString());
+            result_list= User.getName(search_bar.getText().toString());
             Intent j = new Intent(ContactsScreen.this, ContactResult.class);
             j.putExtra("fullname", result_list);
-            j.putExtra("username", search_bar.toString());
+            j.putExtra("username", search_bar.getText().toString());
             startActivity(j);
+            finish();
         } catch (Exception e) {
             e.printStackTrace();
         }

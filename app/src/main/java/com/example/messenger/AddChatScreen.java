@@ -41,7 +41,6 @@ public class AddChatScreen extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterview, View view, int i, long l) {
                 SaveChat(i);
-
                 finish();
             }
         });
