@@ -202,8 +202,8 @@ public class ChatWindow extends AppCompatActivity {
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog dialog = new DatePickerDialog(ChatWindow.this, android.R.style.Theme_Black, dateListener, year, month, day);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        DatePickerDialog dialog = new DatePickerDialog(ChatWindow.this, android.R.style.Theme_DeviceDefault_Dialog, dateListener, year, month, day);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#214D83")));
         dialog.show();
     }
 
@@ -212,8 +212,8 @@ public class ChatWindow extends AppCompatActivity {
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         int minute = cal.get(Calendar.MINUTE);
 
-        TimePickerDialog dialog = new TimePickerDialog(ChatWindow.this, android.R.style.Theme_Black, timeListener, hour, minute, true);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        TimePickerDialog dialog = new TimePickerDialog(ChatWindow.this, android.R.style.Theme_DeviceDefault_Dialog, timeListener, hour, minute, true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#214D83")));
         dialog.show();
     }
 
