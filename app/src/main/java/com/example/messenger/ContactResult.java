@@ -22,7 +22,7 @@ public class ContactResult extends AppCompatActivity {
 
     private ArrayAdapter array_adapter;
     private ArrayList contacts;
-    private String[] contacts_array;
+    private String contacts_array;
     ListView contact_result_list;
 
 
@@ -30,16 +30,16 @@ public class ContactResult extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.contacts_screen);
+        setContentView(R.layout.contact_resultscreen);
         contact_result_list = findViewById(R.id.contact_result_list);
         Intent i =getIntent();
-        InitListView(i.getStringArrayExtra("Result list"));
+        InitListView(i.getStringExtra("Result list"), i.getStringExtra("username"));
 
     }
 
-    private void InitListView(String[] result) {
+    private void InitListView(String result, String username) {
         contacts_array = result;
-        contacts = new ArrayList<>(Arrays.asList(contacts_array));
+        contacts = new ArrayList<>(Arrays.asList(contacts_array, username));
         array_adapter = new ArrayAdapter(getBaseContext(), R.layout.searchlist_layout, R.id.searchlist_contact, contacts);
         contact_result_list.setAdapter(array_adapter);
 
