@@ -58,7 +58,6 @@ public class LoginScreen extends AppCompatActivity {
     }
 
     public void openChats(View v) {
-        ud.setBoolean(Keys.REMEMBER, true);
         String name = username.getText().toString();
         String pass = password.getText().toString();
 
@@ -73,6 +72,7 @@ public class LoginScreen extends AppCompatActivity {
         }
 
         if( successful ) {
+            ud.setBoolean(Keys.REMEMBER, true);
             global.setData(name, pass);
             NextScene();
         } else {
