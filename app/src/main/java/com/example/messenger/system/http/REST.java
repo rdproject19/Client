@@ -25,7 +25,7 @@ public class REST
 	private static OkHttpClient client = new OkHttpClient();
 	
 	private String lastResponseBody;
-	private Response lastResponse;
+	private ApiResponse lastResponse;
 
 	/**
 	 * [_url]/[_group]/[_instruction]
@@ -85,9 +85,10 @@ public class REST
 		        .post(requestBody)
 		        .build();
 		try {
-			lastResponse = client.newCall(request).execute();
-			lastResponseBody = lastResponse.body().string();
-			if(lastResponse.isSuccessful())
+			Response res = client.newCall(request).execute();
+			ApiResponse response = new ApiResponse(HttpStatus.getByCode(res.code()), res.body().string());
+			lastResponseBody = response.response;
+			if(response.status.getCode() == 200)
 				return true;
 			else
 				return false;
@@ -109,9 +110,10 @@ public class REST
 				.put(requestBody)
 				.build();
 		try {
-			lastResponse = client.newCall(request).execute();
-			lastResponseBody = lastResponse.body().string();
-			if(lastResponse.isSuccessful())
+			Response res = client.newCall(request).execute();
+			ApiResponse response = new ApiResponse(HttpStatus.getByCode(res.code()), res.body().string());
+			lastResponseBody = response.response;
+			if(response.status.getCode() == 200)
 				return true;
 			else
 				return false;
@@ -130,9 +132,10 @@ public class REST
 		        .url(httpUrl + "?" + getQueryString())
 		        .build();
 		try {
-			lastResponse = client.newCall(request).execute();
-			lastResponseBody = lastResponse.body().string();
-			if(lastResponse.isSuccessful())
+			Response res = client.newCall(request).execute();
+			ApiResponse response = new ApiResponse(HttpStatus.getByCode(res.code()), res.body().string());
+			lastResponseBody = response.response;
+			if(response.status.getCode() == 200)
 				return true;
 			else
 				return false;
@@ -152,9 +155,10 @@ public class REST
 		        .url(httpUrl + "?" + getQueryString())
 		        .build();
 		try {
-			lastResponse = client.newCall(request).execute();
-			lastResponseBody = lastResponse.body().string();
-			if(lastResponse.isSuccessful())
+			Response res = client.newCall(request).execute();
+			ApiResponse response = new ApiResponse(HttpStatus.getByCode(res.code()), res.body().string());
+			lastResponseBody = response.response;
+			if(response.status.getCode() == 200)
 				return true;
 			else
 				return false;
@@ -165,7 +169,7 @@ public class REST
 	}
 
 	public HttpStatus getHttpStatus() {
-		return HttpStatus.getByCode(this.lastResponse.code());
+		return this.lastResponse.status;
 	}
 	
 	
@@ -173,7 +177,7 @@ public class REST
 		return lastResponseBody;
 	}
 	
-	public Response getResponse() {
+	public ApiResponse getResponse() {
 		return lastResponse;
 	}
 }
