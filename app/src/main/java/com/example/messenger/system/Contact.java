@@ -2,6 +2,7 @@ package com.example.messenger.system;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -13,6 +14,7 @@ public class Contact {
     @ColumnInfo(name = "full name")
     private String fullName;
 
+    @Ignore
     @ColumnInfo(name = "ImagePath")
     private String imagePath;
 

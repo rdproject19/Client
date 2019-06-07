@@ -46,7 +46,7 @@ public class ContactResult extends AppCompatActivity {
         contact_result_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterview, View view, int i, long l) {
-                SaveContact(contacts.get(i).toString());
+                SaveContact(contacts.get(i).toString(), "");
                 finish();
             }
         });
