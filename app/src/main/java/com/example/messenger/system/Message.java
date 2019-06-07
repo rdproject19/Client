@@ -84,8 +84,8 @@ public class Message implements Comparable<Message>{
         this.message = message;
         this.conversationID = conversationID;
         this.parsed = false;
-        this.delayed = delayed;
-        this.recieveDate = recieveDate;
+        //this.delayed = delayed;
+        //this.recieveDate = recieveDate;
     }
 
     /**
@@ -155,8 +155,8 @@ public class Message implements Comparable<Message>{
                 "\"MESSAGE\":\"" + message + "\"," +
                 "\"CONVERSATION_ID\": \"" + conversationID + "\"," +
                 "\"MESSAGE_ID\":" + messageID + "," +
-                "\"DELAYED\":" + delayed + "," +
-                "\"SEND_AT\":" + recieveDate +
+                //"\"DELAYED\":" + delayed + "," +
+                //"\"SEND_AT\":" + recieveDate +
 
                 "}";
     }
