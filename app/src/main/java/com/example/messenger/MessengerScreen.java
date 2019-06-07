@@ -149,6 +149,8 @@ public class MessengerScreen extends AppCompatActivity {
             c.update((Global) this.getApplication());
             ch.ch().putConversation(c);
         }
+
+        ((Global) this.getApplication()).stopAlarm();
     }
 
     private void InitTabs() {
@@ -374,6 +376,12 @@ public class MessengerScreen extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        ((Global) this.getApplication()).startAlarm();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
         ((Global) this.getApplication()).startAlarm();
     }
 }

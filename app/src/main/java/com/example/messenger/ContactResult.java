@@ -64,4 +64,10 @@ public class ContactResult extends AppCompatActivity {
         super.onPause();
         ((Global) this.getApplication()).startAlarm();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((Global) this.getApplication()).stopAlarm();
+    }
 }

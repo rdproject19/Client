@@ -36,9 +36,9 @@ public class AlertReceiver extends BroadcastReceiver {
         Global global = ((Global) context.getApplicationContext());
         UserData ud = global.getUserData();
         global.getChatHandler().sendUpdateRequest();
-        String msg = ud.getString(Keys.LASTMESSAGE);
+        //String msg = ud.getString(Keys.LASTMESSAGE);
         addNotification2(context, "test");
-        try {
+        /*try {
             if( msg!=null) {
                 Message last_message = new Message(msg);
                 addNotification(context, last_message);
@@ -46,7 +46,7 @@ public class AlertReceiver extends BroadcastReceiver {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public static boolean isAppRunning(final Context context, final String packageName) {
