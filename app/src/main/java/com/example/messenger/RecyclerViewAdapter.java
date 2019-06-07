@@ -39,7 +39,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 receiver = person;
             }
         }
-        this.receiver = participants.get(1);
         this.messages = global.db().messageDao().getFromConversation(convo.getConversationId());
         this.mContext = global.getApplicationContext();
     }

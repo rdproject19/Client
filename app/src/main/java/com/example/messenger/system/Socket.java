@@ -132,7 +132,8 @@ public class Socket extends WebSocketClient {
                 if (jsonConvo.has("PARTICIPANTS")) {
                     JSONArray parts = jsonConvo.getJSONArray("PARTICIPANTS");
                     for (int i = 0; i < parts.length(); i++) {
-                        conv.addParticipant((String) parts.get(i));
+                        String participant = (String) parts.get(i);
+                        conv.addParticipant(participant);
                     }
                 }
                 ch.putConversation(conv);
