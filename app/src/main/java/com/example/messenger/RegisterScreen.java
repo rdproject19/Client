@@ -7,6 +7,7 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +35,9 @@ public class RegisterScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_screen);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         full_name = findViewById(R.id.fullname);
         username = findViewById(R.id.username);
@@ -81,16 +85,10 @@ public class RegisterScreen extends AppCompatActivity {
                     } else {
                         finish();
                     }
-                    else {
-                        finish();
-                    }
                 } else {
                     if (!User.createUser(un, pw, fn, true, profile_pic)) {
                         error_text.setText("The username: " + un + " is already in use.");
                     } else {
-                        finish();
-                    }
-                    else {
                         finish();
                     }
                 }
