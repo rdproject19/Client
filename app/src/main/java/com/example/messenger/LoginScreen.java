@@ -63,8 +63,10 @@ public class LoginScreen extends AppCompatActivity {
 
         boolean successful;
         String errorMessage;
+        String fullname;
         try {
             successful = User.userLogin(name, GFG.encryptThisString(pass));
+            fullname = User.getName(name);
             errorMessage = "Incorrect username/password";
         } catch (Exception e) {
             successful = false;
@@ -74,7 +76,7 @@ public class LoginScreen extends AppCompatActivity {
 
         if( successful ) {
             ud.setBoolean(Keys.REMEMBER, true);
-            global.setData(name, pass);
+            global.setData(name, fullname, pass);
             NextScene();
         } else {
             error_text.setText(errorMessage);

@@ -82,9 +82,9 @@ public class Global extends Application {
         this.chatHandler = new ChatHandler(this);
     }
 
-    public void setData(String username, String password) {
+    public void setData(String username, String fullname, String password) {
 
-
+        userdata.setFullname(fullname);
         userdata.setUsername(username);
         userdata.setSeed(GFG.encryptThisString(username+GFG.encryptThisString(password)));
     }
