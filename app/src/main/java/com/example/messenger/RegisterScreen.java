@@ -7,6 +7,7 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -28,12 +29,15 @@ public class RegisterScreen extends AppCompatActivity {
     private EditText full_name, username, password;
     private TextView error_text;
     private ImageButton profile_picture;
-    private String profile_pic;
+    private String profile_pic = new String();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_screen);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         full_name = findViewById(R.id.fullname);
         username = findViewById(R.id.username);
@@ -71,7 +75,7 @@ public class RegisterScreen extends AppCompatActivity {
     public void openLoginScreen(View v) {
         String un = username.getText().toString();
         String pw = password.getText().toString();
-        String fn = password.getText().toString();
+        String fn = full_name.getText().toString();
 
         try {
             if (correctFields()) {
