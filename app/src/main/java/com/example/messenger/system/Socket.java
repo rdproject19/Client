@@ -74,14 +74,8 @@ public class Socket extends WebSocketClient {
             UserData prefs = global.getUserData();
 
             Conversation conv;
-            if(this.ch.conversationExists(convId)) {
-                conv = this.ch.getConversation(convId);
-            } else {
-                this.send("{TYPE: \"update\", USER_ID:\""+ userId + "\"}");
-                conv = Conversation.newConversation(convId, global);
-                ch.putConversation(conv);
-                global.db().conversationDao().putConversation(conv);
-            }
+            conv = this.ch.getConversation(convId);
+            conv.putMessage(msg);
 
             prefs.setString(Keys.LASTMESSAGE, msg.toJSON());
 
@@ -92,7 +86,6 @@ public class Socket extends WebSocketClient {
             sendReceipt(msg);
 
             // Puts the message in the correct conversation
-            conv.putMessage(msg);
 
             // Updates the screen
             RecyclerViewAdapter adapter = global.getAdapter();
