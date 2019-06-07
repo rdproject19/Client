@@ -28,22 +28,22 @@ public class Image
      * @param id Group/User id
      * @param type 'group' or 'user'
      * @param image The image, encoded as base64
-     * @return Success or not
+     * @return The image id, or empty if error
      * @throws ResponseException
      */
-    public boolean updateImage(String id, String type, String image) throws ResponseException
+    public String updateImage(String id, String type, String image) throws ResponseException
     {
         REST rest = new REST(HOSTNAME, GROUPNAME, "/");
         rest.bindParam("id", id);
         rest.bindParam(" type", type);
         rest.bindParam("data", image);
         if (rest.PUT()) {
-            return true;
+            return rest.getContents();
         } else {
             if (rest.getResponse().code() == HttpStatus.InternalServerError.getCode()) {
-                return false;
+                return "";
             } else if (rest.getResponse().code() == HttpStatus.Gone.getCode()) {
-                return false;
+                return "";
             }
         }
         throw new ResponseException(rest.getResponse());
