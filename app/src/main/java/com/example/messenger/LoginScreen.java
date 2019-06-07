@@ -26,8 +26,6 @@ public class LoginScreen extends AppCompatActivity {
     private UserData ud;
     private Global global;
 
-    private CheckBox remember_me;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +33,6 @@ public class LoginScreen extends AppCompatActivity {
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         error_text = findViewById(R.id.invalid);
-        remember_me = findViewById(R.id.rememberMe);
         username.requestFocus();
         global = ((Global) this.getApplication());
 
@@ -56,9 +53,7 @@ public class LoginScreen extends AppCompatActivity {
     }
 
     public void openChats(View v) {
-        if(remember_me.isChecked()) {
-            ud.setBoolean(Keys.REMEMBER, true);
-        }
+        ud.setBoolean(Keys.REMEMBER, true);
         String name = username.getText().toString();
         String pass = password.getText().toString();
 
