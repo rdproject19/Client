@@ -13,8 +13,10 @@ import android.widget.TextView;
 
 import com.example.messenger.system.AlertReceiver;
 import com.example.messenger.system.ChatHandler;
+import com.example.messenger.system.GFG;
 import com.example.messenger.system.Keys;
 import com.example.messenger.system.UserData;
+import com.example.messenger.system.http.User;
 
 public class LoginScreen extends AppCompatActivity {
 
@@ -60,11 +62,22 @@ public class LoginScreen extends AppCompatActivity {
         String name = username.getText().toString();
         String pass = password.getText().toString();
 
+        boolean successful;
+        String errorMessage;
+        try {
+            successful = User.userLogin(name, GFG.encryptThisString(pass));
+            errorMessage = "Incorrect username/password";
+        } catch (Exception e) {
+            successful = false;
+            errorMessage = "Connection failed";
+        }
 
-        ud.setUsername(name);
-        global.setData(name, pass);
-
-        NextScene();
+        if( successful ) {
+            global.setData(name, pass);
+            NextScene();
+        } else {
+            error_text.setText(errorMessage);
+        }
     }
 
     public void openRegisterScreen(View v) {
