@@ -136,7 +136,7 @@ public class MessengerScreen extends AppCompatActivity {
 
                 addButtonListener(action_button);
             }
-        }, 10);
+        }, 1000);
 
         ConversationDao cd = ((Global) this.getApplication()).db().conversationDao();
         ChatHandler ch = ((Global) this.getApplication()).getChatHandler();
@@ -177,7 +177,7 @@ public class MessengerScreen extends AppCompatActivity {
                         });
                         ShowChats();
                     }
-                }, 20);
+                }, 2000);
                 break;
             }
             case 1: {

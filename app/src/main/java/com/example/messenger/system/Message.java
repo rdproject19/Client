@@ -60,6 +60,7 @@ public class Message implements Comparable<Message>{
         timeStamp = json.getLong("TIMESTAMP");
         message = json.getString("MESSAGE");
         conversationID = json.getString("CONVERSATION_ID");
+        messageID = json.getInt("MESSAGE_ID");
         parsed = false;
     }
 
