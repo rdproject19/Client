@@ -51,6 +51,8 @@ public class AddChatScreen extends AppCompatActivity {
                 add_chat_list.setAdapter(MessengerScreen.contact_adapter);
             }
         }, 500);
+
+        ((Global) this.getApplication()).stopAlarm();
     }
 
     private void SaveChat(int number) {
@@ -89,5 +91,17 @@ public class AddChatScreen extends AppCompatActivity {
         } catch (ResponseException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((Global) this.getApplication()).startAlarm();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((Global) this.getApplication()).stopAlarm();
     }
 }
