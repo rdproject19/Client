@@ -37,20 +37,11 @@ public class AlertReceiver extends BroadcastReceiver {
         UserData ud = global.getUserData();
         global.getChatHandler().sendUpdateRequest();
         String msg = ud.getString(Keys.LASTMESSAGE);
+        addNotification2(context, "test");
         try {
-            if(!is_running) {
-                addNotification(context);
-            } else {
-                addNotification(context);
-            }
-
             if( msg!=null) {
                 Message last_message = new Message(msg);
-                if(!is_running) {
-
-                } else {
-                    sendNotification(context, last_message);
-                }
+                addNotification(context, last_message);
                 ud.setString(Keys.LASTMESSAGE, null);
             }
         } catch (Exception e) {
@@ -72,33 +63,29 @@ public class AlertReceiver extends BroadcastReceiver {
         return false;
     }
 
-    public void sendNotification(Context context, Message last_message){
-        notification = new NotificationCompat.Builder(context, "2");
-        notification.setAutoCancel(true);
-
-        //build the notification
-        notification.setSmallIcon(R.drawable.icon_chat);
-        notification.setTicker("You have a new message!");
-        notification.setWhen(System.currentTimeMillis());
-        notification.setContentTitle(last_message.getSenderID());
-        notification.setContentText(last_message.getMessage());
-
-        //select what happens, when user clicks the notification
-        Intent intent = new Intent(context, ChatWindow.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        notification.setContentIntent(pendingIntent);
-
-        //"send" the notification
-        NotificationManager nm = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-        nm.notify(4, notification.build());
-    }
-
-    private void addNotification(Context context) {
+    private void addNotification(Context context, Message msg) {
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.icon_round)
-                        .setContentTitle("Notifications Example")
-                        .setContentText("This is a test notification");
+                        .setContentTitle(msg.getSenderID())
+                        .setContentText(msg.getMessage());
+
+        Intent notificationIntent = new Intent(context, ChatWindow.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(contentIntent);
+
+        // Add as notification
+        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(0, builder.build());
+    }
+
+    private void addNotification2(Context context, String test) {
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.drawable.icon_round)
+                        .setContentTitle(test)
+                        .setContentText(test);
 
         Intent notificationIntent = new Intent(context, ChatWindow.class);
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent,

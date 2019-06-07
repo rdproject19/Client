@@ -1,9 +1,13 @@
 package com.example.messenger;
 
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.PendingIntent;
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.content.Intent;
 
+import com.example.messenger.system.AlertReceiver;
 import com.example.messenger.system.AppDatabase;
 import com.example.messenger.system.ChatHandler;
 import com.example.messenger.system.Conversation;
@@ -24,6 +28,8 @@ public class Global extends Application {
     private AppDatabase db;
     private WebAPI webAPI;
     private RecyclerViewAdapter adapter;
+    private AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
 
     /**
      * Get current chatHandler object
@@ -99,8 +105,21 @@ public class Global extends Application {
         this.context = getApplicationContext();
         this.userdata = new UserData(this.context);
         super.onCreate();
+        Intent intent = new Intent(this, AlertReceiver.class);
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
         /* @TODO remove allowMainThreadQueries */
+    }
 
+    public void startAlarm(){
+        if(alarmManager != null) {
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 5000, 60000, pendingIntent);
+        }
+    }
 
+    public void stopAlarm() {
+        if(alarmManager != null) {
+            alarmManager.cancel(pendingIntent);
+        }
     }
 }

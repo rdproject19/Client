@@ -39,6 +39,7 @@ public class EditDetailsScreen extends AppCompatActivity {
         error_text = findViewById(R.id.newinvalid);
         profile_picture = findViewById(R.id.newProfilePicture);
         new_name.requestFocus();
+        ((Global) this.getApplication()).stopAlarm();
     }
 
     @Override
@@ -145,5 +146,17 @@ public class EditDetailsScreen extends AppCompatActivity {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, 0);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((Global) this.getApplication()).startAlarm();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((Global) this.getApplication()).stopAlarm();
     }
 }
