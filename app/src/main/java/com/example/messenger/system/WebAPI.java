@@ -12,6 +12,7 @@ import java.net.URLConnection;
 import java.util.List;
 
 
+
 /**
  * A class that is compatible with the http API of the server.
  * This class is used to, for example, retrieve a list of conversations
@@ -183,7 +184,6 @@ public class WebAPI {
         return !latestResponse.has("error");
 
     }
-
 
 
 }

@@ -14,7 +14,14 @@ public class User
 {
 	private final String HOSTNAME  = "";
 	private final String GROUPNAME = "users";
-	
+
+	/**
+	 * Check user credentials
+	 * @param username Username
+	 * @param password Password
+	 * @return True if the credentials were correct, false if otherwise
+	 * @throws Exception
+	 */
 	public boolean userLogin(String username, String password) throws Exception
 	{
 		REST request = new REST(HOSTNAME, GROUPNAME, "login");
@@ -30,7 +37,12 @@ public class User
 		throw new ResponseException(request.getResponse());
 	}
 
-
+	/**
+	 * Gets a users full name
+	 * @param username The username
+	 * @return The users full name
+	 * @throws Exception
+	 */
 	public String getName(String username) throws Exception
 	{
 		REST request = new REST(HOSTNAME, GROUPNAME, "name");
@@ -40,11 +52,29 @@ public class User
 		throw new ResponseException(request.getResponse());
 	}
 
-	public boolean createUser(String username, String password, String fullname, boolean hasImage) throws Exception
+	/**
+	 * Creates a new user
+	 * @param username Username
+	 * @param password Password
+	 * @param fullname Full name
+	 * @return Success or not
+	 * @throws Exception
+	 */
+	public boolean createUser(String username, String password, String fullname) throws Exception
 	{
 		return createUser(username, password, fullname, false, "");
 	}
 
+	/**
+	 * Creates a new user
+	 * @param username Username
+	 * @param password Password
+	 * @param fullname Full name
+	 * @param hasImage Whether or not this user has an image
+	 * @param image The image id (returned by upload image)
+	 * @return Success or not
+	 * @throws Exception
+	 */
 	public boolean createUser(String username, String password, String fullname, boolean hasImage, String image) throws Exception
 	{
 		REST request = new REST(HOSTNAME, GROUPNAME, "new");
@@ -63,7 +93,6 @@ public class User
 			throw new ResponseException(request.getResponse());
 		}
 	}
-
 
 	/**
 	 * Get users contacts
@@ -85,9 +114,15 @@ public class User
 
 		return (ArrayList<String>) Arrays.asList(request.getContents().split(","));
 	}
-	
 
-	public boolean editUserContact(String username, String contact) throws Exception
+	/**
+	 * Adds a user to the contact list
+	 * @param username Username
+	 * @param contact User to add
+	 * @return Success or not
+	 * @throws Exception
+	 */
+	public boolean addUserContact(String username, String contact) throws Exception
 	{
 		REST request = new REST(HOSTNAME, GROUPNAME, "contacts/edit");
 		request.bindParam("uname", username);
@@ -108,7 +143,13 @@ public class User
 		throw new ResponseException(request.getResponse());
 	}
 
-
+	/**
+	 * Removes a user from a users contact list
+	 * @param username Username
+	 * @param contact Contact
+	 * @return Success or not
+	 * @throws Exception
+	 */
 	public boolean deleteUserContact(String username, String contact) throws Exception
 	{
 		REST request = new REST(HOSTNAME, GROUPNAME, "contacts/edit");
@@ -130,6 +171,12 @@ public class User
 		throw new ResponseException(request.getResponse());
 	}
 
+	/**
+	 * Edits a user
+	 * @param arguments Map of values to be edited
+	 * @return Success or not
+	 * @throws Exception
+	 */
 	public boolean editUser(HashMap<String, String> arguments) throws Exception
 	{
 		REST request = new REST(HOSTNAME, GROUPNAME, "edit");
