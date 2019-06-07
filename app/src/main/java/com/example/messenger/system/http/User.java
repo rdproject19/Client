@@ -22,7 +22,7 @@ public class User
 	 * @return True if the credentials were correct, false if otherwise
 	 * @throws Exception
 	 */
-	public boolean userLogin(String username, String password) throws Exception
+	public static boolean userLogin(String username, String password) throws Exception
 	{
 		REST request = new REST(HOSTNAME, GROUPNAME, "login");
 		request.bindParam("uname", username);
@@ -43,7 +43,7 @@ public class User
 	 * @return The users full name
 	 * @throws Exception
 	 */
-	public String getName(String username) throws Exception
+	public static String getName(String username) throws Exception
 	{
 		REST request = new REST(HOSTNAME, GROUPNAME, "name");
 		request.bindParam("uname", username);
@@ -100,7 +100,7 @@ public class User
 	 * @return arraylist with usernames of contacts
 	 * @throws Exception if unexpected behavior is encountered.
 	 */
-	public List<String> getUserContacts(String username) throws Exception
+	public static List<String> getUserContacts(String username) throws Exception
 	{
 		REST request = new REST(HOSTNAME, GROUPNAME, "contacts");
 		request.bindParam("uname", username);
@@ -122,7 +122,7 @@ public class User
 	 * @return Success or not
 	 * @throws Exception
 	 */
-	public boolean addUserContact(String username, String contact) throws Exception
+	public static boolean addUserContact(String username, String contact) throws Exception
 	{
 		REST request = new REST(HOSTNAME, GROUPNAME, "contacts/edit");
 		request.bindParam("uname", username);
@@ -150,7 +150,7 @@ public class User
 	 * @return Success or not
 	 * @throws Exception
 	 */
-	public boolean deleteUserContact(String username, String contact) throws Exception
+	public static boolean deleteUserContact(String username, String contact) throws Exception
 	{
 		REST request = new REST(HOSTNAME, GROUPNAME, "contacts/edit");
 		request.bindParam("uname", username);
@@ -177,7 +177,7 @@ public class User
 	 * @return Success or not
 	 * @throws Exception
 	 */
-	public boolean editUser(HashMap<String, String> arguments) throws Exception
+	public static boolean editUser(HashMap<String, String> arguments) throws Exception
 	{
 		REST request = new REST(HOSTNAME, GROUPNAME, "edit");
 		for(Map.Entry<String, String> pair : arguments.entrySet())

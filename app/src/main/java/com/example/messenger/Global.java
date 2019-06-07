@@ -83,8 +83,10 @@ public class Global extends Application {
     }
 
     public void setData(String username, String password) {
+
+
         userdata.setUsername(username);
-        userdata.setSeed(GFG.encryptThisString(username+password));
+        userdata.setSeed(GFG.encryptThisString(username+GFG.encryptThisString(password)));
     }
 
     /**
